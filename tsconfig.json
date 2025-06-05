@@ -24,7 +24,7 @@
     "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "plugins": [
       {
         "name": "next"

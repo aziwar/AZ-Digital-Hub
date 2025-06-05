@@ -23,15 +23,15 @@ const About: React.FC = () => {
 
   return (
     <section id="about" className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto @container">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl @md:text-5xl font-bold text-white mb-4">
             About Me
           </h2>
           <div className="w-24 h-1 bg-blue-500 mx-auto"></div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid @lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Description */}
           <div className="space-y-6">
             <p className="text-lg text-gray-300 leading-relaxed">
@@ -71,7 +71,7 @@ const About: React.FC = () => {
                 key={index}
                 className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 text-center hover:bg-slate-800/70 transition-colors duration-200"
               >
-                <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">
+                <div className="text-3xl @md:text-4xl font-bold text-blue-400 mb-2">
                   {stat.value}
                 </div>
                 <div className="text-gray-400">{stat.label}</div>

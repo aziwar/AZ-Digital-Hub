@@ -8,7 +8,7 @@ A modern, high-performance portfolio website showcasing expertise in Digital Mar
 
 ### Performance & Optimization
 - **Lightning Fast**: Optimized for Core Web Vitals with 95+ Lighthouse scores
-- **Server Components**: Leveraging Next.js 14 App Router for optimal performance
+ - **Server Components**: Leveraging Next.js 15 App Router for optimal performance
 - **Smart Loading**: Dynamic imports and lazy loading for faster initial loads
 - **Image Optimization**: Automatic image optimization with Next.js Image component
 
@@ -17,6 +17,7 @@ A modern, high-performance portfolio website showcasing expertise in Digital Mar
 - **Responsive Design**: Mobile-first approach with fluid typography and spacing
 - **Dark Mode**: Elegant dark theme with careful attention to contrast and readability
 - **Interactive Elements**: 3D visualizations, particle effects, and micro-interactions
+- **Micro-Interactions**: subtle link hover movement and hero gradient fade
 
 ### Technical Features
 - **Type Safety**: Full TypeScript implementation with strict mode
@@ -27,9 +28,9 @@ A modern, high-performance portfolio website showcasing expertise in Digital Mar
 
 ## 🛠 Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS 3.4 with custom design system
+- **Styling**: Tailwind CSS 4 with container queries and custom design system
 - **Animations**: Framer Motion
 - **3D Graphics**: Three.js with React Three Fiber
 - **Forms**: React Hook Form with Zod validation
@@ -160,6 +161,9 @@ DATABASE_URL=your-database-url
 4. **CSS Optimization**: Tailwind CSS with PurgeCSS
 5. **Caching Strategy**: Proper cache headers and ISR
 6. **Custom Animations**: Using Framer Motion instead of external animation libraries
+
+### Continuous Integration
+- Automated tests run on every PR: linting, type checking, Lighthouse CI and axe-core audits, plus depcheck
 
 ### Context7 Optimizations
 - **TypeAnimation**: Using custom Framer Motion implementation instead of external library

@@ -1,0 +1,10 @@
+[
+  { "resourceSizes": [{ "resourceType": "total", "budget": 170 }],
+    "timings": [
+      { "metric": "interactive", "budget": 3800 },
+      { "metric": "first-contentful-paint", "budget": 1400 },
+      { "metric": "total-blocking-time", "budget": 150 },
+      { "metric": "interaction-to-next-paint", "budget": 200 }
+    ]
+  }
+]

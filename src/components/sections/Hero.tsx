@@ -11,20 +11,20 @@ const Hero: React.FC = () => {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 container max-w-7xl mx-auto p-4 @container">
         {/* Main Content */}
         <div className="space-y-8">
           {/* Title */}
-          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
+          <h1 className="text-5xl @md:text-7xl font-bold text-white tracking-tight">
             Ahmed Ziwar
           </h1>
           
           {/* Subtitle */}
           <div className="space-y-2">
-            <h2 className="text-2xl md:text-4xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h2 className="text-2xl @md:text-4xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               Digital Marketing Manager
             </h2>
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg @md:text-xl text-gray-300 max-w-2xl mx-auto">
               Strategic Thinker | Creative Problem Solver | ROI-Driven
             </p>
           </div>
@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
           </div>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+          <div className="flex flex-col @sm:flex-row gap-4 justify-center mt-10">
             <Link
               href="#portfolio"
               className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-blue-500/50"

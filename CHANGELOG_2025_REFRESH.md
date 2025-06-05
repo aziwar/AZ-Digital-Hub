@@ -1,0 +1,19 @@
+ .github/workflows/ci.yml                 |   21 +
+ .gitignore                               |    2 +-
+ CHANGELOG_2025_REFRESH.md                |   19 +
+ README.md                                |    6 +-
+ lighthouse-budget.json                   |    8 +
+ next.config.js                           |   13 +-
+ package-lock.json                        | 1118 +++++++++++++++++++-----------
+ package.json                             |   16 +-
+ postcss.config.js                        |    2 +-
+ scripts/a11y.js                          |   20 +
+ src/app/globals.css                      |   98 ++-
+ src/app/layout.tsx                       |   10 +
+ src/components/sections/About.tsx        |    8 +-
+ src/components/sections/Hero.tsx         |   10 +-
+ src/components/sections/Testimonials.tsx |   86 ++-
+ src/data/testimonials.json               |   17 +
+ tailwind.config.js                       |   36 +-
+ tailwind.config.ts                       |   15 +-
+ 18 files changed, 995 insertions(+), 510 deletions(-)

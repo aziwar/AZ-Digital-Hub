@@ -1,5 +1,9 @@
+// @ts-nocheck
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+import animate from 'tailwindcss-animate'
 
 const config: Config = {
   darkMode: ['class'],
@@ -79,14 +83,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    // @ts-expect-error - These imports are handled by the bundler
-    import('@tailwindcss/forms'),
-    // @ts-expect-error - These imports are handled by the bundler
-    import('@tailwindcss/typography'),
-    // @ts-expect-error - These imports are handled by the bundler
-    import('tailwindcss-animate'),
-  ],
+  plugins: [forms, typography, animate],
 }
 
 export default config

@@ -1,6 +1,7 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const withPWA = require('next-pwa')({ dest: 'public', register: true, skipWaiting: true })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -28,6 +29,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.pixabay.com',
+      },
+    ],
+    // allow images from the local assets folder
+    localPatterns: [
+      {
+        pathname: 'public/assets/images/**',
       },
     ],
     formats: ['image/avif', 'image/webp'],
@@ -64,15 +71,19 @@ const nextConfig = {
       },
       {
         key: 'Referrer-Policy',
-        value: 'origin-when-cross-origin',
+        value: 'strict-origin-when-cross-origin',
       },
       {
         key: 'X-Frame-Options',
-        value: 'DENY',
+        value: 'SAMEORIGIN',
       },
       {
         key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=()',
+        value: 'camera=(), microphone=()',
+      },
+      {
+        key: 'Content-Security-Policy',
+        value: "default-src 'self'; img-src 'self' data:;",
       },
       {
         key: 'X-XSS-Protection',
@@ -90,7 +101,16 @@ const nextConfig = {
 
     return [
       {
-        // Apply these headers to all routes
+        source: '/:path*.(webp|js|css)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public,max-age=31536000,immutable',
+          },
+        ],
+      },
+      {
+        // Apply security headers to all routes
         source: '/:path*',
         headers: securityHeaders,
       },
@@ -119,4 +139,4 @@ const nextConfig = {
 }
 
 // Bundle analyzer configuration
-module.exports = withBundleAnalyzer(nextConfig)
+module.exports = withPWA(withBundleAnalyzer(nextConfig))

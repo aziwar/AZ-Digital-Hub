@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npx depcheck --fail-on-unused
+      - run: npm run build
+      - run: npx playwright install --with-deps
+      - run: node scripts/e2e.js
+      - run: npx lhci autorun --upload.target=temporary-public-storage
+      - run: node scripts/a11y.js
+
