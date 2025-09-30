@@ -28,8 +28,8 @@ export const imageConfig: ImageConfig = {
   // Profile Image - Stored locally
   profile: {
     linkedin: "https://www.linkedin.com/in/ahmedziwar/",
-    profileImage: "/images/ahmed-zewar-profile.jpeg", // Local profile image
-    fallback: "/images/ahmed-zewar-profile.jpeg"
+    profileImage: "/images/ahmed-zewar-profile.png", // Local profile image
+    fallback: "/images/ahmed-zewar-profile.png"
   },
   
   // Brand Assets - Your AMZ logo
