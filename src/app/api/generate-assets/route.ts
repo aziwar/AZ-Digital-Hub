@@ -1,12 +1,16 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { 
-  generateHeadshots, 
-  generateBrandLogos, 
+import {
+  generateHeadshots,
+  generateBrandLogos,
   generateServiceGraphics,
   calculateGenerationCost,
-  validateOpenAIConnection
+  validateOpenAIConnection,
+  strictRateLimiter,
+  getClientIdentifier,
+  checkRateLimit,
+  getRateLimitHeaders
 } from '@/lib'
 
 // Type-safe request interface
@@ -88,11 +92,33 @@ function validateRequest(body: unknown): { isValid: boolean; errors: string[]; d
 
 export async function POST(request: NextRequest): Promise<NextResponse<GenerateAssetsResponse>> {
   try {
+    // Rate limiting check (CRITICAL: protects against OpenAI API cost abuse)
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = await checkRateLimit(strictRateLimiter, clientId);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Rate limit exceeded. Please try again later.',
+          validationErrors: [
+            'Too many requests. Limit: 5 requests per 10 minutes.',
+            `Remaining: ${rateLimitResult.remaining}`,
+            `Reset at: ${new Date(rateLimitResult.reset).toISOString()}`
+          ]
+        },
+        {
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult)
+        }
+      );
+    }
+
     // Environment validation
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
         { success: false, error: 'OPENAI_API_KEY environment variable not configured' },
-        { status: 500 }
+        { status: 500, headers: getRateLimitHeaders(rateLimitResult) }
       );
     }
     
@@ -148,8 +174,11 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateA
     if (failures.length > 0) {
       response.error = `Partial success: ${failures.length} generation tasks failed`;
     }
-    
-    return NextResponse.json(response, { status: 200 });
+
+    return NextResponse.json(response, {
+      status: 200,
+      headers: getRateLimitHeaders(rateLimitResult)
+    });
     
   } catch (err) {
     return NextResponse.json(
@@ -165,6 +194,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateA
 // Type-safe GET endpoint for cost estimation
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
+    // Rate limiting check (uses same strict limits as POST)
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = await checkRateLimit(strictRateLimiter, clientId);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        {
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult)
+        }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     
     const headshotCount = parseInt(searchParams.get('headshotCount') || '4');
@@ -181,7 +224,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     
     const totalCost = calculateGenerationCost(headshotCount, logoCount, serviceCount);
     const totalImages = headshotCount + logoCount + serviceCount;
-    
+
     return NextResponse.json({
       cost: totalCost,
       imageCount: totalImages,
@@ -192,6 +235,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       },
       quality: qualityParam,
       pricePerImage: qualityParam === 'hd' ? 0.08 : 0.04
+    }, {
+      headers: getRateLimitHeaders(rateLimitResult)
     });
     
   } catch {

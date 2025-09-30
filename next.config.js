@@ -85,6 +85,32 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
           },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://cdn.emailjs.com",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https://images.unsplash.com https://cdn.pixabay.com https://avatars.githubusercontent.com https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co https://media.licdn.com",
+              "font-src 'self' data:",
+              "connect-src 'self' https://vercel.live https://api.emailjs.com https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+            ].join('; '),
+          },
         ],
       },
     ]

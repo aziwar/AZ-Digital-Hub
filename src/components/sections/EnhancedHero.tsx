@@ -19,13 +19,13 @@ const EnhancedHero: React.FC = () => {
           <div className="lg:col-span-7 text-center lg:text-left">
             
             {/* URGENT AVAILABILITY ALERT */}
-            <div className="mb-8 inline-flex items-center space-x-3 bg-red-600/20 backdrop-blur border border-red-400/50 rounded-full px-6 py-3 animate-bounce">
-              <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
-              <span className="text-red-300 font-bold text-sm md:text-base">🔥 URGENT: Only 3 Strategic Slots Left This Month</span>
+            <div className="mb-6 sm:mb-8 inline-flex items-center space-x-2 sm:space-x-3 bg-red-600/20 backdrop-blur border border-red-400/50 rounded-full px-4 sm:px-6 py-2 sm:py-3 animate-bounce">
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full animate-pulse"></div>
+              <span className="text-red-300 font-bold text-xs sm:text-sm md:text-base">🔥 URGENT: Only 3 Slots Left</span>
             </div>
 
             {/* Commanding Headlines */}
-            <h1 className="hero-title text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-6 text-animate-reveal">
+            <h1 className="hero-title text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight mb-4 sm:mb-6 text-animate-reveal">
               <span className="block" style={{ "--animation-delay": "0.2s" } as React.CSSProperties}>Ahmed Zewar</span>
               <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent text-hover-glow" style={{ "--animation-delay": "0.4s" } as React.CSSProperties}>
                 Commands Results
@@ -33,12 +33,12 @@ const EnhancedHero: React.FC = () => {
             </h1>
             
             {/* VALUE PROPOSITION */}
-            <div className="mb-8 text-animate-reveal" style={{ "--animation-delay": "0.6s" } as React.CSSProperties}>
-              <h2 className="hero-subtitle text-xl md:text-3xl font-bold text-gray-200 mb-4 text-hover-glow">
+            <div className="mb-6 sm:mb-8 text-animate-reveal" style={{ "--animation-delay": "0.6s" } as React.CSSProperties}>
+              <h2 className="hero-subtitle text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mb-3 sm:mb-4 text-hover-glow">
                 Kuwait&apos;s #1 Digital Marketing Strategist
               </h2>
-              <p className="hero-description text-lg md:text-xl text-gray-300 leading-relaxed">
-                Transform your business with <span className="text-purple-400 font-bold">proven strategies</span> that generated 
+              <p className="hero-description text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed px-2 sm:px-0">
+                Transform your business with <span className="text-purple-400 font-bold">proven strategies</span> that generated
                 <span className="text-green-400 font-bold"> 300% ROI</span> for 200+ Kuwait companies
               </p>
             </div>
@@ -52,31 +52,31 @@ const EnhancedHero: React.FC = () => {
             <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start text-animate-reveal" style={{ "--animation-delay": "0.8s" } as React.CSSProperties}>
               <Link
                 href="#contact"
-                className="group btn-primary btn-magnetic btn-pulse text-lg focus-enhanced"
+                className="group btn-primary btn-magnetic btn-pulse text-base sm:text-lg min-h-[44px] focus-enhanced"
               >
                 <span className="flex items-center justify-center">
                   🚀 Book FREE Strategic Session
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </span>
-                <div className="text-sm font-normal opacity-90 mt-1">Usually 2,000 KWD - Limited Time</div>
+                <div className="text-xs sm:text-sm font-normal opacity-90 mt-1">Usually 2,000 KWD - Limited Time</div>
               </Link>
-              
+
               <a
                 href="https://wa.me/96560672773?text=Hi Ahmed, I need urgent strategic consultation for my business"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group btn-whatsapp btn-magnetic text-lg focus-enhanced"
+                className="group btn-whatsapp btn-magnetic text-base sm:text-lg min-h-[44px] focus-enhanced"
               >
                 <span className="flex items-center justify-center">
                   💬 WhatsApp Instant Response
                   <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </span>
-                <div className="text-sm font-normal opacity-90 mt-1">+965 6067 2773</div>
+                <div className="text-xs sm:text-sm font-normal opacity-90 mt-1">+965 6067 2773</div>
               </a>
             </div>
 
             {/* SOCIAL PROOF TICKER */}
-            <div className="mb-8 flex flex-wrap justify-center lg:justify-start items-center gap-4 text-sm">
+            <div className="mb-8 flex flex-wrap justify-center lg:justify-start items-center gap-2 sm:gap-4 text-xs sm:text-sm">
               <div className="flex items-center space-x-2 bg-green-600/20 rounded-full px-4 py-2">
                 <span className="text-green-400">✓</span>
                 <span className="text-green-300">200+ Kuwait Businesses</span>
@@ -96,7 +96,7 @@ const EnhancedHero: React.FC = () => {
           <div className="lg:col-span-5 space-y-8">
             
             {/* Professional Image */}
-            <div className="relative mx-auto w-80 h-80 lg:w-96 lg:h-96">
+            <div className="relative mx-auto w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
               {/* Neon Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-cyan-500/30 rounded-full blur-2xl animate-pulse" />
               
@@ -123,7 +123,7 @@ const EnhancedHero: React.FC = () => {
         </div>
 
         {/* RESULTS METRICS - Full Width */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
           <div className="bg-white/10 backdrop-blur-md border border-purple-400/30 rounded-xl p-6 hover:bg-white/15 transition-all duration-300 text-center">
             <div className="text-4xl font-bold text-white mb-2">300%</div>
             <div className="text-purple-300 font-medium">Average ROI Increase</div>
@@ -147,7 +147,7 @@ const EnhancedHero: React.FC = () => {
             <h3 className="text-2xl font-bold text-white mb-4 text-center">
               🛡️ 100% Risk-Free Guarantee
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
               <div className="flex items-start space-x-3 mb-2">
                 <span className="text-green-400 mt-1 flex-shrink-0">✓</span>
                 <span className="text-gray-300 leading-relaxed">Money-back if no results in 90 days</span>
