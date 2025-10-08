@@ -1,0 +1,65 @@
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# local env files
+.env*
+.env.local
+.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# backup files and generated assets
+backup_*
+*.backup
+public/images/*-backup*
+
+# Automation scripts with sensitive data (keep these ignored if they contain secrets)
+automation/setup-complete.ps1
+automation/setup-env.ps1
+automation/test-api.ps1
+automation/test-env.ps1
+automation/test-generate.ps1
+
+# Generated files with API responses and reports
+generated-images.json
+*.audit.json
+logs/
+
+# Development tools and caches
+.serena/
+.claude/
+nul
+
+# MCP Configuration (contains sensitive API keys)
+.mcp.json
+
+# Validation reports
+.validation-results.json

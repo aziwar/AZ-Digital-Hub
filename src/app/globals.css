@@ -1,0 +1,812 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Enhanced Typography System */
+:root {
+  /* Fluid Typography Scale */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+  --text-4xl: clamp(2.25rem, 1.8rem + 2.25vw, 3.5rem);
+  --text-5xl: clamp(3rem, 2.4rem + 3vw, 4.5rem);
+  --text-6xl: clamp(3.75rem, 3rem + 3.75vw, 5.5rem);
+  --text-7xl: clamp(4.5rem, 3.6rem + 4.5vw, 7rem);
+  
+  /* Line Height Scale */
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+}
+
+/* Typography Animations */
+@keyframes text-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: rgb(147 51 234); }
+}
+
+/* Enhanced Typography Classes */
+.text-animate-reveal {
+  animation: text-reveal 0.8s ease-out forwards;
+  animation-delay: var(--animation-delay, 0s);
+}
+
+.text-typewriter {
+  overflow: hidden;
+  border-inline-end: 2px solid rgb(147 51 234);
+  white-space: nowrap;
+  margin: 0 auto;
+  animation:
+    typewriter 3.5s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+}
+
+.text-hover-glow {
+  transition: all 0.3s ease;
+}
+
+.text-hover-glow:hover {
+  text-shadow: 0 0 20px rgb(147 51 234 / 0.5);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Enhanced Body Styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Mobile Optimization - Standardized CTA Buttons */
+.btn-primary {
+  @apply px-8 py-4 min-h-[44px] bg-gradient-to-r from-purple-600 to-cyan-600;
+  @apply hover:from-purple-700 hover:to-cyan-700 text-white font-bold;
+  @apply rounded-xl shadow-lg hover:shadow-purple-500/50 border border-purple-500;
+  @apply transition-all duration-200 touch-manipulation;
+}
+
+.btn-whatsapp {
+  @apply px-8 py-4 min-h-[44px] bg-green-600 hover:bg-green-700;
+  @apply text-white font-bold rounded-xl shadow-lg hover:shadow-green-500/50;
+  @apply transition-all duration-200 touch-manipulation;
+}
+
+/* Mobile Typography Optimization */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(2.5rem, 8vw, 3.5rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
+    line-height: 1.4 !important;
+  }
+
+  .hero-description {
+    font-size: clamp(1rem, 4vw, 1.125rem) !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* Arabic Text Spacing - Better readability for RTL */
+[dir="rtl"] .hero-title {
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .hero-title {
+    line-height: 1.6 !important;
+  }
+}
+
+/* Enhanced Smooth Scrolling & Performance */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance Optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Smooth Animations & Transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes scaleHover {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgb(147 51 234 / 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgb(147 51 234 / 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* Section Animation Classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-stagger {
+  animation: fadeInStagger 0.6s ease-out forwards;
+  animation-delay: var(--stagger-delay, 0s);
+}
+
+/* Button & CTA Enhancements */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
+}
+
+.btn-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgb(0 0 0 / 0.3);
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: inset-inline-start 0.5s ease;
+}
+
+.btn-enhanced:hover::before {
+  inset-inline-start: 100%;
+}
+
+.btn-pulse {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Loading States */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(51 65 85) 25%,
+    rgb(71 85 105) 50%,
+    rgb(51 65 85) 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Focus States for Accessibility */
+.focus-enhanced:focus {
+  outline: 2px solid rgb(147 51 234);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgb(147 51 234 / 0.3);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Enhanced Mobile Device Support */
+@supports not (backdrop-filter: blur(1px)) {
+  /* Fallback for browsers without backdrop-filter support */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg {
+    background-color: rgba(15, 23, 42, 0.85);
+  }
+}
+
+@supports (-webkit-backdrop-filter: blur(1px)) {
+  /* Safari iOS support */
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Primary touch devices (phones, tablets without precision pointing) */
+  .btn-magnetic:hover,
+  .btn-enhanced:hover {
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  .hover\:scale-105:hover,
+  .hover\:scale-102:hover,
+  .group:hover .group-hover\:scale-105 {
+    transform: none !important;
+  }
+  
+  /* CRITICAL: Force visibility for intersection observer content on mobile */
+  .observe-fade-in,
+  .observe-slide-left,
+  .observe-slide-right,
+  .observe-stagger-children {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure text animations are visible on mobile */
+  .text-animate-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  /* Disable complex animations for touch performance */
+  .animate-magneticPull,
+  .parallaxFloat {
+    animation: none !important;
+  }
+  
+  /* Optimize infinite animations */
+  .animate-pulse {
+    animation-duration: 2s;
+  }
+  
+  /* Reduce complex shadows and effects */
+  .hover\:shadow-lg:hover,
+  .hover\:shadow-purple-500\/20:hover {
+    box-shadow: none !important;
+  }
+}
+
+/* Mobile-First Responsive Enhancements */
+@media (max-width: 640px) {
+  /* Touch Target Optimization */
+  .btn-enhanced,
+  .focus-enhanced,
+  a[href],
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Mobile Typography Adjustments */
+  .text-animate-reveal {
+    animation-delay: 0s;
+    animation-duration: 0.6s;
+  }
+  
+  /* Reduced Motion for Performance */
+  .animate-stagger {
+    animation-duration: 0.4s;
+  }
+  
+  /* Mobile Scroll Optimization */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Disable backdrop-filter for older mobile browsers */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg {
+    backdrop-filter: none;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Optimize animations for mobile performance */
+  .btn-magnetic:hover {
+    transform: none;
+    animation: none;
+  }
+  
+  /* Reduce complex shadows on mobile */
+  .hover\:shadow-lg {
+    box-shadow: none;
+  }
+  
+  /* Optimize blur effects */
+  .blur-lg {
+    filter: none;
+    opacity: 0.7;
+  }
+  
+  /* Disable infinite animations on mobile for battery */
+  .animate-magneticPull {
+    animation: none;
+  }
+  
+  /* Touch-friendly hover states */
+  .group:hover .group-hover\:scale-105 {
+    transform: none;
+  }
+
+  /* Optimize DECORATIVE gradients only - preserve functional UI gradients */
+  .bg-gradient-to-r {
+    background-image: none !important;
+    background-color: rgba(51, 65, 85, 0.6);
+  }
+
+  /* CRITICAL: Override to preserve gradients in ROIChart and other functional UI */
+  [data-preserve-gradient] .bg-gradient-to-r,
+  [data-preserve-gradient] .bg-clip-text {
+    background-image: revert-layer !important;
+    background-color: transparent !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Tablet Optimizations */
+  .btn-enhanced:hover {
+    transform: none; /* Disable hover transforms on touch devices */
+  }
+  
+  /* Focus improvements for touch */
+  .focus-enhanced:focus {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+  
+  /* Reduce backdrop blur complexity */
+  .backdrop-blur-md {
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Optimize performance for mid-range devices */
+  .parallaxFloat {
+    animation: none;
+  }
+  
+  /* Disable complex transforms on touch devices */
+  .hover\:scale-105:hover {
+    transform: scale(1);
+  }
+  
+  .hover\:scale-102:hover {
+    transform: scale(1);
+  }
+}
+
+/* Services Section Mobile-Specific Fixes */
+@media (max-width: 640px) {
+  /* Fix cramped feature grid layout */
+  .services-features-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Improve emoji rendering consistency */
+  .service-icon {
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
+    display: inline-block !important;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif !important;
+  }
+
+  /* Better touch targets for purple bullets */
+  .feature-bullet {
+    min-width: 12px !important;
+    min-height: 12px !important;
+    margin-inline-end: 0.875rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Improve text hierarchy on small screens */
+  .service-title {
+    font-size: 1.5rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .service-description {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .service-feature-text {
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .text-hover-glow:hover {
+    text-shadow: none;
+    background-color: rgb(147 51 234);
+    color: white;
+  }
+  
+  .btn-enhanced {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark Mode Preparation */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Enhanced Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(15 23 42);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgb(147 51 234), rgb(59 130 246));
+  border-radius: 6px;
+  border: 2px solid rgb(15 23 42);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgb(168 85 247), rgb(96 165 250));
+}
+
+/* iOS Safari Mobile Optimizations */
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific optimizations */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  
+  /* Optimize transform performance */
+  .btn-magnetic,
+  .btn-enhanced {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Fix iOS scroll issues */
+  .overflow-auto,
+  .overflow-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Android Chrome Mobile Optimizations */
+@media screen and (max-width: 767px) and (-webkit-min-device-pixel-ratio: 1) {
+  /* Android-specific optimizations */
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px);
+  }
+  
+  /* Optimize for lower-end Android devices */
+  .animate-bounce,
+  .animate-pulse {
+    animation-duration: 1.5s;
+  }
+  
+  /* Reduce complex transforms for performance */
+  .transform,
+  .scale-105,
+  .scale-102 {
+    will-change: auto;
+  }
+}
+
+/* Phase 2: Enhanced Form Interaction Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes magneticPull {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes successPulse {
+  0% { 
+    transform: scale(1); 
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  50% { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* Enhanced Form Animation Classes */
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.animate-magneticPull {
+  animation: magneticPull 0.6s ease-in-out infinite;
+}
+
+.animate-successPulse {
+  animation: successPulse 1s ease-in-out 3;
+}
+
+/* Enhanced Focus States */
+.focus-enhanced:focus {
+  outline: none;
+  border-color: rgb(168, 85, 247);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1), 0 0 20px rgba(168, 85, 247, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Advanced Button Enhancements */
+.btn-magnetic {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-magnetic:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 10px 25px rgba(147, 51, 234, 0.3),
+    0 0 0 1px rgba(147, 51, 234, 0.2);
+}
+
+.btn-magnetic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: inset-inline-start 0.5s;
+}
+
+.btn-magnetic:hover::before {
+  inset-inline-start: 100%;
+}
+
+.btn-magnetic:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Phase 2: Smooth Section Transitions */
+@keyframes fadeInSection {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes parallaxFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes sectionDivider {
+  0% { 
+    width: 0;
+    opacity: 0;
+  }
+  50% {
+    width: 100%;
+    opacity: 0.6;
+  }
+  100% {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+/* Section Transition Classes */
+.section-fade-in {
+  animation: fadeInSection 1s ease-out forwards;
+  animation-delay: var(--section-delay, 0s);
+}
+
+.section-parallax {
+  animation: parallaxFloat 6s ease-in-out infinite;
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(147, 51, 234), rgb(59, 130, 246), transparent);
+  animation: sectionDivider 2s ease-out forwards;
+}
+
+/* Intersection Observer Classes */
+.observe-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.observe-fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.observe-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.observe-slide-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.observe-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.observe-slide-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered Animations */
+.observe-stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.observe-stagger-children.is-visible > *:nth-child(1) { transition-delay: 0.1s; }
+.observe-stagger-children.is-visible > *:nth-child(2) { transition-delay: 0.2s; }
+.observe-stagger-children.is-visible > *:nth-child(3) { transition-delay: 0.3s; }
+.observe-stagger-children.is-visible > *:nth-child(4) { transition-delay: 0.4s; }
+.observe-stagger-children.is-visible > *:nth-child(5) { transition-delay: 0.5s; }
+.observe-stagger-children.is-visible > *:nth-child(6) { transition-delay: 0.6s; }
+
+.observe-stagger-children.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Progress Indicators */
+.section-progress {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.section-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, rgb(147, 51, 234), rgb(59, 130, 246), rgb(16, 185, 129));
+  transform-origin: inline-start;
+  transition: transform 0.1s ease-out;
+}
+
+/* RTL Support for Directional Animations */
+[dir="rtl"] .observe-slide-left {
+  transform: translateX(30px);
+}
+
+[dir="rtl"] .observe-slide-left.is-visible {
+  transform: translateX(0);
+}
+
+[dir="rtl"] .observe-slide-right {
+  transform: translateX(-30px);
+}
+
+[dir="rtl"] .observe-slide-right.is-visible {
+  transform: translateX(0);
+}

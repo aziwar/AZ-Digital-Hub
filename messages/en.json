@@ -1,0 +1,550 @@
+{
+  "Navigation": {
+    "brand": "AZ Digital Hub",
+    "menu": {
+      "home": "Home",
+      "about": "About",
+      "services": "Services",
+      "portfolio": "Portfolio",
+      "contact": "Contact"
+    },
+    "aria": {
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    }
+  },
+  "Hero": {
+    "urgency": {
+      "badge": "🔥 URGENT: Only 3 Slots Left"
+    },
+    "headline": {
+      "name": "Ahmed Zewar",
+      "tagline": "Commands Results"
+    },
+    "subtitle": "Kuwait's #1 Digital Marketing Strategist",
+    "description": "Transform your business with <strong>proven strategies</strong> that generated <strong>300% ROI</strong> for 200+ Kuwait companies",
+    "cta": {
+      "primary": {
+        "text": "🚀 Book FREE Strategic Session",
+        "subtext": "Usually 2,000 KWD - Limited Time"
+      },
+      "whatsapp": {
+        "text": "💬 WhatsApp Instant Response",
+        "subtext": "+965 6067 2773",
+        "linkText": "Hi Ahmed, I need urgent strategic consultation for my business"
+      }
+    },
+    "profile": {
+      "imageAlt": "Ahmed Zewar - Digital Marketing Expert"
+    },
+    "socialProof": {
+      "businesses": "200+ Kuwait Businesses",
+      "experience": "20+ Years Expertise",
+      "personality": "ENTJ Leadership"
+    },
+    "metrics": {
+      "roi": {
+        "value": "300%",
+        "label": "Average ROI Increase",
+        "timeline": "Within 6 months"
+      },
+      "conversion": {
+        "value": "150%",
+        "label": "Conversion Rate Boost",
+        "timeline": "E-commerce clients"
+      },
+      "response": {
+        "value": "24-48h",
+        "label": "Response Time",
+        "timeline": "Guaranteed"
+      }
+    },
+    "guarantee": {
+      "title": "🛡️ 100% Risk-Free Guarantee",
+      "features": [
+        "Money-back if no results in 90 days",
+        "Free strategy audit included",
+        "Cancel anytime, no questions asked"
+      ]
+    },
+    "scroll": {
+      "text": "See Success Stories"
+    }
+  },
+  "About": {
+    "title": "About Me",
+    "intro": "With over 20 years of experience in digital marketing and IT consulting, I help businesses transform their online presence and achieve measurable growth. My expertise spans from strategic planning to hands-on implementation of ROI-driven digital campaigns.",
+    "current": "Currently serving as Digital Solutions Manager at Smart Technology (STSCKW) in Kuwait, I specialize in e-commerce optimization, digital marketing strategy, and business process improvement. My approach combines technical expertise with creative problem-solving to deliver exceptional results.",
+    "competencies": {
+      "title": "Core Competencies",
+      "skills": [
+        "Digital Marketing Strategy",
+        "E-commerce Management",
+        "Social Media Marketing",
+        "SEO/SEM Optimization",
+        "PPC Campaign Management",
+        "Content Marketing",
+        "Email Marketing",
+        "Analytics & Reporting",
+        "IT Consulting",
+        "Business Development"
+      ]
+    },
+    "stats": {
+      "experience": {
+        "value": "20+",
+        "label": "Years Experience"
+      },
+      "projects": {
+        "value": "150+",
+        "label": "Projects Completed"
+      },
+      "clients": {
+        "value": "50+",
+        "label": "Happy Clients"
+      },
+      "roi": {
+        "value": "300%",
+        "label": "ROI Generated"
+      }
+    },
+    "experience": {
+      "title": "Recent Experience",
+      "roles": [
+        {
+          "title": "Digital Solutions Manager",
+          "company": "Smart Technology (STSCKW) • 2022 - Present",
+          "description": "Leading digital transformation initiatives and e-commerce strategies"
+        },
+        {
+          "title": "Digital Marketing Manager",
+          "company": "Dr Scent • 2023 - 2024",
+          "description": "Implemented comprehensive digital marketing strategies"
+        },
+        {
+          "title": "Social Media Specialist",
+          "company": "Ooredoo Kuwait • 2019 - 2022",
+          "description": "Built and executed social media strategies for major telecom brand"
+        }
+      ]
+    }
+  },
+  "Services": {
+    "badge": "Strategic Solutions • Proven Results",
+    "title": "Command Excellence",
+    "subtitle": "Strategic digital leadership that transforms vision into measurable results. <strong>No compromise on performance.</strong>",
+    "items": [
+      {
+        "icon": "⚡",
+        "title": "Strategic Digital Transformation",
+        "description": "End-to-end digital strategy that delivers measurable ROI. From vision to execution, I orchestrate complete business transformation.",
+        "results": "300% avg revenue increase",
+        "features": [
+          "Executive Strategy Sessions",
+          "Digital Roadmap Creation",
+          "KPI Framework Design",
+          "Performance Optimization"
+        ]
+      },
+      {
+        "icon": "🎯",
+        "title": "E-commerce Command & Control",
+        "description": "Complete e-commerce ecosystem management. Platform optimization, funnel engineering, and conversion maximization for sustained growth.",
+        "results": "150% conversion improvement",
+        "features": [
+          "Platform Architecture",
+          "KNET Payment Integration",
+          "Conversion Rate Optimization",
+          "Sales Performance Analytics"
+        ]
+      },
+      {
+        "icon": "🚀",
+        "title": "Kuwait Market Leadership",
+        "description": "Dominate the GCC digital landscape with culturally-aware campaigns that resonate with local markets while driving international reach.",
+        "results": "GCC market penetration",
+        "features": [
+          "Arabic/English Campaigns",
+          "Ramadan Strategy Planning",
+          "Local SEO Mastery",
+          "Regional Social Influence"
+        ]
+      },
+      {
+        "icon": "💼",
+        "title": "Enterprise IT Consulting",
+        "description": "Technology transformation that aligns with business objectives. Strategic IT solutions that enhance operational efficiency and competitive advantage.",
+        "results": "40% efficiency gains",
+        "features": [
+          "Infrastructure Assessment",
+          "Digital Process Optimization",
+          "Team Training & Development",
+          "Technology Stack Modernization"
+        ]
+      },
+      {
+        "icon": "📊",
+        "title": "Data-Driven Decision Making",
+        "description": "Transform raw data into strategic insights. Advanced analytics frameworks that drive informed decisions and sustainable competitive advantage.",
+        "results": "Real-time intelligence",
+        "features": [
+          "Performance Dashboard Creation",
+          "ROI Tracking Systems",
+          "Predictive Analytics",
+          "Strategic Reporting Automation"
+        ]
+      },
+      {
+        "icon": "⭐",
+        "title": "Executive Leadership Coaching",
+        "description": "Develop your team's strategic thinking capabilities. Leadership development focused on results-driven execution and organizational excellence.",
+        "results": "Team performance boost",
+        "features": [
+          "Leadership Strategy Sessions",
+          "Process Optimization Training",
+          "Goal Achievement Systems",
+          "Performance Management"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "Ready to Command Your Market?",
+      "subtitle": "Strategic consultation sessions that deliver immediate clarity and actionable plans for market dominance.",
+      "buttons": {
+        "primary": "Strategic Consultation →",
+        "secondary": "View Success Stories"
+      }
+    }
+  },
+  "Testimonials": {
+    "title": "Testimonials",
+    "subtitle": "Hear from clients who have partnered with Ahmed Zewar to elevate their digital presence.",
+    "items": [
+      {
+        "name": "Sarah K.",
+        "role": "E-commerce Entrepreneur",
+        "quote": "Ahmed transformed our online store and tripled our conversion rate. His strategies simply work."
+      },
+      {
+        "name": "David M.",
+        "role": "Marketing Director",
+        "quote": "The SEO and analytics insights Ahmed provided were game changers for our lead generation efforts."
+      },
+      {
+        "name": "Lina R.",
+        "role": "Small Business Owner",
+        "quote": "Thanks to Ahmed's social media campaigns, our brand engagement has skyrocketed."
+      }
+    ]
+  },
+  "Portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Showcasing successful projects and measurable results",
+    "keyResults": "KEY RESULTS",
+    "items": [
+      {
+        "title": "E-commerce Platform Optimization",
+        "client": "Smart Technology (STSCKW)",
+        "description": "Led the complete overhaul of e-commerce platform resulting in 200% increase in conversion rates",
+        "tags": ["E-commerce", "SEO", "UX Optimization"],
+        "results": [
+          "200% conversion increase",
+          "150% ROI improvement",
+          "50% faster load times"
+        ]
+      },
+      {
+        "title": "Digital Marketing Campaign",
+        "client": "Dr Scent",
+        "description": "Developed and executed comprehensive digital marketing strategy across multiple channels",
+        "tags": ["Social Media", "PPC", "Email Marketing"],
+        "results": [
+          "300% social engagement",
+          "250% lead generation",
+          "180% sales growth"
+        ]
+      },
+      {
+        "title": "Social Media Transformation",
+        "client": "Ooredoo Kuwait",
+        "description": "Built social media presence from ground up for major telecommunications provider",
+        "tags": ["Social Strategy", "Content Creation", "Community Management"],
+        "results": [
+          "500K+ followers",
+          "400% engagement rate",
+          "Top telecom brand on social"
+        ]
+      },
+      {
+        "title": "IT Infrastructure Modernization",
+        "client": "Multiple Clients",
+        "description": "Consulted on digital transformation projects for various businesses in Kuwait",
+        "tags": ["IT Consulting", "System Design", "Implementation"],
+        "results": [
+          "60% cost reduction",
+          "99.9% uptime",
+          "Streamlined operations"
+        ]
+      }
+    ],
+    "cta": {
+      "text": "Want to see more detailed case studies?",
+      "button": "Request Case Studies"
+    }
+  },
+  "Contact": {
+    "urgency": {
+      "badge": "⚡ Only 3 Strategic Slots Available"
+    },
+    "title": "Ready to <gradient>Command</gradient> Your Market?",
+    "subtitle": "Join 200+ Kuwait businesses that transformed their digital presence with strategic leadership",
+    "socialProof": [
+      "24-48h response",
+      "Free audit",
+      "ROI guarantee"
+    ],
+    "form": {
+      "title": "Start Your Strategic Session",
+      "pricing": {
+        "regular": "Usually $2,000 KWD",
+        "offer": "FREE Audit"
+      },
+      "fields": {
+        "name": {
+          "label": "Your Name *",
+          "placeholder": "Ahmed Al-Rashid",
+          "errors": {
+            "required": "Name is required",
+            "minLength": "Name must be at least 2 characters"
+          }
+        },
+        "email": {
+          "label": "Business Email *",
+          "placeholder": "ahmed@company.com",
+          "errors": {
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address"
+          }
+        },
+        "company": {
+          "label": "Company/Organization",
+          "placeholder": "Al-Rashid Trading Co."
+        },
+        "phone": {
+          "label": "WhatsApp Number",
+          "placeholder": "+965 XXXX XXXX",
+          "errors": {
+            "invalid": "Please enter a valid phone number"
+          }
+        },
+        "projectType": {
+          "label": "Project Type *",
+          "placeholder": "Select Project Type",
+          "options": [
+            "E-commerce Development",
+            "Digital Marketing Campaign",
+            "Website Redesign",
+            "SEO Optimization",
+            "Social Media Strategy",
+            "IT Consulting",
+            "Other"
+          ],
+          "errors": {
+            "required": "Please select a project type"
+          }
+        },
+        "budgetRange": {
+          "label": "Investment Range *",
+          "placeholder": "Select Budget Range",
+          "options": [
+            "Under 5,000 KWD",
+            "5,000 - 15,000 KWD",
+            "15,000 - 50,000 KWD",
+            "50,000+ KWD",
+            "Enterprise (Custom Quote)"
+          ],
+          "errors": {
+            "required": "Please select a budget range"
+          }
+        },
+        "message": {
+          "label": "Strategic Objectives *",
+          "placeholder": "Describe your current challenges and business goals...",
+          "errors": {
+            "required": "Please describe your strategic objectives",
+            "minLength": "Please provide more details (minimum 20 characters)"
+          }
+        }
+      },
+      "submit": {
+        "idle": "🚀 Book FREE Strategic Session (Worth 2,000 KWD)",
+        "loading": "⚡ Booking Your Strategic Session...",
+        "success": "✅ Strategic Session Booked!"
+      },
+      "status": {
+        "success": {
+          "title": "🎯 Strategic Session Booked!",
+          "message": "Ahmed will personally contact you within 24 hours with your free strategic audit results."
+        },
+        "error": {
+          "message": "Failed to submit. Please try WhatsApp contact below or email directly."
+        }
+      }
+    },
+    "whatsapp": {
+      "title": "Instant Response Available",
+      "description": "For urgent projects or immediate consultation, contact Ahmed directly via WhatsApp.",
+      "button": "📱 WhatsApp: +965 6067 2773"
+    },
+    "trustSignals": {
+      "title": "✅ Why Kuwait Businesses Choose Ahmed",
+      "items": [
+        "<strong>20+ Years</strong> of proven digital marketing excellence in Kuwait & GCC",
+        "<strong>200+ Local Businesses</strong> transformed and scaled successfully",
+        "<strong>300% Average ROI</strong> improvement within first 6 months",
+        "<strong>ENTJ Leadership Style</strong> - Strategic, decisive, results-driven",
+        "<strong>100% Money-Back Guarantee</strong> if no measurable results in 90 days"
+      ]
+    },
+    "availability": {
+      "title": "⏰ Limited Strategic Sessions",
+      "slots": {
+        "january": {
+          "month": "January 2025",
+          "status": "3 slots remaining"
+        },
+        "february": {
+          "month": "February 2025",
+          "status": "Waitlist only"
+        }
+      },
+      "note": "⚡ High demand due to Ramadan preparation projects. Book now to secure your strategic consultation."
+    },
+    "contactMethods": {
+      "title": "Other Contact Methods",
+      "email": {
+        "label": "Email",
+        "value": "ahmed@zewar.xyz"
+      },
+      "linkedin": {
+        "label": "LinkedIn",
+        "value": "linkedin.com/in/ahmedziwar"
+      },
+      "location": {
+        "label": "Location",
+        "value": "Kuwait City, Kuwait"
+      }
+    },
+    "finalCta": {
+      "title": "⚡ Don't Miss Your Strategic Advantage",
+      "description": "While your competitors struggle with outdated marketing, secure your spot for strategic digital transformation that delivers results.",
+      "urgency": "⏰ Only 3 consultation slots remaining this month",
+      "button": "Secure My Strategic Session Now →"
+    }
+  },
+  "Footer": {
+    "cta": {
+      "title": "🚀 Ready to Transform Your Business?",
+      "subtitle": "Join 200+ Kuwait businesses that chose strategic excellence",
+      "button": "Book Your FREE Strategic Session →"
+    },
+    "contact": {
+      "title": "Strategic Contact",
+      "email": "ahmed@zewar.xyz",
+      "phone": "+965 6067 2773 (WhatsApp)",
+      "location": "Kuwait City, Kuwait",
+      "linkedin": "linkedin.com/in/ahmedziwar"
+    },
+    "services": {
+      "title": "Services",
+      "items": [
+        "Digital Marketing Strategy",
+        "E-commerce Development",
+        "Kuwait Market Expertise",
+        "IT Consulting",
+        "ROI Optimization"
+      ]
+    },
+    "guarantees": {
+      "title": "Guarantees",
+      "items": [
+        "24-48 hour response",
+        "300% avg ROI increase",
+        "100% money-back guarantee",
+        "Free strategic audit",
+        "Kuwait market specialist"
+      ]
+    },
+    "copyright": "© 2025 Ahmed Zewar - ENTJ Commander • Strategic Digital Marketing Excellence • Kuwait & GCC",
+    "tagline": "All rights reserved. Transforming businesses through strategic digital leadership since 2005."
+  },
+  "Common": {
+    "buttons": {
+      "learnMore": "Learn More",
+      "getStarted": "Get Started",
+      "contact": "Contact",
+      "viewAll": "View All",
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success"
+    }
+  },
+  "Metadata": {
+    "title": "Ahmed Zewar | Digital Marketing Manager",
+    "description": "Experienced Digital Marketing Manager and IT Consultant in Kuwait. Specializing in ROI-driven campaigns, e-commerce solutions, and strategic business growth.",
+    "keywords": "digital marketing, kuwait, roi campaigns, e-commerce, business growth, marketing consultant",
+    "creator": "Ahmed Zewar",
+    "publisher": "AZ Digital Hub",
+    "appName": "AZ Digital Hub"
+  },
+  "ROIChart": {
+    "header": {
+      "title": "Performance Metrics",
+      "subtitle": "Average ROI Increases - Kuwait Market"
+    },
+    "metrics": {
+      "ecommerce": {
+        "category": "E-commerce Optimization",
+        "description": "Complete e-commerce transformation with KNET integration and conversion optimization",
+        "timeline": "3-6 months average"
+      },
+      "marketing": {
+        "category": "Digital Marketing Campaigns",
+        "description": "Multi-channel campaigns optimized for Kuwait and GCC markets",
+        "timeline": "2-4 months average"
+      },
+      "penetration": {
+        "category": "Kuwait Market Penetration",
+        "description": "Local market dominance with culturally-aware digital strategies",
+        "timeline": "4-8 months average"
+      },
+      "infrastructure": {
+        "category": "IT Infrastructure ROI",
+        "description": "Technology modernization and process optimization",
+        "timeline": "6-12 months average"
+      }
+    },
+    "details": {
+      "basedOn": "Based on 200+ implementations"
+    },
+    "footer": {
+      "projects": "Projects",
+      "response": "Response",
+      "guarantee": "Guarantee"
+    }
+  },
+  "ServiceIcons": {
+    "webDevelopment": "Web Development",
+    "digitalMarketing": "Digital Marketing",
+    "analytics": "Analytics",
+    "seoOptimization": "SEO Optimization",
+    "mobileApps": "Mobile Apps",
+    "itConsulting": "IT Consulting"
+  }
+}
