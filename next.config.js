@@ -1,5 +1,13 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Force cache invalidation for TypeScript fix (fab5310)
+  generateBuildId: async () => {
+    return 'fab5310-ts-fix'
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   
@@ -117,4 +125,4 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+export default withNextIntl(nextConfig)
