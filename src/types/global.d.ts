@@ -7,9 +7,14 @@ declare module '*.js' {
   export default content;
 }
 
-// Global type declarations for process
-interface ProcessEnv {
-  [key: string]: string | undefined;
+// Global type declarations for process environment
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      [key: string]: string | undefined;
+    }
+  }
 }
 
-// Add any other global type declarations here
+// Make this file a module
+export {}
