@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { routing } from '../../../i18n/routing'
+import { routing } from '@/i18n/routing'
 import '../globals.css'
 
 export async function generateMetadata({ params }: { params: Promise<{locale: string}> }): Promise<Metadata> {
