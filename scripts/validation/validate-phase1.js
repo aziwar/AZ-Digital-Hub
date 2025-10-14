@@ -48,7 +48,7 @@ async function validatePhase1() {
     // 3. Test API connection (mock validation)
     console.log('\n🌐 Testing API endpoint structure...');
     // fs already imported at top
-    const apiPath = path.join(__dirname, '../app/api/generate-assets/route.ts');
+    const apiPath = path.join(__dirname, '../../src/app/api/generate-assets/route.ts');
     
     if (fs.existsSync(apiPath)) {
       console.log('✅ API route created: /api/generate-assets');

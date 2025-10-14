@@ -21,5 +21,6 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-rtl'),
+    require('tailwindcss-animate'),
   ],
 }

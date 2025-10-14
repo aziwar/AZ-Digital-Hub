@@ -31,11 +31,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-assets": "node scripts/generate-assets.js",
+    "generate-assets": "echo 'Generate assets script - implement if needed'",
     "type-check": "tsc --noEmit",
     "build-check": "npm run build && npm run type-check",
-    "stage-1-safety": "node scripts/validate-config.js",
-    "stage-2-typescript": "node scripts/validate-typescript.js",
+    "stage-1-safety": "node scripts/validation/validate-config.js",
+    "stage-2-typescript": "node scripts/validation/validate-typescript.js",
     "stage-3-eslint": "eslint . --max-warnings 0 --report-unused-disable-directives",
     "stage-4-dependencies": "npm audit --audit-level=moderate && npm outdated --depth=0",
     "stage-5-build": "next build --no-lint",
@@ -50,7 +50,15 @@
     "clean:linux": "rm -rf .next node_modules/.cache",
     "full-clean": "rm -rf .next node_modules package-lock.json && npm install",
     "check-deps": "npm ls",
-    "audit-fix": "npm audit fix"
+    "audit-fix": "npm audit fix",
+    "perf:baseline": "npm run build && node scripts/performance/compare-bundles.js",
+    "perf:compare": "npm run build && node scripts/performance/compare-bundles.js",
+    "perf:fps": "npm run dev & sleep 5 && node scripts/performance/measure-fps.js",
+    "lighthouse": "lighthouse http://localhost:3000/en --output html --output-path reports/lighthouse.html --only-categories=performance",
+    "lighthouse:mobile": "lighthouse http://localhost:3000/en --output html --output-path reports/lighthouse-mobile.html --only-categories=performance --preset=mobile",
+    "test:visual:baseline": "playwright test --update-snapshots",
+    "test:visual": "playwright test",
+    "test:performance": "npm run perf:compare && npm run perf:fps"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -81,10 +89,13 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.34.0",
+    "@playwright/test": "^1.49.1",
     "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.34.0",
     "eslint-config-next": "^15.5.0",
+    "playwright": "^1.49.1",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2"
   }
 }

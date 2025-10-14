@@ -33,7 +33,7 @@ const Services: React.FC = () => {
             headerVisible ? 'observe-slide-left is-visible' : 'observe-slide-left'
           }`}
         >
-          <div className="inline-flex items-center gap-2 sm:gap-3 bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 sm:gap-3 bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500">
             <span className="text-purple-300 font-bold text-xs sm:text-sm md:text-base">{t('badge')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 text-animate-reveal text-hover-glow px-2 sm:px-0">
