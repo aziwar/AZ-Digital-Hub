@@ -896,3 +896,70 @@ html {
 [dir="rtl"] .observe-slide-right.is-visible {
   transform: translateX(0);
 }
+/* ============================================================================
+   RTL-Aware Animation Utilities (tailwindcss-animate wrappers)
+   ============================================================================ */
+
+@layer utilities {
+  /* Fade In Animations with RTL Support */
+  
+  /* Fade in from text start (left in LTR, right in RTL) */
+  .animate-fade-from-start {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-left-4 motion-safe:duration-500;
+  }
+  
+  [dir="rtl"] .animate-fade-from-start {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-4 motion-safe:duration-500;
+  }
+  
+  /* Fade in from text end (right in LTR, left in RTL) */
+  .animate-fade-from-end {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-4 motion-safe:duration-500;
+  }
+  
+  [dir="rtl"] .animate-fade-from-end {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-left-4 motion-safe:duration-500;
+  }
+  
+  /* Fade in from bottom (directionally neutral) */
+  .animate-fade-from-bottom {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500;
+  }
+  
+  /* Fade in from top (directionally neutral) */
+  .animate-fade-from-top {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-4 motion-safe:duration-500;
+  }
+  
+  /* Duration Variants */
+  .animate-fade-fast {
+    @apply motion-safe:duration-300;
+  }
+  
+  .animate-fade-slow {
+    @apply motion-safe:duration-700;
+  }
+  
+  /* Distance Variants */
+  .animate-fade-near {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2;
+  }
+  
+  .animate-fade-far {
+    @apply motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8;
+  }
+  
+  /* Zoom Animations (directionally neutral) */
+  .animate-zoom-in {
+    @apply motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500;
+  }
+  
+  .animate-zoom-out {
+    @apply motion-safe:animate-out motion-safe:zoom-out-95 motion-safe:duration-300;
+  }
+  
+  /* Spin Animations (directionally neutral) */
+  .animate-spin-in {
+    @apply motion-safe:animate-in motion-safe:spin-in-90 motion-safe:duration-500;
+  }
+}

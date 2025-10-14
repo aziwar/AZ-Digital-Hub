@@ -29,15 +29,15 @@ const EnhancedHero: React.FC = () => {
             </div>
 
             {/* Commanding Headlines */}
-            <h1 className="hero-title text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight mb-4 sm:mb-6 text-animate-reveal">
-              <span className="block" style={{ "--animation-delay": "0.2s" } as React.CSSProperties}>{t('headline.name')}</span>
-              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent text-hover-glow" style={{ "--animation-delay": "0.4s" } as React.CSSProperties}>
+            <h1 className="hero-title text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight mb-4 sm:mb-6">
+              <span className="block animate-fade-from-bottom motion-safe:delay-200">{t('headline.name')}</span>
+              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent text-hover-glow animate-fade-from-bottom motion-safe:delay-500">
                 {t('headline.tagline')}
               </span>
             </h1>
 
             {/* VALUE PROPOSITION */}
-            <div className="mb-6 sm:mb-8 text-animate-reveal" style={{ "--animation-delay": "0.6s" } as React.CSSProperties}>
+            <div className="mb-6 sm:mb-8 animate-fade-from-bottom motion-safe:delay-700">
               <h2 className="hero-subtitle text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mb-3 sm:mb-4 text-hover-glow">
                 {t('subtitle')}
               </h2>
@@ -54,7 +54,7 @@ const EnhancedHero: React.FC = () => {
             </div>
 
             {/* PRIMARY CTAs */}
-            <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start text-animate-reveal" style={{ "--animation-delay": "0.8s" } as React.CSSProperties}>
+            <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-from-bottom motion-safe:delay-1000">
               <Link
                 href="#contact"
                 className="group btn-primary btn-magnetic btn-pulse text-base sm:text-lg min-h-[44px] focus-enhanced"
