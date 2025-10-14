@@ -31,17 +31,6 @@
 }
 
 /* Typography Animations */
-@keyframes text-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes typewriter {
   from { width: 0; }
   to { width: 100%; }
@@ -53,11 +42,6 @@
 }
 
 /* Enhanced Typography Classes */
-.text-animate-reveal {
-  animation: text-reveal 0.8s ease-out forwards;
-  animation-delay: var(--animation-delay, 0s);
-}
-
 .text-typewriter {
   overflow: hidden;
   border-inline-end: 2px solid rgb(147 51 234);
@@ -311,12 +295,6 @@ html {
     visibility: visible !important;
   }
 
-  /* Ensure text animations are visible on mobile */
-  .text-animate-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  
   /* Disable complex animations for touch performance */
   .animate-magneticPull,
   .parallaxFloat {
@@ -345,13 +323,7 @@ html {
     min-height: 44px;
     min-width: 44px;
   }
-  
-  /* Mobile Typography Adjustments */
-  .text-animate-reveal {
-    animation-delay: 0s;
-    animation-duration: 0.6s;
-  }
-  
+
   /* Reduced Motion for Performance */
   .animate-stagger {
     animation-duration: 0.4s;

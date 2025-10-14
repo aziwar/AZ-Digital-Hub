@@ -36,13 +36,10 @@ const Services: React.FC = () => {
           <div className="inline-flex items-center gap-2 sm:gap-3 bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500">
             <span className="text-purple-300 font-bold text-xs sm:text-sm md:text-base">{t('badge')}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 text-animate-reveal text-hover-glow px-2 sm:px-0">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 animate-fade-from-bottom text-hover-glow px-2 sm:px-0">
             {t('title')}
           </h2>
-          <p
-            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed text-animate-reveal px-4 sm:px-0"
-            style={{ "--animation-delay": "0.2s" } as React.CSSProperties}
-          >
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed animate-fade-from-bottom motion-safe:delay-200 px-4 sm:px-0">
             {t.rich('subtitle', {
               strong: (chunks) => <strong className="font-bold text-purple-400">{chunks}</strong>
             })}
