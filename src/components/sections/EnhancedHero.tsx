@@ -13,7 +13,7 @@ import { imageConfig } from '@/lib/images.config';
 const EnhancedHero: React.FC = () => {
   const t = useTranslations('Hero');
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-slate-900 overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-slate-900 overflow-hidden">
       
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         

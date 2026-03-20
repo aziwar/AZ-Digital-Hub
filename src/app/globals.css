@@ -28,6 +28,11 @@
   --tracking-tight: -0.025em;
   --tracking-normal: 0em;
   --tracking-wide: 0.025em;
+
+  /* Custom Tailwind Colors (HSL values from common UI framework defaults) */
+  --background: 0 0% 100%; /* HSL for white */
+  --foreground: 222.2 47.4% 11.2%; /* HSL for nearly black */
+  --border: 214.3 31.8% 91.4%; /* HSL for light gray */
 }
 
 /* Typography Animations */
@@ -87,29 +92,29 @@ body {
 /* Mobile Typography Optimization */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: clamp(2.5rem, 8vw, 3.5rem) !important;
-    line-height: 1.2 !important;
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    line-height: 1.2;
   }
 
   .hero-subtitle {
-    font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
-    line-height: 1.4 !important;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    line-height: 1.4;
   }
 
   .hero-description {
-    font-size: clamp(1rem, 4vw, 1.125rem) !important;
-    line-height: 1.6 !important;
+    font-size: clamp(1rem, 4vw, 1.125rem);
+    line-height: 1.6;
   }
 }
 
 /* Arabic Text Spacing - Better readability for RTL */
 [dir="rtl"] .hero-title {
-  line-height: 1.5 !important;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {
   [dir="rtl"] .hero-title {
-    line-height: 1.6 !important;
+    line-height: 1.6;
   }
 }
 
@@ -158,6 +163,22 @@ html {
   50% {
     box-shadow: 0 0 30px rgb(147 51 234 / 0.6);
   }
+}
+
+@keyframes iconGlowEntrance {
+  0% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.8),
+                0 0 40px rgba(147, 51, 234, 0.4);
+    filter: brightness(1.2);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(147, 51, 234, 0);
+    filter: brightness(1);
+  }
+}
+
+.animate-icon-entrance-glow {
+  animation: iconGlowEntrance 800ms ease-out forwards;
 }
 
 @keyframes shimmer {
@@ -224,11 +245,13 @@ html {
   animation: shimmer 2s infinite linear;
 }
 
-/* Focus States for Accessibility */
+/* Enhanced Focus States */
 .focus-enhanced:focus {
-  outline: 2px solid rgb(147 51 234);
+  outline: 2px solid rgb(168, 85, 247);
   outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgb(147 51 234 / 0.3);
+  border-color: rgb(168, 85, 247);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1), 0 0 20px rgba(168, 85, 247, 0.2);
+  transform: translateY(-1px);
 }
 
 /* Reduced Motion Support */
@@ -239,8 +262,9 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  
+
   html {
     scroll-behavior: auto;
   }
@@ -275,14 +299,14 @@ html {
   /* Primary touch devices (phones, tablets without precision pointing) */
   .btn-magnetic:hover,
   .btn-enhanced:hover {
-    transform: none !important;
-    animation: none !important;
+    transform: none;
+    animation: none;
   }
   
   .hover\:scale-105:hover,
   .hover\:scale-102:hover,
   .group:hover .group-hover\:scale-105 {
-    transform: none !important;
+    transform: none;
   }
   
   /* CRITICAL: Force visibility for intersection observer content on mobile */
@@ -298,7 +322,7 @@ html {
   /* Disable complex animations for touch performance */
   .animate-magneticPull,
   .parallaxFloat {
-    animation: none !important;
+    animation: none;
   }
   
   /* Optimize infinite animations */
@@ -309,7 +333,7 @@ html {
   /* Reduce complex shadows and effects */
   .hover\:shadow-lg:hover,
   .hover\:shadow-purple-500\/20:hover {
-    box-shadow: none !important;
+    box-shadow: none;
   }
 }
 
@@ -379,8 +403,8 @@ html {
   /* CRITICAL: Override to preserve gradients in ROIChart and other functional UI */
   [data-preserve-gradient] .bg-gradient-to-r,
   [data-preserve-gradient] .bg-clip-text {
-    background-image: revert-layer !important;
-    background-color: transparent !important;
+    background-image: revert-layer;
+    background-color: transparent;
   }
 }
 
@@ -420,41 +444,41 @@ html {
 @media (max-width: 640px) {
   /* Fix cramped feature grid layout */
   .services-features-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.75rem !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   /* Improve emoji rendering consistency */
   .service-icon {
-    font-size: 2.5rem !important;
-    line-height: 1.2 !important;
-    display: inline-block !important;
-    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif !important;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    display: inline-block;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   }
 
   /* Better touch targets for purple bullets */
   .feature-bullet {
-    min-width: 12px !important;
-    min-height: 12px !important;
-    margin-inline-end: 0.875rem !important;
-    flex-shrink: 0 !important;
+    min-width: 12px;
+    min-height: 12px;
+    margin-inline-end: 0.875rem;
+    flex-shrink: 0;
   }
 
   /* Improve text hierarchy on small screens */
   .service-title {
-    font-size: 1.5rem !important;
-    line-height: 1.3 !important;
+    font-size: 1.5rem;
+    line-height: 1.3;
   }
 
   .service-description {
-    font-size: 1rem !important;
-    line-height: 1.5 !important;
+    font-size: 1rem;
+    line-height: 1.5;
   }
 
   .service-feature-text {
-    font-size: 0.875rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 }
 
@@ -601,13 +625,7 @@ html {
   animation: successPulse 1s ease-in-out 3;
 }
 
-/* Enhanced Focus States */
-.focus-enhanced:focus {
-  outline: none;
-  border-color: rgb(168, 85, 247);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1), 0 0 20px rgba(168, 85, 247, 0.2);
-  transform: translateY(-1px);
-}
+
 
 /* Advanced Button Enhancements */
 .btn-magnetic {

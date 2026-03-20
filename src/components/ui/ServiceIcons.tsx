@@ -48,10 +48,11 @@ export const ServiceIconGrid: React.FC = () => {
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-      {services.map((service) => (
+      {services.map((service, index) => (
         <div
           key={service.name}
-          className="group flex flex-col items-center p-3 bg-slate-800/30 backdrop-blur rounded-lg border border-gray-600/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105"
+          className="group flex flex-col items-center p-3 bg-slate-800/30 backdrop-blur rounded-lg border border-gray-600/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105 animate-fade-from-bottom animate-zoom-in animate-icon-entrance-glow"
+          style={{ animationDelay: `${index * 200}ms` }}
         >
           <ServiceIcon
             name={service.name}

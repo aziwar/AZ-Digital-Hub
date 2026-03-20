@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 
+import Footer from '@/components/Footer'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
@@ -122,6 +123,7 @@ export default async function RootLayout({
       <body className="font-sans">
         <NextIntlClientProvider messages={messages}>
           {children}
+          <Footer />
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />

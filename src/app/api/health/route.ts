@@ -28,58 +28,27 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         }
       );
     }
-    // Environment validation
-    const hasOpenAIKey = !!process.env.OPENAI_API_KEY
-    const keyLength = process.env.OPENAI_API_KEY?.length || 0
-    
-    // Build configuration check
-    const deployment = {
-      timestamp: new Date().toISOString(),
-      environment: process.env.VERCEL_ENV || 'development',
-      region: process.env.VERCEL_REGION || 'unknown',
-      deployment_id: process.env.VERCEL_DEPLOYMENT_ID || 'local'
-    }
-    
-    // API readiness assessment
-    const apiReadiness = {
-      openai_configured: hasOpenAIKey,
-      key_present: hasOpenAIKey ? 'YES' : 'NO',
-      key_length: hasOpenAIKey ? `${keyLength} chars` : 'N/A',
-      lazy_client: 'IMPLEMENTED',
-      build_safe: 'YES'
-    }
-    
-    // Cost calculation test
-    const costCalculation = {
-      standard_quality: 0.04,
-      target_images: 24,
-      target_cost: '$0.96',
-      ready_for_generation: hasOpenAIKey
-    }
-    
+    const isHealthy = !!process.env.OPENAI_API_KEY;
+
     const response = {
-      status: hasOpenAIKey ? 'READY' : 'BLOCKED',
-      blocker: hasOpenAIKey ? null : 'OPENAI_API_KEY missing in Vercel environment',
-      deployment,
-      apiReadiness,
-      costCalculation,
-      next_action: hasOpenAIKey ? 'Execute Phase 2 asset generation' : 'Configure OPENAI_API_KEY in Vercel dashboard'
-    }
+      status: isHealthy ? 'OK' : 'SERVICE_UNAVAILABLE',
+      timestamp: new Date().toISOString()
+    };
     
     return NextResponse.json(response, {
-      status: 200,
+      status: isHealthy ? 200 : 503,
       headers: {
         'Cache-Control': 'no-cache, no-store',
         'Content-Type': 'application/json',
         ...getRateLimitHeaders(rateLimitResult)
       }
-    })
+    });
     
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { 
+      {
         status: 'ERROR',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Internal server error',
         timestamp: new Date().toISOString()
       },
       { status: 500 }

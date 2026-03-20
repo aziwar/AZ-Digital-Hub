@@ -116,8 +116,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<GenerateA
 
     // Environment validation
     if (!process.env.OPENAI_API_KEY) {
+      // eslint-disable-next-line no-console
+      console.error('OPENAI_API_KEY environment variable not configured');
       return NextResponse.json(
-        { success: false, error: 'OPENAI_API_KEY environment variable not configured' },
+        { success: false, error: 'Internal server error' },
         { status: 500, headers: getRateLimitHeaders(rateLimitResult) }
       );
     }

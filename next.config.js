@@ -14,7 +14,6 @@ const nextConfig = {
   // Performance optimizations for Next.js 15
   experimental: {
     optimizePackageImports: [
-      'framer-motion',
       '@heroicons/react',
       'lucide-react'
     ],
@@ -105,11 +104,12 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://cdn.emailjs.com",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://images.unsplash.com https://cdn.pixabay.com https://avatars.githubusercontent.com https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co https://media.licdn.com",
               "font-src 'self' data:",
-              "connect-src 'self' https://vercel.live https://api.emailjs.com https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co",
+              "connect-src 'self' https://vercel.live https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co https://www.google.com/recaptcha/",
+              "frame-src https://www.google.com/recaptcha/",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

@@ -1,11 +1,21 @@
 'use client';
 
-import emailjs from '@emailjs/browser';
-import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
+import React, { useState, useEffect } from 'react';
+
+// Extend Window interface to include grecaptcha
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 const EnhancedContact: React.FC = () => {
   const t = useTranslations('Contact');
+  const locale = useLocale();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,7 +32,42 @@ const EnhancedContact: React.FC = () => {
   const [focusedField, setFocusedField] = useState<string>('');
   const [fieldTouched, setFieldTouched] = useState<Record<string, boolean>>({});
 
-  // Real-time validation functions
+  // Load reCAPTCHA script
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) {
+      return;
+    }
+
+    if (window.grecaptcha && window.grecaptcha.ready) {
+      window.grecaptcha.ready(() => {
+        // reCAPTCHA is ready
+      });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}&hl=${locale}`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+    script.onload = () => {
+      if (window.grecaptcha && window.grecaptcha.ready) {
+        window.grecaptcha.ready(() => {
+          // reCAPTCHA is ready
+        });
+      }
+    };
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [locale]);
+
+  // Real-time validation functions (these will now be primary for client-side UX,
+  // but server-side validation is the security critical one)
   const validateField = (name: string, value: string): string => {
     switch (name) {
       case 'name':
@@ -57,10 +102,10 @@ const EnhancedContact: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
 
     // Real-time validation
     if (fieldTouched[name]) {
@@ -92,7 +137,7 @@ const EnhancedContact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate all fields
+    // Client-side validation (for UX, not security)
     const errors: Record<string, string> = {};
     Object.keys(formData).forEach(key => {
       if (key !== 'company') { // company is optional
@@ -111,31 +156,49 @@ const EnhancedContact: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // EmailJS configuration with actual API keys
-      await emailjs.send(
-        'service_k0o6pjb',        // Service ID
-        'J2bpzRucK3c2SkZ8O',      // Template ID
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          company: formData.company,
-          project_type: formData.project_type,
-          budget_range: formData.budget_range,
-          phone: formData.phone,
-          message: formData.message,
-          to_name: 'Ahmed Zewar'
+      // Execute reCAPTCHA
+      let recaptchaToken = '';
+      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+      if (window.grecaptcha && window.grecaptcha.execute && siteKey) {
+        recaptchaToken = await window.grecaptcha.execute(siteKey, { action: 'contact_form_submit' });
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('reCAPTCHA not ready or site key missing. Proceeding without reCAPTCHA token.');
+      }
+
+      // Submit to the new API route
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        'vFeXiuswX_-hBd6vM12zz'  // Public Key
-      );
-      
-      setSubmitStatus('success');
-      setFormData({
-        name: '', email: '', company: '', project_type: '', 
-        budget_range: '', message: '', phone: ''
+        body: JSON.stringify({ ...formData, recaptchaToken }), // Pass recaptchaToken
       });
+
+      let result: { message?: string; errors?: string[] } = {};
+      try {
+        result = await response.json();
+      } catch {
+        result = { message: t('form.status.error.message') };
+      }
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '', email: '', company: '', project_type: '',
+          budget_range: '', message: '', phone: ''
+        });
+      } else {
+        setSubmitStatus('error');
+        if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
+          setFieldErrors({ general: result.errors[0] });
+        } else if (result.message) {
+          setFieldErrors({ general: result.message });
+        }
+      }
     } catch {
-      
       setSubmitStatus('error');
+      setFieldErrors({ general: t('form.status.error.message') }); // Fallback for network errors
     } finally {
       setIsSubmitting(false);
     }
@@ -188,15 +251,15 @@ const EnhancedContact: React.FC = () => {
             {/* SOCIAL PROOF TICKER */}
             <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8 text-xs sm:text-sm text-purple-300">
               <div className="flex items-center gap-2">
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400" aria-hidden="true">✓</span>
                 <span>{t('socialProof.0')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400" aria-hidden="true">✓</span>
                 <span>{t('socialProof.1')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400" aria-hidden="true">✓</span>
                 <span>{t('socialProof.2')}</span>
               </div>
             </div>
@@ -216,15 +279,15 @@ const EnhancedContact: React.FC = () => {
             </div>
 
             {submitStatus === 'success' && (
-              <div className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
+              <div role="alert" aria-live="polite" className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
                 <h4 className="text-green-400 font-bold mb-2">{t('form.status.success.title')}</h4>
                 <p className="text-green-300 text-sm">{t('form.status.success.message')}</p>
               </div>
             )}
 
             {submitStatus === 'error' && (
-              <div className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-lg">
-                <p className="text-red-300 text-sm">{t('form.status.error.message')}</p>
+              <div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-lg">
+                <p className="text-red-300 text-sm">{fieldErrors.general || t('form.status.error.message')}</p>
               </div>
             )}
 
@@ -504,7 +567,7 @@ const EnhancedContact: React.FC = () => {
             {/* INSTANT CONTACT */}
             <div className="bg-gradient-to-r from-green-600/20 to-green-800/20 backdrop-blur-md border border-green-500/30 rounded-xl p-4 sm:p-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 flex items-center">
-                <span className="me-2 sm:me-3">💬</span>
+                <span className="me-2 sm:me-3" aria-hidden="true">💬</span>
                 {t('whatsapp.title')}
               </h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
@@ -525,7 +588,7 @@ const EnhancedContact: React.FC = () => {
               <h4 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">{t('trustSignals.title')}</h4>
               <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-300">
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">🏆</span>
+                  <span className="text-green-400 mt-1" aria-hidden="true">🏆</span>
                   <span>
                     {t.rich('trustSignals.items.0', {
                       strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
@@ -533,7 +596,7 @@ const EnhancedContact: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">💼</span>
+                  <span className="text-green-400 mt-1" aria-hidden="true">💼</span>
                   <span>
                     {t.rich('trustSignals.items.1', {
                       strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
@@ -541,7 +604,7 @@ const EnhancedContact: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">🎯</span>
+                  <span className="text-green-400 mt-1" aria-hidden="true">🎯</span>
                   <span>
                     {t.rich('trustSignals.items.2', {
                       strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
@@ -549,7 +612,7 @@ const EnhancedContact: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">🌟</span>
+                  <span className="text-green-400 mt-1" aria-hidden="true">🌟</span>
                   <span>
                     {t.rich('trustSignals.items.3', {
                       strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
@@ -557,7 +620,7 @@ const EnhancedContact: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1">🔒</span>
+                  <span className="text-green-400 mt-1" aria-hidden="true">🔒</span>
                   <span>
                     {t.rich('trustSignals.items.4', {
                       strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
@@ -592,7 +655,7 @@ const EnhancedContact: React.FC = () => {
               <h4 className="text-base sm:text-lg font-bold text-white">{t('contactMethods.title')}</h4>
 
               <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl">📧</span>
+                <span className="text-2xl" aria-hidden="true">📧</span>
                 <div>
                   <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.email.label')}</h5>
                   <a href="mailto:ahmed@zewar.xyz" className="text-blue-400 hover:text-blue-300 transition-colors">
@@ -602,7 +665,7 @@ const EnhancedContact: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl">💼</span>
+                <span className="text-2xl" aria-hidden="true">💼</span>
                 <div>
                   <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.linkedin.label')}</h5>
                   <a
@@ -617,7 +680,7 @@ const EnhancedContact: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl">📍</span>
+                <span className="text-2xl" aria-hidden="true">📍</span>
                 <div>
                   <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.location.label')}</h5>
                   <span className="text-white">{t('contactMethods.location.value')}</span>
