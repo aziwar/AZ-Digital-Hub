@@ -154,23 +154,6 @@ const EnhancedHero: React.FC = () => {
           </div>
         </div>
 
-        {/* GUARANTEES & RISK REVERSAL */}
-        <div className="mt-12 max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-green-900/30 to-blue-900/30 backdrop-blur-md border border-green-500/30 rounded-2xl p-6">
-            <h3 className="text-2xl font-bold text-white mb-4 text-center">
-              {t('guarantee.title')}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
-              {t.raw('guarantee.features').map((feature: string, index: number) => (
-                <div key={index} className="flex items-start gap-3 mb-2">
-                  <span className="text-green-400 mt-1 flex-shrink-0">✓</span>
-                  <span className="text-gray-300 leading-relaxed">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* SCROLL INDICATOR */}
         <div className="absolute bottom-4 start-1/2 transform -translate-x-1/2 rtl:translate-x-1/2">
           <div className="flex flex-col items-center space-y-2 animate-bounce">
