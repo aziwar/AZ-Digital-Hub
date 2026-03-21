@@ -15,32 +15,32 @@
   },
   "Hero": {
     "urgency": {
-      "badge": "🔥 URGENT: Only 3 Slots Left"
+      "badge": "🔥 Now Accepting New Projects"
     },
     "headline": {
       "name": "Ahmed Zewar",
       "tagline": "Commands Results"
     },
-    "subtitle": "Kuwait's #1 Digital Marketing Strategist",
-    "description": "Transform your business with <strong>proven strategies</strong> that generated <strong>300% ROI</strong> for 200+ Kuwait companies",
+    "subtitle": "AI Solutions & Digital Strategy Consultant — Kuwait",
+    "description": "Build smarter businesses with <strong>AI-powered automation</strong>, <strong>full-stack development</strong>, and <strong>data-driven digital strategies</strong> that deliver measurable ROI across Kuwait & GCC",
     "cta": {
       "primary": {
-        "text": "🚀 Book FREE Strategic Session",
-        "subtext": "Usually 2,000 KWD - Limited Time"
+        "text": "🚀 Book FREE Strategy Session",
+        "subtext": "Online & In-Person Available"
       },
       "whatsapp": {
         "text": "💬 WhatsApp Instant Response",
         "subtext": "+965 6067 2773",
-        "linkText": "Hi Ahmed, I need urgent strategic consultation for my business"
+        "linkText": "Hi Ahmed, I'm interested in AI-powered solutions for my business"
       }
     },
     "profile": {
-      "imageAlt": "Ahmed Zewar - Digital Marketing Expert"
+      "imageAlt": "Ahmed Zewar - AI & Digital Strategy Consultant in Kuwait"
     },
     "socialProof": {
-      "businesses": "200+ Kuwait Businesses",
+      "businesses": "200+ Businesses Served",
       "experience": "20+ Years Expertise",
-      "personality": "ENTJ Leadership"
+      "personality": "AI & Full-Stack"
     },
     "metrics": {
       "roi": {
@@ -73,21 +73,21 @@
   },
   "About": {
     "title": "About Me",
-    "intro": "With over 20 years of experience in digital marketing and IT consulting, I help businesses transform their online presence and achieve measurable growth. My expertise spans from strategic planning to hands-on implementation of ROI-driven digital campaigns.",
-    "current": "Currently serving as Digital Solutions Manager at Smart Technology (STSCKW) in Kuwait, I specialize in e-commerce optimization, digital marketing strategy, and business process improvement. My approach combines technical expertise with creative problem-solving to deliver exceptional results.",
+    "intro": "With over 20 years of experience spanning AI infrastructure, full-stack development, and digital marketing, I help businesses leverage cutting-edge technology to achieve measurable growth. From building AI agent systems and knowledge graph architectures to executing ROI-driven digital campaigns — I deliver end-to-end solutions across Kuwait & GCC.",
+    "current": "Currently serving as Digital Solutions Manager at Smart Technology (STSCKW) in Kuwait, while also delivering freelance AI consulting, full-stack development, and digital strategy services. Available online worldwide and in-person across Kuwait.",
     "competencies": {
       "title": "Core Competencies",
       "skills": [
-        "Digital Marketing Strategy",
-        "E-commerce Management",
-        "Social Media Marketing",
-        "SEO/SEM Optimization",
-        "PPC Campaign Management",
-        "Content Marketing",
-        "Email Marketing",
-        "Analytics & Reporting",
-        "IT Consulting",
-        "Business Development"
+        "AI Agent Development & MCP Protocol",
+        "Knowledge Graph Architecture (GraphRAG)",
+        "LLM Orchestration & Automation",
+        "Next.js / React / TypeScript",
+        "Python / FastAPI / Backend Systems",
+        "E-commerce Optimization (Shopify, KNET)",
+        "SEO/SEM & Digital Marketing Strategy",
+        "Government Digital Transformation",
+        "Cloud Infrastructure (Cloudflare, Vercel)",
+        "Database Architecture (PostgreSQL, Graph DB, Redis)"
       ]
     },
     "stats": {
@@ -105,7 +105,7 @@
       },
       "roi": {
         "value": "300%",
-        "label": "ROI Generated"
+        "label": "Avg ROI Generated"
       }
     },
     "experience": {
@@ -114,139 +114,172 @@
         {
           "title": "Digital Solutions Manager",
           "company": "Smart Technology (STSCKW) • 2022 - Present",
-          "description": "Leading digital transformation initiatives and e-commerce strategies"
+          "description": "Leading digital transformation, AI integration, and e-commerce strategies"
         },
         {
-          "title": "Digital Marketing Manager",
-          "company": "Dr Scent • 2023 - 2024",
-          "description": "Implemented comprehensive digital marketing strategies"
+          "title": "AI & Digital Strategy Consultant",
+          "company": "Freelance • Ongoing",
+          "description": "AI agent development, knowledge graphs, full-stack solutions, and digital marketing for businesses across Kuwait & GCC"
         },
         {
-          "title": "Social Media Specialist",
-          "company": "Ooredoo Kuwait • 2019 - 2022",
-          "description": "Built and executed social media strategies for major telecom brand"
+          "title": "Social Media & Digital Lead",
+          "company": "Major Telecom Provider • 2019 - 2022",
+          "description": "Built and executed enterprise-level social media strategies growing presence to 500K+ followers"
         }
       ]
     }
   },
   "Services": {
-    "badge": "Strategic Solutions • Proven Results",
-    "title": "Command Excellence",
-    "subtitle": "Strategic digital leadership that transforms vision into measurable results. <strong>No compromise on performance.</strong>",
+    "badge": "AI-Powered Solutions • Proven Results",
+    "title": "Services & Expertise",
+    "subtitle": "From AI agent development to digital marketing — strategic solutions that transform businesses. <strong>Technology meets results.</strong>",
     "items": [
       {
-        "icon": "⚡",
-        "title": "Strategic Digital Transformation",
-        "description": "End-to-end digital strategy that delivers measurable ROI. From vision to execution, I orchestrate complete business transformation.",
-        "results": "300% avg revenue increase",
+        "icon": "🤖",
+        "title": "AI Agent Solutions & Automation",
+        "description": "Custom AI agent development, LLM orchestration, and intelligent automation systems that transform how your business operates and scales.",
+        "results": "40-60% workflow automation",
         "features": [
-          "Executive Strategy Sessions",
-          "Digital Roadmap Creation",
-          "KPI Framework Design",
-          "Performance Optimization"
+          "Custom AI Agent Development",
+          "MCP Server Architecture & Deployment",
+          "Knowledge Graph (GraphRAG) Solutions",
+          "LLM Integration & Orchestration",
+          "AI-Powered Chatbot & Avatar Systems"
         ]
       },
       {
-        "icon": "🎯",
-        "title": "E-commerce Command & Control",
-        "description": "Complete e-commerce ecosystem management. Platform optimization, funnel engineering, and conversion maximization for sustained growth.",
+        "icon": "💻",
+        "title": "Full-Stack Development",
+        "description": "Modern web applications built with Next.js, React, TypeScript, and Python. From bilingual Arabic/English platforms to complex enterprise systems.",
+        "results": "Production-ready systems",
+        "features": [
+          "Next.js / React / TypeScript Apps",
+          "Python / FastAPI Backend Systems",
+          "RTL-First Arabic Platform Design",
+          "Database Architecture & API Design",
+          "Cloudflare & Vercel Deployment"
+        ]
+      },
+      {
+        "icon": "🛒",
+        "title": "E-commerce & Shopify Solutions",
+        "description": "Complete e-commerce ecosystem optimized for the Kuwait market. Shopify expertise with KNET payment integration and local delivery solutions.",
         "results": "150% conversion improvement",
         "features": [
-          "Platform Architecture",
+          "Shopify Store Setup & Optimization",
           "KNET Payment Integration",
+          "Kuwait City-Level Shipping Zones",
           "Conversion Rate Optimization",
-          "Sales Performance Analytics"
+          "Product SEO & Catalog Management"
         ]
       },
       {
-        "icon": "🚀",
-        "title": "Kuwait Market Leadership",
-        "description": "Dominate the GCC digital landscape with culturally-aware campaigns that resonate with local markets while driving international reach.",
-        "results": "GCC market penetration",
+        "icon": "📈",
+        "title": "Digital Marketing & SEO",
+        "description": "Data-driven digital marketing strategies tailored for Kuwait and GCC markets. Bilingual campaigns that drive measurable ROI.",
+        "results": "300% avg ROI increase",
         "features": [
-          "Arabic/English Campaigns",
-          "Ramadan Strategy Planning",
-          "Local SEO Mastery",
-          "Regional Social Influence"
+          "SEO/SEM Strategy & Execution",
+          "Social Media Campaign Management",
+          "PPC & Google/Meta Ads",
+          "Content Marketing (Arabic/English)",
+          "Analytics & Performance Tracking"
         ]
       },
       {
-        "icon": "💼",
-        "title": "Enterprise IT Consulting",
-        "description": "Technology transformation that aligns with business objectives. Strategic IT solutions that enhance operational efficiency and competitive advantage.",
-        "results": "40% efficiency gains",
+        "icon": "🏛️",
+        "title": "Government & Enterprise Consulting",
+        "description": "Digital transformation consulting for government sector and enterprise organizations. Modular architecture design with compliance-first approach.",
+        "results": "12+ department digitization",
         "features": [
-          "Infrastructure Assessment",
-          "Digital Process Optimization",
-          "Team Training & Development",
-          "Technology Stack Modernization"
+          "Government Sector Digital Transformation",
+          "Modular Platform Architecture",
+          "RTL-First Arabic Compliance Design",
+          "Workflow Automation & Process Mapping",
+          "Multi-Department System Integration"
         ]
       },
       {
-        "icon": "📊",
-        "title": "Data-Driven Decision Making",
-        "description": "Transform raw data into strategic insights. Advanced analytics frameworks that drive informed decisions and sustainable competitive advantage.",
-        "results": "Real-time intelligence",
+        "icon": "☁️",
+        "title": "Cloud Infrastructure & DevOps",
+        "description": "Scalable cloud infrastructure with edge computing, self-hosted solutions, and modern DevOps practices for performance and cost optimization.",
+        "results": "60% cost reduction",
         "features": [
-          "Performance Dashboard Creation",
-          "ROI Tracking Systems",
-          "Predictive Analytics",
-          "Strategic Reporting Automation"
-        ]
-      },
-      {
-        "icon": "⭐",
-        "title": "Executive Leadership Coaching",
-        "description": "Develop your team's strategic thinking capabilities. Leadership development focused on results-driven execution and organizational excellence.",
-        "results": "Team performance boost",
-        "features": [
-          "Leadership Strategy Sessions",
-          "Process Optimization Training",
-          "Goal Achievement Systems",
-          "Performance Management"
+          "Cloudflare Workers & Edge Computing",
+          "Self-Hosted Infrastructure (Hetzner)",
+          "Docker Containerization & Deployment",
+          "Database Optimization (PostgreSQL, Redis)",
+          "CI/CD Pipeline Setup"
         ]
       }
     ],
     "cta": {
-      "title": "Ready to Command Your Market?",
-      "subtitle": "Strategic consultation sessions that deliver immediate clarity and actionable plans for market dominance.",
+      "title": "Ready to Transform Your Business?",
+      "subtitle": "Book a free strategy session to discuss how AI and digital solutions can accelerate your growth.",
       "buttons": {
-        "primary": "Strategic Consultation →",
-        "secondary": "View Success Stories"
+        "primary": "Book Strategy Session →",
+        "secondary": "View Project Portfolio"
       }
     }
   },
   "Testimonials": {
-    "title": "Testimonials",
-    "subtitle": "Hear from clients who have partnered with Ahmed Zewar to elevate their digital presence.",
+    "title": "Client Feedback",
+    "subtitle": "Results from businesses that partnered with Ahmed Zewar for digital transformation.",
     "items": [
       {
-        "name": "Sarah K.",
-        "role": "E-commerce Entrepreneur",
-        "quote": "Ahmed transformed our online store and tripled our conversion rate. His strategies simply work."
+        "name": "Khaled M.",
+        "role": "E-commerce Operations, Retail Sector",
+        "quote": "The e-commerce transformation tripled our conversion rate and streamlined our fulfillment process across Kuwait with proper KNET integration and city-level shipping."
       },
       {
-        "name": "David M.",
-        "role": "Marketing Director",
-        "quote": "The SEO and analytics insights Ahmed provided were game changers for our lead generation efforts."
+        "name": "Noura A.",
+        "role": "Project Director, Government Sector",
+        "quote": "Ahmed designed a modular digital platform handling complex workflows across 12 departments with full Arabic RTL support and state-machine driven processes."
       },
       {
-        "name": "Lina R.",
-        "role": "Small Business Owner",
-        "quote": "Thanks to Ahmed's social media campaigns, our brand engagement has skyrocketed."
+        "name": "Faisal R.",
+        "role": "Marketing Director, Telecom Industry",
+        "quote": "Our social media engagement grew by 400% under Ahmed's direction, making us the leading brand in our sector with 500K+ followers across platforms."
+      },
+      {
+        "name": "Maha S.",
+        "role": "Founder, Healthcare Practice",
+        "quote": "Ahmed built our bilingual medical website with modern design, Arabic/English support, and exceptional performance on Cloudflare — exactly what our patients needed."
       }
     ]
   },
   "Portfolio": {
     "title": "Portfolio",
-    "subtitle": "Showcasing successful projects and measurable results",
+    "subtitle": "Selected projects showcasing AI, development, and digital strategy results",
     "keyResults": "KEY RESULTS",
     "items": [
       {
-        "title": "E-commerce Platform Optimization",
-        "client": "Smart Technology (STSCKW)",
-        "description": "Led the complete overhaul of e-commerce platform resulting in 200% increase in conversion rates",
-        "tags": ["E-commerce", "SEO", "UX Optimization"],
+        "title": "AI Knowledge Graph Platform",
+        "client": "Enterprise AI Project",
+        "description": "Built a dual-brain architecture combining SQL and graph databases with RRF fusion search, deployed as a Cloudflare Worker gateway with 15 hardened API tools and auto-extraction via LLM",
+        "tags": ["AI Agents", "Knowledge Graph", "Cloudflare Workers", "GraphRAG"],
+        "results": [
+          "15 production API tools deployed",
+          "Dual-brain RRF fusion search",
+          "Auto-extraction via GPT-4o-mini"
+        ]
+      },
+      {
+        "title": "Government Sector Digital Platform",
+        "client": "Government Sector, Kuwait",
+        "description": "Designed and developed a modular monolith platform with 8 bounded contexts, AI microservice layer, and state-machine driven workflow for a major government institution",
+        "tags": ["Government", "Modular Architecture", "AI Services", "Arabic RTL"],
+        "results": [
+          "8 bounded context modules",
+          "12 departments digitized",
+          "Full Arabic RTL compliance"
+        ]
+      },
+      {
+        "title": "E-commerce Platform Transformation",
+        "client": "Retail Technology, Kuwait",
+        "description": "Led complete overhaul of e-commerce platform including Shopify optimization, KNET payment integration, and Kuwait city-level shipping configuration",
+        "tags": ["E-commerce", "Shopify", "KNET", "SEO"],
         "results": [
           "200% conversion increase",
           "150% ROI improvement",
@@ -254,65 +287,65 @@
         ]
       },
       {
-        "title": "Digital Marketing Campaign",
-        "client": "Dr Scent",
-        "description": "Developed and executed comprehensive digital marketing strategy across multiple channels",
-        "tags": ["Social Media", "PPC", "Email Marketing"],
+        "title": "Enterprise Social Media Strategy",
+        "client": "Major Telecom Provider, GCC",
+        "description": "Built enterprise social media presence from ground up for a major telecommunications provider, managing multi-channel content strategy and community engagement",
+        "tags": ["Social Strategy", "Content Creation", "Community Management"],
+        "results": [
+          "500K+ followers achieved",
+          "400% engagement growth",
+          "Leading brand in telecom sector"
+        ]
+      },
+      {
+        "title": "Bilingual Healthcare Platform",
+        "client": "Medical Practice, Kuwait",
+        "description": "Full-stack Next.js bilingual medical website with Arabic/English RTL support, deployed on Cloudflare with modern responsive design and SEO optimization",
+        "tags": ["Next.js", "Bilingual RTL", "Cloudflare", "Healthcare"],
+        "results": [
+          "Arabic/English RTL support",
+          "Sub-2s load times",
+          "Full SEO optimization"
+        ]
+      },
+      {
+        "title": "Multi-Channel Digital Campaign",
+        "client": "Consumer Brand, Kuwait",
+        "description": "Developed and executed comprehensive digital marketing strategy across social media, PPC, and email for a consumer products brand in the Kuwait market",
+        "tags": ["Digital Marketing", "PPC", "Social Media", "Email"],
         "results": [
           "300% social engagement",
           "250% lead generation",
           "180% sales growth"
         ]
-      },
-      {
-        "title": "Social Media Transformation",
-        "client": "Ooredoo Kuwait",
-        "description": "Built social media presence from ground up for major telecommunications provider",
-        "tags": ["Social Strategy", "Content Creation", "Community Management"],
-        "results": [
-          "500K+ followers",
-          "400% engagement rate",
-          "Top telecom brand on social"
-        ]
-      },
-      {
-        "title": "IT Infrastructure Modernization",
-        "client": "Multiple Clients",
-        "description": "Consulted on digital transformation projects for various businesses in Kuwait",
-        "tags": ["IT Consulting", "System Design", "Implementation"],
-        "results": [
-          "60% cost reduction",
-          "99.9% uptime",
-          "Streamlined operations"
-        ]
       }
     ],
     "cta": {
-      "text": "Want to see more detailed case studies?",
-      "button": "Request Case Studies"
+      "text": "Interested in similar results for your business?",
+      "button": "Start a Conversation"
     }
   },
   "Contact": {
     "urgency": {
-      "badge": "⚡ Only 3 Strategic Slots Available"
+      "badge": "⚡ Accepting New Projects — Online & In-Person"
     },
-    "title": "Ready to <gradient>Command</gradient> Your Market?",
-    "subtitle": "Join 200+ Kuwait businesses that transformed their digital presence with strategic leadership",
+    "title": "Ready to <gradient>Transform</gradient> Your Business?",
+    "subtitle": "Freelance AI, development, and digital strategy services — available online worldwide and in-person in Kuwait",
     "socialProof": [
       "24-48h response",
-      "Free audit",
+      "Free consultation",
       "ROI guarantee"
     ],
     "form": {
-      "title": "Start Your Strategic Session",
+      "title": "Start Your Free Consultation",
       "pricing": {
-        "regular": "Usually $2,000 KWD",
-        "offer": "FREE Audit"
+        "regular": "Strategy Session",
+        "offer": "FREE Consultation"
       },
       "fields": {
         "name": {
           "label": "Your Name *",
-          "placeholder": "Ahmed Al-Rashid",
+          "placeholder": "Your full name",
           "errors": {
             "required": "Name is required",
             "minLength": "Name must be at least 2 characters"
@@ -320,7 +353,7 @@
         },
         "email": {
           "label": "Business Email *",
-          "placeholder": "ahmed@company.com",
+          "placeholder": "you@company.com",
           "errors": {
             "required": "Email is required",
             "invalid": "Please enter a valid email address"
@@ -328,7 +361,7 @@
         },
         "company": {
           "label": "Company/Organization",
-          "placeholder": "Al-Rashid Trading Co."
+          "placeholder": "Your company name"
         },
         "phone": {
           "label": "WhatsApp Number",
@@ -341,12 +374,13 @@
           "label": "Project Type *",
           "placeholder": "Select Project Type",
           "options": [
-            "E-commerce Development",
+            "AI Agent / Automation Solution",
+            "Full-Stack Web Development",
+            "E-commerce / Shopify Store",
             "Digital Marketing Campaign",
-            "Website Redesign",
             "SEO Optimization",
-            "Social Media Strategy",
-            "IT Consulting",
+            "Government / Enterprise Consulting",
+            "Cloud Infrastructure / DevOps",
             "Other"
           ],
           "errors": {
@@ -368,23 +402,23 @@
           }
         },
         "message": {
-          "label": "Strategic Objectives *",
-          "placeholder": "Describe your current challenges and business goals...",
+          "label": "Project Details *",
+          "placeholder": "Describe your project goals, current challenges, and what you'd like to achieve...",
           "errors": {
-            "required": "Please describe your strategic objectives",
+            "required": "Please describe your project",
             "minLength": "Please provide more details (minimum 20 characters)"
           }
         }
       },
       "submit": {
-        "idle": "🚀 Book FREE Strategic Session (Worth 2,000 KWD)",
-        "loading": "⚡ Booking Your Strategic Session...",
-        "success": "✅ Strategic Session Booked!"
+        "idle": "🚀 Book FREE Consultation",
+        "loading": "⚡ Sending Your Request...",
+        "success": "✅ Request Sent Successfully!"
       },
       "status": {
         "success": {
-          "title": "🎯 Strategic Session Booked!",
-          "message": "Ahmed will personally contact you within 24 hours with your free strategic audit results."
+          "title": "🎯 Consultation Request Received!",
+          "message": "Ahmed will personally respond within 24 hours with initial thoughts on your project."
         },
         "error": {
           "message": "Failed to submit. Please try WhatsApp contact below or email directly."
@@ -397,28 +431,28 @@
       "button": "📱 WhatsApp: +965 6067 2773"
     },
     "trustSignals": {
-      "title": "✅ Why Kuwait Businesses Choose Ahmed",
+      "title": "✅ Why Businesses Choose Ahmed",
       "items": [
-        "<strong>20+ Years</strong> of proven digital marketing excellence in Kuwait & GCC",
-        "<strong>200+ Local Businesses</strong> transformed and scaled successfully",
-        "<strong>300% Average ROI</strong> improvement within first 6 months",
-        "<strong>ENTJ Leadership Style</strong> - Strategic, decisive, results-driven",
-        "<strong>100% Money-Back Guarantee</strong> if no measurable results in 90 days"
+        "<strong>20+ Years</strong> of proven expertise in AI, development, and digital marketing",
+        "<strong>AI & Full-Stack</strong> — from knowledge graphs to production Next.js applications",
+        "<strong>300% Average ROI</strong> improvement for digital marketing clients",
+        "<strong>Government Sector Experience</strong> — enterprise-grade platform architecture",
+        "<strong>Kuwait & GCC Specialist</strong> — bilingual Arabic/English, RTL-first design"
       ]
     },
     "availability": {
-      "title": "⏰ Limited Strategic Sessions",
+      "title": "⏰ Availability",
       "slots": {
-        "january": {
-          "month": "January 2025",
-          "status": "3 slots remaining"
+        "online": {
+          "month": "Online Services",
+          "status": "Available Worldwide"
         },
-        "february": {
-          "month": "February 2025",
-          "status": "Waitlist only"
+        "inPerson": {
+          "month": "In-Person (Kuwait)",
+          "status": "Accepting Projects"
         }
       },
-      "note": "⚡ High demand due to Ramadan preparation projects. Book now to secure your strategic consultation."
+      "note": "⚡ Freelance availability — flexible engagement models for projects of any size."
     },
     "contactMethods": {
       "title": "Other Contact Methods",
@@ -436,20 +470,20 @@
       }
     },
     "finalCta": {
-      "title": "⚡ Don't Miss Your Strategic Advantage",
-      "description": "While your competitors struggle with outdated marketing, secure your spot for strategic digital transformation that delivers results.",
-      "urgency": "⏰ Only 3 consultation slots remaining this month",
-      "button": "Secure My Strategic Session Now →"
+      "title": "⚡ Let's Build Something Great Together",
+      "description": "Whether you need AI automation, a full-stack platform, or a results-driven marketing strategy — let's discuss how technology can accelerate your business.",
+      "urgency": "⏰ Currently accepting new projects for Q2 2026",
+      "button": "Start Your Project →"
     }
   },
   "Footer": {
     "cta": {
       "title": "🚀 Ready to Transform Your Business?",
-      "subtitle": "Join 200+ Kuwait businesses that chose strategic excellence",
-      "button": "Book Your FREE Strategic Session →"
+      "subtitle": "AI solutions, full-stack development, and digital strategy — all in one place",
+      "button": "Book Your FREE Consultation →"
     },
     "contact": {
-      "title": "Strategic Contact",
+      "title": "Contact",
       "email": "ahmed@zewar.xyz",
       "phone": "+965 6067 2773 (WhatsApp)",
       "location": "Kuwait City, Kuwait",
@@ -458,11 +492,11 @@
     "services": {
       "title": "Services",
       "items": [
-        "Digital Marketing Strategy",
-        "E-commerce Development",
-        "Kuwait Market Expertise",
-        "IT Consulting",
-        "ROI Optimization"
+        "AI Agent Development",
+        "Full-Stack Development",
+        "E-commerce & Shopify",
+        "Digital Marketing & SEO",
+        "Enterprise Consulting"
       ]
     },
     "guarantees": {
@@ -471,12 +505,12 @@
         "24-48 hour response",
         "300% avg ROI increase",
         "100% money-back guarantee",
-        "Free strategic audit",
-        "Kuwait market specialist"
+        "Free initial consultation",
+        "Kuwait & GCC specialist"
       ]
     },
-    "copyright": "© 2025 Ahmed Zewar - ENTJ Commander • Strategic Digital Marketing Excellence • Kuwait & GCC",
-    "tagline": "All rights reserved. Transforming businesses through strategic digital leadership since 2005."
+    "copyright": "© 2026 Ahmed Zewar • AI & Digital Strategy Consultant • Kuwait & GCC",
+    "tagline": "All rights reserved. Transforming businesses through AI and strategic digital solutions since 2005."
   },
   "Common": {
     "buttons": {
@@ -496,9 +530,9 @@
     }
   },
   "Metadata": {
-    "title": "Ahmed Zewar | Digital Marketing Manager",
-    "description": "Experienced Digital Marketing Manager and IT Consultant in Kuwait. Specializing in ROI-driven campaigns, e-commerce solutions, and strategic business growth.",
-    "keywords": "digital marketing, kuwait, roi campaigns, e-commerce, business growth, marketing consultant",
+    "title": "Ahmed Zewar | AI & Full-Stack Developer | Kuwait",
+    "description": "Freelance AI agent developer and full-stack consultant in Kuwait. Custom automation, Next.js development, Shopify e-commerce, and ROI-driven digital marketing across the GCC.",
+    "keywords": "AI consultant Kuwait, AI agent developer Kuwait, freelance web developer Kuwait, full-stack developer Kuwait, Next.js developer, Shopify developer Kuwait, business automation Kuwait, digital marketing Kuwait, e-commerce optimization, government digital transformation Kuwait, knowledge graph, MCP developer, SEO consultant Kuwait, web developer for hire Kuwait, GCC digital strategy",
     "creator": "Ahmed Zewar",
     "publisher": "AZ Digital Hub",
     "appName": "AZ Digital Hub"
@@ -506,7 +540,7 @@
   "ROIChart": {
     "header": {
       "title": "Performance Metrics",
-      "subtitle": "Average ROI Increases - Kuwait Market"
+      "subtitle": "Results Across Key Service Areas"
     },
     "metrics": {
       "ecommerce": {
@@ -520,18 +554,18 @@
         "timeline": "2-4 months average"
       },
       "penetration": {
-        "category": "Kuwait Market Penetration",
-        "description": "Local market dominance with culturally-aware digital strategies",
-        "timeline": "4-8 months average"
+        "category": "AI & Automation Solutions",
+        "description": "AI agent development and workflow automation for business efficiency",
+        "timeline": "1-3 months average"
       },
       "infrastructure": {
-        "category": "IT Infrastructure ROI",
-        "description": "Technology modernization and process optimization",
-        "timeline": "6-12 months average"
+        "category": "Cloud & Infrastructure",
+        "description": "Edge computing, self-hosted solutions, and DevOps optimization",
+        "timeline": "2-6 months average"
       }
     },
     "details": {
-      "basedOn": "Based on 200+ implementations"
+      "basedOn": "Based on 150+ implementations"
     },
     "footer": {
       "projects": "Projects",
@@ -544,7 +578,7 @@
     "digitalMarketing": "Digital Marketing",
     "analytics": "Analytics",
     "seoOptimization": "SEO Optimization",
-    "mobileApps": "Mobile Apps",
+    "mobileApps": "AI Solutions",
     "itConsulting": "IT Consulting"
   }
 }

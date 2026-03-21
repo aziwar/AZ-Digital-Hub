@@ -637,12 +637,12 @@ const EnhancedContact: React.FC = () => {
               </h4>
               <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                 <div className="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
-                  <span className="text-gray-300">{t('availability.slots.january.month')}</span>
-                  <span className="text-red-400 font-bold">{t('availability.slots.january.status')}</span>
+                  <span className="text-gray-300">{t('availability.slots.online.month')}</span>
+                  <span className="text-red-400 font-bold">{t('availability.slots.online.status')}</span>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
-                  <span className="text-gray-300">{t('availability.slots.february.month')}</span>
-                  <span className="text-yellow-400 font-bold">{t('availability.slots.february.status')}</span>
+                  <span className="text-gray-300">{t('availability.slots.inPerson.month')}</span>
+                  <span className="text-yellow-400 font-bold">{t('availability.slots.inPerson.status')}</span>
                 </div>
                 <p className="text-purple-300 text-xs mt-4">
                   {t('availability.note')}

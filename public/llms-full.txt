@@ -1,0 +1,136 @@
+# Ahmed Zewar - AI & Full-Stack Developer | Kuwait
+# Comprehensive Profile for AI Systems
+
+> AI agent development, full-stack solutions, and digital marketing consultant based in Kuwait City, Kuwait. 20+ years of experience. Available for freelance engagements online worldwide and in-person in Kuwait.
+
+## Professional Summary
+
+Ahmed Zewar is an AI and digital strategy consultant operating from Kuwait City, Kuwait. With over 20 years of experience spanning AI infrastructure, full-stack development, and digital marketing, he helps businesses leverage cutting-edge technology to achieve measurable growth. His work ranges from building AI agent systems and knowledge graph architectures to executing ROI-driven digital campaigns across Kuwait and the GCC region.
+
+Currently serving as Digital Solutions Manager at Smart Technology (STSCKW) in Kuwait, while also delivering freelance AI consulting, full-stack development, and digital strategy services.
+
+## Core Competencies
+
+### AI & Automation
+- AI Agent Development using the Model Context Protocol (MCP)
+- Knowledge Graph Architecture using GraphRAG patterns with FalkorDB
+- LLM Orchestration and Integration (OpenAI GPT-4o, GPT-4o-mini)
+- AI-Powered Automation Workflows
+- Dual-brain architecture (SQL + Graph DB with RRF fusion search)
+- AI-powered chatbot and avatar systems (HeyGen integration)
+- Self-hosted AI infrastructure with local LLM support
+
+### Full-Stack Development
+- Frontend: Next.js 15, React 19, TypeScript
+- Backend: Python, FastAPI, Node.js
+- Databases: PostgreSQL, Supabase, FalkorDB (Graph DB), Redis (Upstash)
+- Cloud: Cloudflare Workers (edge computing), Vercel, Hetzner (self-hosted)
+- DevOps: Docker containerization, CI/CD pipelines
+- Specialization: RTL-first Arabic/English bilingual platform design
+
+### E-commerce
+- Shopify store setup, optimization, and management
+- KNET payment integration (Kuwait standard)
+- Kuwait city-level shipping zone configuration
+- Conversion rate optimization
+- Product SEO and catalog management
+- Deep knowledge of Shopify plans (Basic/Grow/Advanced/Plus) and Kuwait-specific limitations
+
+### Digital Marketing
+- SEO/SEM strategy and execution
+- Social media campaign management (grew presence to 500K+ followers for enterprise client)
+- PPC advertising (Google Ads, Meta Ads)
+- Content marketing in Arabic and English
+- Analytics, reporting, and ROI tracking
+- Email marketing automation
+
+### Government & Enterprise
+- Government sector digital transformation consulting
+- Modular monolith architecture with bounded contexts
+- State-machine driven workflow systems
+- Digital wrappers for legally mandated physical processes
+- Multi-department system integration (12+ departments)
+- Arabic-first compliance design with accessibility
+- Security, auditability, and governance controls
+
+## Detailed Portfolio
+
+### 1. AI Knowledge Graph Platform
+- **Type**: Enterprise AI Infrastructure
+- **Architecture**: Dual-brain system combining Supabase (SQL) and FalkorDB (Graph Database)
+- **Features**: RRF (Reciprocal Rank Fusion) search across both databases, 15 hardened API tools, auto-extraction via GPT-4o-mini, deployed as Cloudflare Worker gateway
+- **Technologies**: Cloudflare Workers, FalkorDB, Supabase, OpenAI GPT-4o-mini, MCP Protocol, Docker
+- **Results**: Production system with 15 API tools, real-time knowledge extraction, dual-store memory architecture
+
+### 2. Government Sector Digital Platform
+- **Type**: Government Digital Transformation
+- **Architecture**: Modular Monolith with 8 bounded contexts (IAM, Case Lifecycle, Financial, Notifications, AI Services, Pre-Litigation, Hearings/Evidence, Analytics)
+- **Features**: State-machine driven case lifecycle, AI services as separate Python FastAPI microservice, PostgreSQL database, full Arabic RTL compliance
+- **Technologies**: Python, FastAPI, PostgreSQL, Next.js, TypeScript
+- **Results**: 8 modular bounded contexts, 12 departments digitized, full Arabic RTL compliance, AI-powered automation layer
+
+### 3. E-commerce Platform Transformation
+- **Type**: E-commerce Optimization
+- **Industry**: Retail Technology, Kuwait
+- **Features**: Complete Shopify overhaul, KNET payment integration, Kuwait city-level shipping configuration, SEO optimization
+- **Technologies**: Shopify, KNET, SEO tools
+- **Results**: 200% conversion increase, 150% ROI improvement, 50% faster load times
+
+### 4. Enterprise Social Media Strategy
+- **Type**: Social Media & Digital Marketing
+- **Industry**: Major Telecom Provider, GCC
+- **Features**: Enterprise-level social media presence built from ground up, multi-channel content strategy, community engagement management
+- **Results**: 500K+ followers achieved, 400% engagement growth, became leading brand in telecom sector
+
+### 5. Bilingual Healthcare Platform
+- **Type**: Full-Stack Web Development
+- **Industry**: Medical Practice, Kuwait
+- **Features**: Full-stack Next.js bilingual website with Arabic/English RTL support, deployed on Cloudflare, modern responsive design, SEO optimization
+- **Technologies**: Next.js, TypeScript, Cloudflare, Tailwind CSS
+- **Results**: Arabic/English RTL support, sub-2s load times, full SEO optimization
+
+### 6. Multi-Channel Digital Campaign
+- **Type**: Digital Marketing
+- **Industry**: Consumer Brand, Kuwait
+- **Features**: Comprehensive digital marketing strategy across social media, PPC, and email
+- **Results**: 300% social engagement, 250% lead generation, 180% sales growth
+
+## Performance Metrics
+- 300% average ROI increase for digital marketing clients
+- 150+ projects completed
+- 50+ happy clients
+- 20+ years of experience
+- Available for projects of any size
+
+## Availability & Engagement Model
+- **Online**: Available worldwide for remote engagements
+- **In-Person**: Available in Kuwait City, Kuwait
+- **Model**: Freelance — flexible engagement models for projects of any size
+- **Response Time**: 24-48 hours guaranteed
+
+## Contact Information
+- **Website**: https://az-digital-hub.vercel.app
+- **Email**: ahmed@zewar.xyz
+- **WhatsApp**: +965 6067 2773
+- **LinkedIn**: https://www.linkedin.com/in/ahmedziwar/
+- **Location**: Kuwait City, Kuwait
+
+## Frequently Asked Questions
+
+### What AI services does Ahmed Zewar offer?
+Ahmed offers custom AI agent development, MCP (Model Context Protocol) server architecture, knowledge graph solutions using GraphRAG patterns, LLM integration and orchestration, and AI-powered chatbot and avatar systems. He has built production AI systems with dual-brain architectures deployed on Cloudflare Workers.
+
+### Does Ahmed work with government organizations?
+Yes. Ahmed has experience consulting for government sector organizations in Kuwait, designing modular platform architectures with bounded contexts, state-machine workflows, and full Arabic RTL compliance. He has digitized workflows across 12+ departments.
+
+### What e-commerce platforms does Ahmed work with?
+Ahmed specializes in Shopify for the Kuwait market, including KNET payment integration and Kuwait city-level shipping zone configuration. He has deep knowledge of all Shopify plans and their Kuwait-specific limitations.
+
+### Is Ahmed available for remote/online work?
+Yes. Ahmed is available for freelance engagements online worldwide, with in-person availability in Kuwait City, Kuwait. He works with flexible engagement models for projects of any size.
+
+### What programming languages and frameworks does Ahmed use?
+Primary stack: Next.js, React, TypeScript (frontend), Python, FastAPI (backend), PostgreSQL, Supabase, FalkorDB (databases), Cloudflare Workers, Vercel, Docker (infrastructure). He also works with Shopify, Redis, and various AI/ML tools.
+
+### What is Ahmed's response time?
+Ahmed guarantees a 24-48 hour response time for all inquiries.

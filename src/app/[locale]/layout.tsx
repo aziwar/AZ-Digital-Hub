@@ -119,6 +119,109 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-tap-highlight" content="no" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": "https://az-digital-hub.vercel.app/#person",
+                  "name": "Ahmed Zewar",
+                  "jobTitle": "AI & Full-Stack Developer",
+                  "description": "AI agent development, full-stack solutions, and digital marketing consultant based in Kuwait. 20+ years of experience in AI infrastructure, Next.js, Shopify e-commerce, and government digital transformation.",
+                  "url": "https://az-digital-hub.vercel.app",
+                  "email": "ahmed@zewar.xyz",
+                  "telephone": "+96560672773",
+                  "image": "https://az-digital-hub.vercel.app/images/ahmed-zewar-profile.png",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/ahmedziwar/",
+                    "https://github.com/aziwar"
+                  ],
+                  "knowsAbout": [
+                    "Artificial Intelligence",
+                    "AI Agent Development",
+                    "MCP Protocol",
+                    "Knowledge Graphs",
+                    "GraphRAG",
+                    "Next.js",
+                    "React",
+                    "TypeScript",
+                    "Python",
+                    "FastAPI",
+                    "Shopify",
+                    "E-commerce",
+                    "Digital Marketing",
+                    "SEO",
+                    "Government Digital Transformation",
+                    "Cloudflare Workers",
+                    "Full-Stack Development"
+                  ],
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Kuwait City",
+                    "addressCountry": "KW"
+                  },
+                  "worksFor": {
+                    "@type": "Organization",
+                    "name": "Smart Technology (STSCKW)"
+                  }
+                },
+                {
+                  "@type": "ProfessionalService",
+                  "@id": "https://az-digital-hub.vercel.app/#service",
+                  "name": "AZ Digital Hub",
+                  "description": "AI agent development, full-stack web development, e-commerce optimization, and digital marketing services in Kuwait and GCC.",
+                  "url": "https://az-digital-hub.vercel.app",
+                  "telephone": "+96560672773",
+                  "email": "ahmed@zewar.xyz",
+                  "image": "https://az-digital-hub.vercel.app/images/AMZ-logo-tr.png",
+                  "priceRange": "$$-$$$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Kuwait City",
+                    "addressCountry": "KW"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 29.3759,
+                    "longitude": 47.9774
+                  },
+                  "areaServed": [
+                    { "@type": "Country", "name": "Kuwait" },
+                    { "@type": "Place", "name": "GCC Region" }
+                  ],
+                  "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Digital Services",
+                    "itemListElement": [
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Agent Solutions & Automation" } },
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Full-Stack Web Development" } },
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "E-commerce & Shopify Solutions" } },
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digital Marketing & SEO" } },
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Government & Enterprise Consulting" } },
+                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cloud Infrastructure & DevOps" } }
+                    ]
+                  },
+                  "founder": { "@id": "https://az-digital-hub.vercel.app/#person" },
+                  "sameAs": [
+                    "https://www.linkedin.com/in/ahmedziwar/",
+                    "https://github.com/aziwar"
+                  ]
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://az-digital-hub.vercel.app/#website",
+                  "name": "AZ Digital Hub",
+                  "url": "https://az-digital-hub.vercel.app",
+                  "inLanguage": ["en", "ar"],
+                  "publisher": { "@id": "https://az-digital-hub.vercel.app/#person" }
+                }
+              ]
+            })
+          }}
+        />
       </head>
       <body className="font-sans">
         <NextIntlClientProvider messages={messages}>

@@ -1,0 +1,41 @@
+# Ahmed Zewar - AI & Full-Stack Developer | Kuwait
+
+> AI agent development, full-stack solutions, and digital marketing consultant based in Kuwait City, Kuwait. Available for freelance engagements online worldwide and in-person in Kuwait.
+
+## About
+
+Ahmed Zewar is an AI and digital strategy consultant with 20+ years of experience. He specializes in AI agent development, knowledge graph architecture (GraphRAG), full-stack web development (Next.js, React, TypeScript, Python/FastAPI), e-commerce optimization (Shopify with KNET), and government digital transformation across Kuwait and the GCC region.
+
+## Services
+
+- AI Agent Solutions & Automation: Custom AI agent development, MCP server architecture, knowledge graph (GraphRAG) solutions, LLM integration and orchestration, AI-powered chatbot and avatar systems
+- Full-Stack Development: Next.js/React/TypeScript applications, Python/FastAPI backend systems, RTL-first Arabic platform design, database architecture and API design, Cloudflare and Vercel deployment
+- E-commerce & Shopify Solutions: Shopify store setup and optimization, KNET payment integration, Kuwait city-level shipping zones, conversion rate optimization
+- Digital Marketing & SEO: SEO/SEM strategy, social media campaigns, PPC and Google/Meta ads, bilingual Arabic/English content marketing
+- Government & Enterprise Consulting: Government sector digital transformation, modular platform architecture, RTL-first Arabic compliance design, multi-department system integration
+- Cloud Infrastructure & DevOps: Cloudflare Workers and edge computing, self-hosted infrastructure, Docker containerization, database optimization
+
+## Key Technologies
+
+Next.js, React, TypeScript, Python, FastAPI, Cloudflare Workers, Vercel, Shopify, PostgreSQL, FalkorDB, Redis, Supabase, Docker, Hetzner, OpenAI, MCP Protocol, GraphRAG, Knowledge Graphs
+
+## Location
+
+Kuwait City, Kuwait
+Available: Online worldwide, In-person in Kuwait
+
+## Contact
+
+- Website: https://az-digital-hub.vercel.app
+- Email: ahmed@zewar.xyz
+- WhatsApp: +965 6067 2773
+- LinkedIn: https://www.linkedin.com/in/ahmedziwar/
+
+## Portfolio Highlights
+
+1. AI Knowledge Graph Platform: Dual-brain architecture with SQL and graph databases, RRF fusion search, 15 hardened API tools deployed on Cloudflare Workers
+2. Government Sector Digital Platform: Modular monolith with 8 bounded contexts, AI microservice layer, 12 departments digitized with full Arabic RTL compliance
+3. E-commerce Platform Transformation: 200% conversion increase, 150% ROI improvement, Shopify with KNET and Kuwait city-level shipping
+4. Enterprise Social Media Strategy: 500K+ followers, 400% engagement growth for a major GCC telecom provider
+5. Bilingual Healthcare Platform: Full-stack Next.js with Arabic/English RTL, deployed on Cloudflare
+6. Multi-Channel Digital Campaign: 300% social engagement, 250% lead generation, 180% sales growth

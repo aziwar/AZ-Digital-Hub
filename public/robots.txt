@@ -1,10 +1,41 @@
+# AZ Digital Hub - Ahmed Zewar
+# AI & Digital Strategy Consultant - Kuwait
+
 User-Agent: *
 Allow: /
 
-# Sitemap locations
+# Sitemap
 Sitemap: https://az-digital-hub.vercel.app/sitemap.xml
 
-# Block API routes and internal paths
+# Block internal paths
 Disallow: /api/
 Disallow: /_next/
 Disallow: /_vercel/
+
+# AI Search Crawlers - Explicitly Allowed
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
