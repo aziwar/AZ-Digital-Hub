@@ -7,6 +7,7 @@ import React from 'react';
 
 import { ROIChart } from '@/components/ui/ROIChart';
 import { ServiceIconGrid } from '@/components/ui/ServiceIcons';
+import { VideoBackground } from '@/components/ui/VideoBackground';
 import { Link } from '@/i18n/navigation';
 import { imageConfig } from '@/lib/images.config';
 
@@ -14,7 +15,14 @@ const EnhancedHero: React.FC = () => {
   const t = useTranslations('Hero');
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center bg-slate-900 overflow-hidden">
-      
+
+      {/* Video Background - desktop only, poster on mobile */}
+      <VideoBackground
+        mp4Src="/videos/hero-background.mp4"
+        webmSrc="/videos/hero-background.webm"
+        posterSrc="/videos/hero-background-poster.webp"
+      />
+
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         
         <div className="grid lg:grid-cols-12 gap-8 items-center">

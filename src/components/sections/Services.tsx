@@ -4,6 +4,7 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
+import { LazyVideo } from '@/components/ui/VideoBackground';
 import { useScrollObserver } from '@/hooks/useScrollObserver';
 
 const Services: React.FC = () => {
@@ -44,6 +45,15 @@ const Services: React.FC = () => {
               strong: (chunks) => <strong className="font-bold text-purple-400">{chunks}</strong>
             })}
           </p>
+        </div>
+
+        {/* Services Video Showcase */}
+        <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+          <LazyVideo
+            mp4Src="/videos/services-showcase.mp4"
+            posterSrc="/videos/services-poster.webp"
+            className="shadow-2xl shadow-purple-500/10"
+          />
         </div>
 
         {/* Strategic Services Grid */}
