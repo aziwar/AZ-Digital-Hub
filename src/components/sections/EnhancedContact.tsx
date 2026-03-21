@@ -211,7 +211,8 @@ const EnhancedContact: React.FC = () => {
     t('form.fields.projectType.options.3'),
     t('form.fields.projectType.options.4'),
     t('form.fields.projectType.options.5'),
-    t('form.fields.projectType.options.6')
+    t('form.fields.projectType.options.6'),
+    t('form.fields.projectType.options.7')
   ];
 
   const budgetRanges = [

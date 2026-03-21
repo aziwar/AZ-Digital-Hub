@@ -91,10 +91,12 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
           setIsVisible(true);
           // Auto-play on desktop
           if (window.innerWidth > 768 && videoRef.current) {
-            videoRef.current.play().catch(() => {
+            videoRef.current.play().then(() => {
+              setIsPlaying(true);
+            }).catch(() => {
               // Autoplay blocked - user will need to tap
+              setIsPlaying(false);
             });
-            setIsPlaying(true);
           }
         } else if (videoRef.current) {
           videoRef.current.pause();
