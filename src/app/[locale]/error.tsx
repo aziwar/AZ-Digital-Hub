@@ -12,6 +12,7 @@
 import { useEffect } from 'react'
 
 import { Link } from '@/i18n/navigation'
+import { reportClientError } from '@/lib/report-client-error'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -22,13 +23,8 @@ export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Log error to monitoring service in production
     if (process.env.NODE_ENV === 'production') {
-      // TODO: Add error reporting service integration (e.g., Sentry)
-      // eslint-disable-next-line no-console
-      console.error('[Error Boundary]', {
-        message: error.message,
-        digest: error.digest,
-        timestamp: new Date().toISOString()
-      })
+      // Forwarded to Vercel runtime logs via /api/client-error (once per error)
+      reportClientError(error, 'route')
     } else {
       // Development: detailed console logging
       // eslint-disable-next-line no-console
@@ -37,7 +33,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br/srgb from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center px-4">
       <div className="max-w-2xl w-full text-center space-y-8">
         {/* Error Icon */}
         <div className="inline-flex items-center justify-center w-24 h-24 bg-red-500/10 rounded-full border-2 border-red-500/30 mb-8">

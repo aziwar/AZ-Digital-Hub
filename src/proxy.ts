@@ -2,7 +2,8 @@ import createMiddleware from 'next-intl/middleware';
 
 import {routing} from './i18n/routing';
 
-export default createMiddleware(routing);
+// Next.js 16 renamed the `middleware` convention to `proxy`
+export const proxy = createMiddleware(routing);
 
 export const config = {
   // Match all pathnames except for

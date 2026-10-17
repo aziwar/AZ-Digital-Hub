@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server"
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 import {
@@ -8,50 +8,46 @@ import {
   getRateLimitHeaders
 } from '@/lib'
 
-// Context7-validated environment diagnostic endpoint
+export const dynamic = 'force-dynamic'
+
+const has = (...names: string[]): boolean => names.every((n) => Boolean(process.env[n]))
+
+/**
+ * Liveness/config endpoint used by the GitHub site monitor.
+ * Never fails because optional config is missing: reports booleans only
+ * (never values) and rate-limits only when Upstash is configured.
+ */
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  try {
-    // Rate limiting check (60 requests per minute)
-    const clientId = getClientIdentifier(request);
-    const rateLimitResult = await checkRateLimit(standardRateLimiter, clientId);
-
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        {
-          status: 'RATE_LIMITED',
-          error: 'Too many requests. Please try again later.',
-          timestamp: new Date().toISOString()
-        },
-        {
-          status: 429,
-          headers: getRateLimitHeaders(rateLimitResult)
-        }
-      );
-    }
-    const isHealthy = true;
-
-    const response = {
-      status: isHealthy ? 'OK' : 'SERVICE_UNAVAILABLE',
-      timestamp: new Date().toISOString()
-    };
-    
-    return NextResponse.json(response, {
-      status: isHealthy ? 200 : 503,
-      headers: {
-        'Cache-Control': 'no-cache, no-store',
-        'Content-Type': 'application/json',
-        ...getRateLimitHeaders(rateLimitResult)
-      }
-    });
-    
-  } catch {
-    return NextResponse.json(
-      {
-        status: 'ERROR',
-        error: 'Internal server error',
-        timestamp: new Date().toISOString()
-      },
-      { status: 500 }
-    )
+  const checks = {
+    upstash: has('UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'),
+    emailjs: has(
+      'EMAILJS_SERVICE_ID',
+      'EMAILJS_TEMPLATE_ID',
+      'NEXT_PUBLIC_EMAILJS_PUBLIC_KEY',
+      'EMAILJS_PRIVATE_KEY'
+    ),
+    recaptcha: has('RECAPTCHA_SECRET_KEY', 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY')
   }
+
+  const headers: Record<string, string> = { 'Cache-Control': 'no-store' }
+
+  if (checks.upstash) {
+    try {
+      const result = await checkRateLimit(standardRateLimiter, getClientIdentifier(request))
+      Object.assign(headers, getRateLimitHeaders(result))
+      if (!result.success) {
+        return NextResponse.json({ status: 'rate_limited' }, { status: 429, headers })
+      }
+    } catch {
+      // Upstash unreachable: skip rate limiting rather than failing the health check
+      checks.upstash = false
+    }
+  }
+
+  const status = checks.upstash && checks.emailjs && checks.recaptcha ? 'ok' : 'degraded'
+
+  return NextResponse.json(
+    { status, checks, timestamp: new Date().toISOString() },
+    { status: 200, headers }
+  )
 }

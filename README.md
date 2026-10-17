@@ -6,8 +6,8 @@ Live site: [https://www.zewar.xyz](https://www.zewar.xyz) (English at `/en`, Ara
 
 ## Tech stack
 
-- Next.js 15 (App Router) with React 19 and TypeScript
-- Tailwind CSS (with RTL support)
+- Next.js 16 (App Router) with React 19 and TypeScript
+- Tailwind CSS 4 (logical-property utilities for RTL)
 - next-intl for English/Arabic content (`messages/en.json`, `messages/ar.json`)
 - Contact form via EmailJS (server-side), with optional reCAPTCHA v3 and Upstash rate limiting
 - Deployed on Vercel
@@ -27,7 +27,7 @@ src/components/      # Sections and UI components
 
 ## Getting started
 
-Requires Node.js >= 20.11.
+Requires Node.js >=20.11.0 <23.0.0 (see `engines` in `package.json`).
 
 ```bash
 git clone https://github.com/aziwar/AZ-Digital-Hub.git
@@ -55,7 +55,7 @@ See `.env.example`. The code reads:
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Optional: reCAPTCHA v3 site key |
 | `RECAPTCHA_SECRET_KEY` | Optional: reCAPTCHA v3 secret (server-side) |
 
-In production the contact API returns 503 unless Upstash is configured (rate limiting fails closed); in development it runs without it. reCAPTCHA is optional.
+In production the contact API returns 503 when Upstash is missing or unreachable (rate limiting fails closed); in development it runs without it. reCAPTCHA is optional.
 
 ## Contact
 

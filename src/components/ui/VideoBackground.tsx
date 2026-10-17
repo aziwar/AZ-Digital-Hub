@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 interface VideoBackgroundProps {
   mp4Src: string;
@@ -12,6 +11,12 @@ interface VideoBackgroundProps {
   overlay?: boolean;
 }
 
+const noopSubscribe = () => () => {};
+
+// Only show video on desktop (>768px) and if user doesn't prefer reduced motion
+const shouldShowVideo = () =>
+  window.innerWidth > 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   mp4Src,
   webmSrc,
@@ -20,17 +25,8 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   overlay = true,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [showVideo, setShowVideo] = useState(false);
-
-  useEffect(() => {
-    // Only show video on desktop (>768px) and if user doesn't prefer reduced motion
-    const isDesktop = window.innerWidth > 768;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (isDesktop && !prefersReducedMotion) {
-      setShowVideo(true);
-    }
-  }, []);
+  // Decided once after hydration (server snapshot is false), like the previous mount effect
+  const showVideo = useSyncExternalStore(noopSubscribe, shouldShowVideo, () => false);
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
@@ -41,7 +37,8 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
         alt=""
         aria-hidden="true"
         fill
-        priority
+        preload
+        fetchPriority="high"
         sizes="100vw"
         quality={70}
         className={`object-cover ${showVideo ? 'hidden' : 'block'}`}
@@ -75,18 +72,20 @@ interface LazyVideoProps {
   mp4Src: string;
   posterSrc: string;
   className?: string;
+  labels: { playVideo: string; pauseVideo: string; videoPoster: string };
 }
 
 export const LazyVideo: React.FC<LazyVideoProps> = ({
   mp4Src,
   posterSrc,
   className = '',
+  labels,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const t = useTranslations('Common');
+  const t = (key: keyof LazyVideoProps['labels']) => labels[key];
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -169,7 +168,7 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
       {/* Play button overlay (mobile) */}
       {!isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
-          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center group-hover:scale-110 transition-transform">
             <svg className="w-8 h-8 text-white ms-1" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>

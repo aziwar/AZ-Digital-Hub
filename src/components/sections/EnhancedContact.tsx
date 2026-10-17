@@ -1,9 +1,9 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 
 import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, WHATSAPP_NUMBER, PHONE_DISPLAY } from '@/components/contactDetails';
+import { createTranslator, type MessageTree } from '@/lib/messages';
 
 // Extend Window interface to include grecaptcha
 declare global {
@@ -30,11 +30,17 @@ const emptyForm: Record<FieldName, string> = {
 const NOT_SPECIFIED = 'Not specified';
 
 const inputBase =
-  'w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-200 focus-enhanced';
+  'w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-hidden transition-colors duration-200 focus-enhanced';
 
-const EnhancedContact: React.FC = () => {
-  const t = useTranslations('Contact');
-  const locale = useLocale();
+interface EnhancedContactProps {
+  locale: string;
+  /** The Contact namespace (plain strings); the rich title is formatted on the server */
+  messages: MessageTree;
+  title: React.ReactNode;
+}
+
+const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, title }) => {
+  const t = createTranslator(messages, 'Contact');
   const [formData, setFormData] = useState<Record<FieldName, string>>(emptyForm);
   const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -176,18 +182,12 @@ const EnhancedContact: React.FC = () => {
   const labelClass = 'block text-sm font-medium text-gray-200 mb-2';
 
   return (
-    <section id="contact" className="py-12 sm:py-16 md:py-20 px-4 bg-gradient-to-b from-slate-900 to-purple-900/30">
+    <section id="contact" className="py-12 sm:py-16 md:py-20 px-4 bg-linear-to-b/srgb from-slate-900 to-purple-900/30">
       <div className="max-w-7xl mx-auto">
 
         <div className="text-center mb-12 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
-            {t.rich('title', {
-              gradient: (chunks) => (
-                <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  {chunks}
-                </span>
-              )
-            })}
+            {title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
             {t('subtitle')}
@@ -197,7 +197,7 @@ const EnhancedContact: React.FC = () => {
         <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 md:gap-12">
 
           {/* Form */}
-          <div className="lg:col-span-3 bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 md:p-8">
+          <div className="lg:col-span-3 bg-slate-800/50 backdrop-blur-xs border border-purple-500/30 rounded-xl p-4 sm:p-6 md:p-8">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-6">{t('form.title')}</h3>
 
             {/* Live region stays mounted so screen readers announce status changes */}
@@ -364,7 +364,7 @@ const EnhancedContact: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold text-sm sm:text-base rounded-lg shadow-lg focus-enhanced disabled:opacity-60 disabled:cursor-wait min-h-[44px]"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-linear-to-r/srgb from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold text-sm sm:text-base rounded-lg shadow-lg focus-enhanced disabled:opacity-60 disabled:cursor-wait min-h-[44px]"
               >
                 {submitStatus === 'success'
                   ? t('form.submit.success')
@@ -378,12 +378,12 @@ const EnhancedContact: React.FC = () => {
           {/* Side column */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
 
-            <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-4 sm:p-6">
+            <div className="bg-slate-800/30 backdrop-blur-xs border border-slate-700 rounded-xl p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-4">{t('nextSteps.title')}</h3>
               <ol className="space-y-3 text-sm sm:text-base text-gray-300">
                 {nextSteps.map((step, index) => (
                   <li key={step} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600/30 text-purple-200 text-xs font-bold flex items-center justify-center" aria-hidden="true">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-purple-600/30 text-purple-200 text-xs font-bold flex items-center justify-center" aria-hidden="true">
                       {index + 1}
                     </span>
                     <span>{step}</span>
@@ -392,7 +392,7 @@ const EnhancedContact: React.FC = () => {
               </ol>
             </div>
 
-            <div className="bg-gradient-to-r from-green-600/15 to-green-800/15 border border-green-500/30 rounded-xl p-4 sm:p-6">
+            <div className="bg-linear-to-r/srgb from-green-600/15 to-green-800/15 border border-green-500/30 rounded-xl p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{t('whatsapp.title')}</h3>
               <p className="text-sm sm:text-base text-gray-300 mb-4">{t('whatsapp.description')}</p>
               <a

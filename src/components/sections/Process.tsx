@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server';
-import React from 'react';
 
 export default async function Process() {
   const t = await getTranslations('Process');
@@ -28,7 +27,7 @@ export default async function Process() {
                 {String(index + 1).padStart(2, '0')}
               </span>
               <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{step.title}</h3>
-              <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{step.description}</p>
+              <p className="text-sm sm:text-base text-gray-300 leading-relaxed sm:leading-6">{step.description}</p>
             </li>
           ))}
         </ol>

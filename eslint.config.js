@@ -1,22 +1,11 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
-import { defineConfig } from "eslint/config";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
-
-export default defineConfig([{
-    extends: compat.extends("next/core-web-vitals", "next/typescript"),
-    
-    ignores: [
+export default defineConfig([
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  globalIgnores([
         ".next/**/*",
         "out/**/*", 
         "dist/**/*",
@@ -32,8 +21,8 @@ export default defineConfig([{
         "scripts/**/*",
         "next-env.d.ts",
         "postcss.config.js"
-    ],
-
+  ]),
+  {
     rules: {
         "import/order": ["error", {
             groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
@@ -53,4 +42,5 @@ export default defineConfig([{
         "no-console": ["error"],
         "react/no-unescaped-entities": "error",
     },
-}]);
+  },
+]);
