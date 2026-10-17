@@ -144,7 +144,6 @@ test.describe('Entrance Animations - Visual Regression', () => {
     const heroSection = page.locator('section').first();
 
     await expect(heroSection).toHaveScreenshot('hero-complete.png', {
-      fullPage: false,
       maxDiffPixels: 200,
     });
   });
@@ -185,7 +184,7 @@ test.describe('Mobile - Entrance Animations', () => {
 });
 
 test.describe('Reduced Motion - Accessibility', () => {
-  test.use({ reducedMotion: 'reduce' });
+  test.use({ contextOptions: { reducedMotion: 'reduce' } });
 
   test('Reduced Motion - Animations Disabled', async ({ page }) => {
     await page.goto('/en', { waitUntil: 'networkidle' });
@@ -263,7 +262,6 @@ test.describe('Cross-Browser - Animation Consistency', () => {
       const heroSection = page.locator('section').first();
 
       await expect(heroSection).toHaveScreenshot(`${browserName}-hero.png`, {
-        fullPage: false,
         maxDiffPixels: 300, // Allow more tolerance for cross-browser differences
       });
     });
