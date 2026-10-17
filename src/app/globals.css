@@ -270,7 +270,11 @@ body {
 }
 
 /* IBM Plex Sans Arabic (OFL), self-hosted in public/fonts. Only the ar locale references it,
-   so EN pages never download it; ar preloads these files in the layout head. */
+   so EN pages never download it; ar preloads these files in the layout head.
+   The files are subset to the Arabic block U+0600-06FF (plus spaces, ZWNJ/ZWJ, bidi marks and
+   U+FDF2/FDFA/FDFD) with all OpenType layout features and hinting kept, ~20% smaller:
+   pyftsubset <file> --unicodes="U+0000,U+000D,U+0020,U+00A0,U+0600-06FF,U+200C-200F,U+2010,U+FDF2,U+FDFA,U+FDFD"
+     --layout-features='*' --flavor=woff2 --glyph-names --notdef-outline --name-IDs='*' --name-languages='*' --hinting --legacy-kern */
 @font-face { font-family: 'IBM Plex Sans Arabic'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2') format('woff2'); }
 @font-face { font-family: 'IBM Plex Sans Arabic'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2') format('woff2'); }
 @font-face { font-family: 'IBM Plex Sans Arabic'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2') format('woff2'); }
