@@ -1,13 +1,15 @@
-import emailjs from '@emailjs/nodejs';
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
   strictRateLimiter,
+  memoryStrictRateLimiter,
   getClientIdentifier,
   checkRateLimit,
   getRateLimitHeaders,
   type RateLimitResult
 } from '@/lib';
+import { getContactEmailProvider, isUpstashConfigured } from '@/lib/contactDelivery';
+import { sendContactEmail } from '@/lib/contactEmail';
 
 // Type-safe request interface for validation
 interface ContactFormRequest {
@@ -18,6 +20,7 @@ interface ContactFormRequest {
   budget_range?: string;
   message: string;
   phone?: string;
+  locale?: string;
   recaptchaToken?: string;
   company_website?: string; // honeypot: must stay empty
 }
@@ -40,7 +43,7 @@ const validateContactForm = (data: Partial<ContactFormRequest>): { isValid: bool
   }
 
   const maxLengths: Partial<Record<keyof ContactFormRequest, number>> = {
-    name: 100, email: 254, company: 200, phone: 32, project_type: 100, budget_range: 100, message: 5000,
+    name: 100, email: 254, company: 200, phone: 32, project_type: 100, budget_range: 100, message: 5000, locale: 10,
   };
   for (const [field, max] of Object.entries(maxLengths) as [keyof ContactFormRequest, number][]) {
     const value = data[field];
@@ -60,39 +63,37 @@ const validateContactForm = (data: Partial<ContactFormRequest>): { isValid: bool
 
 export async function POST(req: NextRequest) {
   try {
-    // --- Rate Limiting Check (optional - skipped if Upstash not configured) ---
-    let rateLimitResult: RateLimitResult | null = null;
-    try {
-      const clientId = getClientIdentifier(req);
-      rateLimitResult = await checkRateLimit(strictRateLimiter, clientId);
+    // --- Rate Limiting Check: Upstash when configured, else in-memory (5 per 10 min per IP) ---
+    let rateLimitResult: RateLimitResult;
+    const clientId = getClientIdentifier(req);
+    if (isUpstashConfigured()) {
+      try {
+        rateLimitResult = await checkRateLimit(strictRateLimiter, clientId);
+      } catch {
+        // Upstash unreachable: fall back to the in-memory limiter instead of failing
+        // eslint-disable-next-line no-console
+        console.error('[contact] Upstash rate limiting unreachable; using in-memory limiter.');
+        rateLimitResult = await checkRateLimit(memoryStrictRateLimiter, clientId);
+      }
+    } else {
+      rateLimitResult = await checkRateLimit(memoryStrictRateLimiter, clientId);
+    }
 
-      if (!rateLimitResult.success) {
-        return NextResponse.json(
-          {
-            message: 'Rate limit exceeded. Please try again later.',
-            errors: [
-              'Too many requests. Limit: 5 requests per 10 minutes.',
-              `Remaining: ${rateLimitResult.remaining}`,
-              `Reset at: ${new Date(rateLimitResult.reset).toISOString()}`
-            ]
-          },
-          {
-            status: 429,
-            headers: getRateLimitHeaders(rateLimitResult)
-          }
-        );
-      }
-    } catch {
-      // Rate limiting unavailable (Upstash not configured or unreachable):
-      // fail closed in production, allow in development
-      // eslint-disable-next-line no-console
-      console.error('[contact] Rate limiting unavailable: UPSTASH_REDIS_REST_URL/TOKEN not configured or unreachable.');
-      if (process.env.NODE_ENV === 'production') {
-        return NextResponse.json(
-          { message: 'Contact form is temporarily unavailable.' },
-          { status: 503 }
-        );
-      }
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          message: 'Rate limit exceeded. Please try again later.',
+          errors: [
+            'Too many requests. Limit: 5 requests per 10 minutes.',
+            `Remaining: ${rateLimitResult.remaining}`,
+            `Reset at: ${new Date(rateLimitResult.reset).toISOString()}`
+          ]
+        },
+        {
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult)
+        }
+      );
     }
     // --- End Rate Limiting Check ---
 
@@ -102,14 +103,14 @@ export async function POST(req: NextRequest) {
     } catch {
       return NextResponse.json(
         { message: 'Invalid request body' },
-        { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+        { status: 400, headers: getRateLimitHeaders(rateLimitResult) }
       );
     }
 
     if (typeof body !== 'object' || body === null || Array.isArray(body)) {
       return NextResponse.json(
         { message: 'Invalid request body' },
-        { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+        { status: 400, headers: getRateLimitHeaders(rateLimitResult) }
       );
     }
 
@@ -123,7 +124,7 @@ export async function POST(req: NextRequest) {
     const { isValid, errors } = validateContactForm(body);
 
     if (!isValid) {
-      return NextResponse.json({ message: 'Validation failed', errors }, { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } });
+      return NextResponse.json({ message: 'Validation failed', errors }, { status: 400, headers: getRateLimitHeaders(rateLimitResult) });
     }
 
     // reCAPTCHA verification: required whenever RECAPTCHA_SECRET_KEY is configured
@@ -133,7 +134,7 @@ export async function POST(req: NextRequest) {
       if (!token) {
         return NextResponse.json(
           { message: 'reCAPTCHA verification failed. Please try again.' },
-          { status: 403, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+          { status: 403, headers: getRateLimitHeaders(rateLimitResult) }
         );
       }
       const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -147,43 +148,29 @@ export async function POST(req: NextRequest) {
         console.warn('reCAPTCHA verification failed:', recaptchaResult['error-codes']);
         return NextResponse.json(
           { message: 'reCAPTCHA verification failed. Please try again.' },
-          { status: 403, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+          { status: 403, headers: getRateLimitHeaders(rateLimitResult) }
         );
       }
     }
 
-    // Retrieve EmailJS credentials from environment variables
-    const serviceId = process.env.EMAILJS_SERVICE_ID;
-    const templateId = process.env.EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-    const privateKey = process.env.EMAILJS_PRIVATE_KEY;
-
-    if (!serviceId || !templateId || !publicKey || !privateKey) {
+    if (!getContactEmailProvider()) {
       // eslint-disable-next-line no-console
-      console.error('EmailJS environment variables not configured.');
-      return NextResponse.json({ message: 'Email service configuration error' }, { status: 500, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } });
+      console.error('[contact] No email provider configured (Cloudflare Email Service or EmailJS).');
+      return NextResponse.json({ message: 'Email service configuration error' }, { status: 503, headers: getRateLimitHeaders(rateLimitResult) });
     }
 
-    await emailjs.send(
-      serviceId,
-      templateId,
-      {
-        from_name: body.name,
-        from_email: body.email,
-        company: body.company,
-        project_type: body.project_type || 'Not specified',
-        budget_range: body.budget_range || 'Not specified',
-        message: body.message,
-        phone: body.phone,
-        to_name: 'Ahmed Zewar' // This could also be an env var if dynamic
-      },
-      {
-        publicKey: publicKey,
-        privateKey: privateKey,
-      }
-    );
+    await sendContactEmail({
+      name: body.name,
+      email: body.email,
+      company: body.company,
+      phone: body.phone,
+      project_type: body.project_type,
+      budget_range: body.budget_range,
+      message: body.message,
+      locale: body.locale,
+    });
 
-    return NextResponse.json({ message: 'Message sent successfully' }, { status: 200, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } });
+    return NextResponse.json({ message: 'Message sent successfully' }, { status: 200, headers: getRateLimitHeaders(rateLimitResult) });
 
   } catch (error) {
     // eslint-disable-next-line no-console

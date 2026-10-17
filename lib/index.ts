@@ -8,5 +8,7 @@ export {
   getClientIdentifier,
   checkRateLimit,
   getRateLimitHeaders,
+  createMemoryRateLimiter,
+  memoryStrictRateLimiter,
   type RateLimitResult
 } from './ratelimit'

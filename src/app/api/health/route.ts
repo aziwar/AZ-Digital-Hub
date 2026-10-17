@@ -9,6 +9,9 @@ import {
 } from '@/lib'
 import {
   getContactDeliveryMode,
+  getContactEmailProvider,
+  getRateLimitBackend,
+  isCloudflareEmailConfigured,
   isEmailJsConfigured,
   isRecaptchaConfigured,
   isUpstashConfigured
@@ -24,11 +27,14 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const checks = {
     upstash: isUpstashConfigured(),
+    cloudflareEmail: isCloudflareEmailConfigured(),
     emailjs: isEmailJsConfigured(),
     recaptcha: isRecaptchaConfigured()
   }
   // Config-based, matching /api/contact/status: "handoff" = form sends leads via WhatsApp/email
   const contact = getContactDeliveryMode()
+  const provider = getContactEmailProvider()
+  const rateLimit = getRateLimitBackend()
 
   const headers: Record<string, string> = { 'Cache-Control': 'no-store' }
 
@@ -45,10 +51,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
   }
 
-  const status = checks.upstash && checks.emailjs && checks.recaptcha ? 'ok' : 'degraded'
+  // "ok" = server email ready with reCAPTCHA; "degraded" = optional config missing
+  const status = contact === 'email' && checks.recaptcha ? 'ok' : 'degraded'
 
   return NextResponse.json(
-    { status, contact, checks, timestamp: new Date().toISOString() },
+    { status, contact, provider, rateLimit, checks, timestamp: new Date().toISOString() },
     { status: 200, headers }
   )
 }

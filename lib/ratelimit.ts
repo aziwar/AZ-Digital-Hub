@@ -160,3 +160,42 @@ export function getRateLimitHeaders(result: RateLimitResult): Record<string, str
     'X-RateLimit-Reset': result.reset.toString(),
   };
 }
+
+/**
+ * In-memory sliding-window limiter, used when Upstash is not configured.
+ * Per server instance only (serverless instances do not share it), which is
+ * enough to stop casual abuse of the contact form without extra services.
+ */
+export function createMemoryRateLimiter(max: number, windowMs: number) {
+  const hits = new Map<string, number[]>();
+  let lastPrune = Date.now();
+
+  const prune = (now: number) => {
+    for (const [key, stamps] of hits) {
+      const recent = stamps.filter((t) => now - t < windowMs);
+      if (recent.length) hits.set(key, recent);
+      else hits.delete(key);
+    }
+    lastPrune = now;
+  };
+
+  return {
+    limit: async (identifier: string): Promise<RateLimitResult> => {
+      const now = Date.now();
+      if (now - lastPrune > windowMs || hits.size > 10_000) prune(now);
+      const recent = (hits.get(identifier) ?? []).filter((t) => now - t < windowMs);
+      const success = recent.length < max;
+      if (success) recent.push(now);
+      hits.set(identifier, recent);
+      return {
+        success,
+        limit: max,
+        remaining: Math.max(0, max - recent.length),
+        reset: (recent[0] ?? now) + windowMs,
+      };
+    },
+  };
+}
+
+/** Contact form fallback limiter: 5 requests per 10 minutes per client. */
+export const memoryStrictRateLimiter = createMemoryRateLimiter(5, 10 * 60 * 1000);

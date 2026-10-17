@@ -54,7 +54,7 @@ const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, tit
   const handoffHeadingRef = useRef<HTMLHeadingElement>(null);
   const returnFocusRef = useRef(false);
 
-  // Server email (EmailJS + Upstash) may not be configured; then the lead is handed off
+  // Server email (Cloudflare Email Service or EmailJS) may not be configured; then the lead is handed off
   // to WhatsApp/email from the visitor's device. Fetched lazily so the page stays static.
   const getDeliveryMode = (): Promise<DeliveryMode | null> => {
     deliveryModeRef.current ??= fetch('/api/contact/status', { cache: 'no-store' })
