@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import React from 'react';
@@ -97,8 +95,8 @@ const EnhancedHero: React.FC = () => {
                   alt={t('profile.imageAlt')}
                   width={400}
                   height={400}
+                  sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, (min-width: 640px) 288px, 256px"
                   className="w-full h-full object-cover"
-                  priority
                 />
               </div>
             </div>

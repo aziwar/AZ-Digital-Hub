@@ -55,6 +55,16 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Self-hosted fonts never change in place; cache them for a year
+        source: '/fonts/:file*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
         source: '/:path*',
         headers: [
           {
