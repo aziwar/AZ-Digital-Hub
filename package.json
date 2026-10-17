@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Digital Marketing Hub - Professional digital marketing services by Ahmed Zewar",
+  "description": "Website of Ahmed Ziwar, AI consultant in Kuwait: AI strategy, delivery and adoption for mid-sized companies in Kuwait and the GCC",
   "author": "Ahmed Zewar <ahmed@zewar.xyz>",
   "homepage": "https://www.zewar.xyz",
   "repository": {
@@ -15,12 +15,14 @@
     "email": "ahmed@zewar.xyz"
   },
   "keywords": [
-    "digital-marketing",
+    "ai-consulting",
+    "ai-strategy",
+    "digital-transformation",
+    "kuwait",
+    "gcc",
     "next.js",
-    "tailwind",
-    "typescript",
-    "seo",
-    "social-media"
+    "next-intl",
+    "typescript"
   ],
   "engines": {
     "node": ">=20.11.0 <23.0.0",

@@ -1,41 +1,33 @@
-# Ahmed Zewar - AI & Full-Stack Developer | Kuwait
+# Ahmed Ziwar - AI Consultant | Kuwait & GCC
 
-> AI agent development, full-stack solutions, and digital marketing consultant based in Kuwait City, Kuwait. Available for freelance engagements online worldwide and in-person in Kuwait.
+> AI strategy and delivery for mid-sized companies in Kuwait and the GCC. Ahmed Ziwar is a Kuwait-based digital solutions and AI integration consultant with more than 15 years across IT, digital marketing and AI delivery. He helps management teams move AI from presentations to working solutions their people adopt and results leadership can measure. Arabic and English.
 
-## About
+## Site
 
-Ahmed Zewar is an AI and digital strategy consultant with 20+ years of experience. He specializes in AI agent development, knowledge graph architecture (GraphRAG), full-stack web development (Next.js, React, TypeScript, Python/FastAPI), e-commerce optimization (Shopify with KNET), and government digital transformation across Kuwait and the GCC region.
+- [Home (English)](https://www.zewar.xyz/en): AI consultant in Kuwait for mid-sized companies across the GCC
+- [Home (Arabic)](https://www.zewar.xyz/ar): Arabic version of the site
+- [About](https://www.zewar.xyz/en#about): Background, competencies and career path
+- [Services](https://www.zewar.xyz/en#services): Three ways to work together
+- [Process](https://www.zewar.xyz/en#process): Discover, Design, Deliver, Adopt & measure
+- [Typical engagements](https://www.zewar.xyz/en#engagements): Common types of work (client details kept confidential)
+- [FAQ](https://www.zewar.xyz/en#faq): Short answers to what clients usually ask
+- [Contact](https://www.zewar.xyz/en#contact): Request a discovery call
+- [Full profile for AI systems](https://www.zewar.xyz/llms-full.txt): Extended version of this file
 
 ## Services
 
-- AI Agent Solutions & Automation: Custom AI agent development, MCP server architecture, knowledge graph (GraphRAG) solutions, LLM integration and orchestration, AI-powered chatbot and avatar systems
-- Full-Stack Development: Next.js/React/TypeScript applications, Python/FastAPI backend systems, RTL-first Arabic platform design, database architecture and API design, Cloudflare and Vercel deployment
-- E-commerce & Shopify Solutions: Shopify store setup and optimization, KNET payment integration, Kuwait city-level shipping zones, conversion rate optimization
-- Digital Marketing & SEO: SEO/SEM strategy, social media campaigns, PPC and Google/Meta ads, bilingual Arabic/English content marketing
-- Government & Enterprise Consulting: Government sector digital transformation, modular platform architecture, RTL-first Arabic compliance design, multi-department system integration
-- Cloud Infrastructure & DevOps: Cloudflare Workers and edge computing, self-hosted infrastructure, Docker containerization, database optimization
+- AI strategy & readiness: A clear, prioritised AI roadmap your leadership agrees on. Opportunity and use-case workshops, data and systems readiness review, prioritised roadmap with business cases, build/buy/partner recommendations.
+- AI solution delivery & integration: Working AI solutions connected to the systems you already use. AI assistants and avatar experiences, document intelligence and search, process and workflow automation, secure AI model gateways.
+- Adoption & enablement: Teams that use the solution and leaders who can see the impact. Rollout and change planning, team training and playbooks, usage and impact measures for management, ongoing improvement after go-live.
 
-## Key Technologies
+## Who it is for
 
-Next.js, React, TypeScript, Python, FastAPI, Cloudflare Workers, Vercel, Shopify, PostgreSQL, FalkorDB, Redis, Supabase, Docker, Hetzner, OpenAI, MCP Protocol, GraphRAG, Knowledge Graphs
-
-## Location
-
-Kuwait City, Kuwait
-Available: Online worldwide, In-person in Kuwait
+Mid-sized companies in Kuwait and the GCC with an established management team, who value quality, clear accountability and long-term results over the lowest price.
 
 ## Contact
 
-- Website: https://www.zewar.xyz
-- Email: ahmed@zewar.xyz
-- WhatsApp: +965 6067 2773
-- LinkedIn: https://www.linkedin.com/in/ahmedziwar/
-
-## Portfolio Highlights
-
-1. AI Knowledge Graph Platform: Dual-brain architecture with SQL and graph databases, RRF fusion search, 15 hardened API tools deployed on Cloudflare Workers
-2. Government Sector Digital Platform: Modular monolith with 8 bounded contexts, AI microservice layer, 12 departments digitized with full Arabic RTL compliance
-3. E-commerce Platform Transformation: 200% conversion increase, 150% ROI improvement, Shopify with KNET and Kuwait city-level shipping
-4. Enterprise Social Media Strategy: 500K+ followers, 400% engagement growth for a major GCC telecom provider
-5. Bilingual Healthcare Platform: Full-stack Next.js with Arabic/English RTL, deployed on Cloudflare
-6. Multi-Channel Digital Campaign: 300% social engagement, 250% lead generation, 180% sales growth
+- [Website](https://www.zewar.xyz)
+- [Email](mailto:ahmed@zewar.xyz): ahmed@zewar.xyz
+- [WhatsApp](https://wa.me/96560672773): +965 6067 2773
+- [LinkedIn](https://www.linkedin.com/in/ahmedziwar/)
+- Location: Kuwait
