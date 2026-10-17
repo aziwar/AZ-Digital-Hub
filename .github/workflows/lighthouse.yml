@@ -1,0 +1,92 @@
+name: Lighthouse
+
+on:
+  schedule:
+    - cron: '17 5 * * 1' # Mondays 05:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: lighthouse
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Run Lighthouse (mobile)
+        run: |
+          mkdir -p lighthouse
+          for locale in en ar; do
+            npx --yes lighthouse@12 "https://www.zewar.xyz/$locale" \
+              --quiet --chrome-flags="--headless=new --no-sandbox" \
+              --only-categories=performance,accessibility,best-practices,seo \
+              --output=json --output=html --output-path="lighthouse/$locale"
+          done
+
+      - name: Check thresholds
+        id: assert
+        continue-on-error: true
+        run: |
+          node .github/scripts/lighthouse-assert.mjs lighthouse/en.report.json lighthouse/ar.report.json
+          cat lighthouse-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: |
+            lighthouse/
+            lighthouse-summary.md
+          retention-days: 30
+
+      - name: Open, update or close the lighthouse issue
+        uses: actions/github-script@v7
+        env:
+          OUTCOME: ${{ steps.assert.outcome }}
+        with:
+          script: |
+            const fs = require('fs');
+            const label = 'lighthouse';
+            const { owner, repo } = context.repo;
+            const ok = process.env.OUTCOME === 'success';
+            const summary = fs.existsSync('lighthouse-summary.md') ? fs.readFileSync('lighthouse-summary.md', 'utf8') : '(no summary)';
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const body = `${summary}\n\nReports: [run artifacts](${runUrl})`;
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: label });
+            } catch (e) {
+              if (e.status !== 404) throw e;
+              await github.rest.issues.createLabel({ owner, repo, name: label, color: 'fbca04', description: 'Weekly Lighthouse score regressions' });
+            }
+
+            const open = await github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', labels: label, per_page: 100 });
+            const existing = open.find((i) => !i.pull_request);
+
+            if (ok) {
+              if (existing) {
+                await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body: `Scores back above thresholds.\n\n${body}` });
+                await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed', state_reason: 'completed' });
+              }
+              return;
+            }
+
+            if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ owner, repo, title: 'Lighthouse scores below threshold', labels: [label], body });
+            }
+            core.setFailed('Lighthouse scores below threshold');
