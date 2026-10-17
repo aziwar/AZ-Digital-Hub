@@ -41,9 +41,9 @@ const EnhancedHero: React.FC = () => {
             </h1>
 
             <div className="mb-8 animate-fade-from-bottom motion-safe:delay-700">
-              <h2 className="hero-subtitle text-lg sm:text-xl md:text-2xl font-semibold text-gray-100 mb-4">
+              <p className="hero-subtitle text-lg sm:text-xl md:text-2xl font-semibold text-gray-100 mb-4">
                 {t('subtitle')}
-              </h2>
+              </p>
               <p className="hero-description text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mb-4">
                 {t.rich('description', {
                   strong: (chunks) => <strong className="font-semibold text-purple-300">{chunks}</strong>
