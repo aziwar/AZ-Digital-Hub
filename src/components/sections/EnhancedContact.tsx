@@ -126,7 +126,9 @@ const EnhancedContact: React.FC = () => {
     try {
       let recaptchaToken = '';
       const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-      if (window.grecaptcha && window.grecaptcha.execute && siteKey) {
+      if (siteKey && window.grecaptcha) {
+        // execute() is only safe once the script signals ready
+        await new Promise<void>(resolve => window.grecaptcha.ready(resolve));
         recaptchaToken = await window.grecaptcha.execute(siteKey, { action: 'contact_form_submit' });
       }
 
@@ -143,24 +145,14 @@ const EnhancedContact: React.FC = () => {
         }),
       });
 
-      let result: { message?: string; errors?: string[] } = {};
-      try {
-        result = await response.json();
-      } catch {
-        result = {};
-      }
-
       if (response.ok) {
         setSubmitStatus('success');
         setFormData(emptyForm);
         setFieldTouched({});
       } else {
+        // Server messages are English-only; always show the localized error
         setSubmitStatus('error');
-        if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
-          setFieldErrors({ general: result.errors[0] });
-        } else if (result.message) {
-          setFieldErrors({ general: result.message });
-        }
+        setFieldErrors({ general: t('form.status.error.message') });
       }
     } catch {
       setSubmitStatus('error');
@@ -334,7 +326,7 @@ const EnhancedContact: React.FC = () => {
               {/* Honeypot: hidden from people and assistive tech; bots tend to fill it */}
               <div
                 aria-hidden="true"
-                style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}
+                style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clipPath: 'inset(50%)', whiteSpace: 'nowrap' }}
               >
                 <label htmlFor="company_website">{t('form.fields.honeypot.label')}</label>
                 <input

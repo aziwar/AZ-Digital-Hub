@@ -6,6 +6,11 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+
+  // opengraph-image reads these fonts at request time; ship them with the function
+  outputFileTracingIncludes: {
+    '/[locale]/opengraph-image': ['./assets/fonts/**'],
+  },
   
   // SYSTEMATIC PATTERN ELIMINATION: Dangerous bypass flags removed
   // Previous configuration caused 58% deployment failure rate

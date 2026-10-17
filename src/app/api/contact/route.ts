@@ -39,6 +39,16 @@ const validateContactForm = (data: Partial<ContactFormRequest>): { isValid: bool
     errors.push('Message is required and must be at least 20 characters long.');
   }
 
+  const maxLengths: Partial<Record<keyof ContactFormRequest, number>> = {
+    name: 100, email: 254, company: 200, phone: 32, project_type: 100, budget_range: 100, message: 5000,
+  };
+  for (const [field, max] of Object.entries(maxLengths) as [keyof ContactFormRequest, number][]) {
+    const value = data[field];
+    if (value !== undefined && (typeof value !== 'string' || value.length > max)) {
+      errors.push(`${field} must be text of at most ${max} characters.`);
+    }
+  }
+
   // Company field is optional, no validation needed if empty.
   // Phone validation (optional field)
   if (data.phone && typeof data.phone === 'string' && data.phone.trim().length > 0 && !/^\+?[1-9]\d{1,14}$/.test(data.phone.replace(/\s/g, ''))) {
@@ -83,6 +93,13 @@ export async function POST(req: NextRequest) {
     try {
       body = await req.json();
     } catch {
+      return NextResponse.json(
+        { message: 'Invalid request body' },
+        { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+      );
+    }
+
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) {
       return NextResponse.json(
         { message: 'Invalid request body' },
         { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
