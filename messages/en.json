@@ -2,341 +2,247 @@
   "Navigation": {
     "brand": "AZ Digital Hub",
     "menu": {
-      "home": "Home",
       "about": "About",
       "services": "Services",
-      "portfolio": "Portfolio",
+      "process": "Process",
+      "engagements": "Engagements",
+      "faq": "FAQ",
       "contact": "Contact"
     },
     "aria": {
+      "home": "Back to top",
       "openMenu": "Open menu",
       "closeMenu": "Close menu"
     }
   },
   "Hero": {
-    "urgency": {
-      "badge": "🔥 Now Accepting New Projects"
-    },
+    "eyebrow": "AI consulting for mid-sized companies · Kuwait & GCC",
     "headline": {
-      "name": "Ahmed Zewar",
-      "tagline": "Commands Results"
+      "name": "Ahmed Ziwar",
+      "tagline": "AI your team actually uses."
     },
-    "subtitle": "AI Solutions & Digital Strategy Consultant — Kuwait",
-    "description": "Build smarter businesses with <strong>AI-powered automation</strong>, <strong>full-stack development</strong>, and <strong>data-driven digital strategies</strong> that deliver measurable ROI across Kuwait & GCC",
+    "subtitle": "AI strategy and delivery for mid-sized companies in Kuwait and the GCC",
+    "description": "I help management teams move AI from presentations to <strong>working solutions their people adopt</strong> and <strong>results leadership can measure</strong>.",
+    "whyMe": "More than 15 years across IT, digital marketing and AI delivery. I bring both the technology and the know-how to get it adopted, and I stay hands-on from the first workshop to go-live.",
     "cta": {
-      "primary": {
-        "text": "🚀 Book FREE Strategy Session",
-        "subtext": "Online & In-Person Available"
-      },
+      "primary": "Request a discovery call",
       "whatsapp": {
-        "text": "💬 WhatsApp Instant Response",
-        "subtext": "+965 6067 2773",
-        "linkText": "Hi Ahmed, I'm interested in AI-powered solutions for my business"
+        "text": "Message on WhatsApp",
+        "linkText": "Hello Ahmed, I would like to discuss an AI initiative for our company."
       }
     },
+    "highlights": [
+      "15+ years across technology and marketing",
+      "Hands-on delivery, not just advice",
+      "Arabic and English"
+    ],
     "profile": {
-      "imageAlt": "Ahmed Zewar - AI & Digital Strategy Consultant in Kuwait"
-    },
-    "socialProof": {
-      "businesses": "200+ Businesses Served",
-      "experience": "20+ Years Expertise",
-      "personality": "AI & Full-Stack"
-    },
-    "metrics": {
-      "roi": {
-        "value": "300%",
-        "label": "Average ROI Increase",
-        "timeline": "Within 6 months"
-      },
-      "conversion": {
-        "value": "150%",
-        "label": "Conversion Rate Boost",
-        "timeline": "E-commerce clients"
-      },
-      "response": {
-        "value": "24-48h",
-        "label": "Response Time",
-        "timeline": "Guaranteed"
-      }
+      "imageAlt": "Ahmed Ziwar, AI consultant in Kuwait"
     },
     "scroll": {
-      "text": "See Success Stories"
+      "text": "How I can help"
     }
   },
   "About": {
-    "title": "About Me",
-    "intro": "With over 20 years of experience spanning AI infrastructure, full-stack development, and digital marketing, I help businesses leverage cutting-edge technology to achieve measurable growth. From building AI agent systems and knowledge graph architectures to executing ROI-driven digital campaigns — I deliver end-to-end solutions across Kuwait & GCC.",
-    "current": "Currently serving as Digital Solutions Manager at Smart Technology (STSCKW) in Kuwait, while also delivering freelance AI consulting, full-stack development, and digital strategy services. Available online worldwide and in-person across Kuwait.",
+    "title": "About",
+    "intro": "I am a Kuwait-based digital solutions and AI integration consultant. For more than 15 years I have worked where business meets technology: IT and network administration, IT consulting, digital media and marketing, and, since 2022, the design and delivery of AI solutions.",
+    "approach": "That mix matters. A marketing background means I think about the people who will use a solution as much as the technology behind it, which is why the solutions I deliver get used rather than shelved.",
+    "experienceLine": "I have experience delivering AI solutions for large enterprises and public-sector organisations.",
     "competencies": {
-      "title": "Core Competencies",
+      "title": "What I bring",
       "skills": [
-        "AI Agent Development & MCP Protocol",
-        "Knowledge Graph Architecture (GraphRAG)",
-        "LLM Orchestration & Automation",
-        "Next.js / React / TypeScript",
-        "Python / FastAPI / Backend Systems",
-        "E-commerce Optimization (Shopify, KNET)",
-        "SEO/SEM & Digital Marketing Strategy",
-        "Government Digital Transformation",
-        "Cloud Infrastructure (Cloudflare, Vercel)",
-        "Database Architecture (PostgreSQL, Graph DB, Redis)"
+        "AI strategy and readiness",
+        "AI assistants and avatar experiences",
+        "Document intelligence and search",
+        "AI model gateways and governance",
+        "Process automation",
+        "Adoption, training and change support",
+        "Digital and customer experience",
+        "Arabic and English delivery"
       ]
     },
-    "stats": {
-      "experience": {
-        "value": "20+",
-        "label": "Years Experience"
+    "highlights": [
+      {
+        "value": "15+",
+        "label": "Years across technology and marketing"
       },
-      "projects": {
-        "value": "150+",
-        "label": "Projects Completed"
+      {
+        "value": "Kuwait",
+        "label": "Based locally, serving the GCC"
       },
-      "clients": {
-        "value": "50+",
-        "label": "Happy Clients"
+      {
+        "value": "EN · AR",
+        "label": "Bilingual delivery"
       },
-      "roi": {
-        "value": "300%",
-        "label": "Avg ROI Generated"
+      {
+        "value": "Data Science",
+        "label": "Microsoft Professional Program"
       }
-    },
+    ],
     "experience": {
-      "title": "Recent Experience",
+      "title": "Career path",
       "roles": [
         {
-          "title": "Digital Solutions Manager",
-          "company": "Smart Technology (STSCKW) • 2022 - Present",
-          "description": "Leading digital transformation, AI integration, and e-commerce strategies"
+          "title": "Digital solutions & AI delivery (since 2022)",
+          "description": "Designing and delivering AI solutions such as AI assistants and avatars, document intelligence portals, AI model gateways and process automation."
         },
         {
-          "title": "AI & Digital Strategy Consultant",
-          "company": "Freelance • Ongoing",
-          "description": "AI agent development, knowledge graphs, full-stack solutions, and digital marketing for businesses across Kuwait & GCC"
+          "title": "Digital media & marketing",
+          "description": "Digital media and marketing roles, including at Ooredoo Kuwait: understanding audiences and what makes people engage."
         },
         {
-          "title": "Social Media & Digital Lead",
-          "company": "Major Telecom Provider • 2019 - 2022",
-          "description": "Built and executed enterprise-level social media strategies growing presence to 500K+ followers"
+          "title": "IT consulting & network administration",
+          "description": "The technical foundation: running infrastructure and advising businesses on their IT."
         }
       ]
     }
   },
   "Services": {
-    "badge": "AI-Powered Solutions • Proven Results",
-    "title": "Services & Expertise",
-    "subtitle": "From AI agent development to digital marketing — strategic solutions that transform businesses. <strong>Technology meets results.</strong>",
+    "badge": "Services",
+    "title": "How I help",
+    "subtitle": "Three ways to work together, each focused on a business outcome rather than a technology.",
+    "audience": "I work with mid-sized companies in Kuwait and the GCC with an established management team, who value quality, clear accountability and long-term results over the lowest price.",
+    "outcomeLabel": "Outcome",
     "items": [
       {
-        "icon": "🤖",
-        "title": "AI Agent Solutions & Automation",
-        "description": "Custom AI agent development, LLM orchestration, and intelligent automation systems that transform how your business operates and scales.",
-        "results": "40-60% workflow automation",
+        "title": "AI strategy & readiness",
+        "outcome": "A clear, prioritised AI roadmap your leadership agrees on",
+        "description": "We identify where AI creates real value in your business, assess how ready your data, systems and teams are, and agree which opportunities to pursue first.",
         "features": [
-          "Custom AI Agent Development",
-          "MCP Server Architecture & Deployment",
-          "Knowledge Graph (GraphRAG) Solutions",
-          "LLM Integration & Orchestration",
-          "AI-Powered Chatbot & Avatar Systems"
+          "Opportunity and use-case workshops",
+          "Data and systems readiness review",
+          "Prioritised roadmap with business cases",
+          "Build, buy or partner recommendations"
         ]
       },
       {
-        "icon": "💻",
-        "title": "Full-Stack Development",
-        "description": "Modern web applications built with Next.js, React, TypeScript, and Python. From bilingual Arabic/English platforms to complex enterprise systems.",
-        "results": "Production-ready systems",
+        "title": "AI solution delivery & integration",
+        "outcome": "Working AI solutions connected to the systems you already use",
+        "description": "From pilot to production: AI assistants, document intelligence, automation and model gateways, delivered and integrated with your existing platforms, securely and in Arabic and English.",
         "features": [
-          "Next.js / React / TypeScript Apps",
-          "Python / FastAPI Backend Systems",
-          "RTL-First Arabic Platform Design",
-          "Database Architecture & API Design",
-          "Cloudflare & Vercel Deployment"
+          "AI assistants and avatar experiences",
+          "Document intelligence and search",
+          "Process and workflow automation",
+          "Secure AI model gateways"
         ]
       },
       {
-        "icon": "🛒",
-        "title": "E-commerce & Shopify Solutions",
-        "description": "Complete e-commerce ecosystem optimized for the Kuwait market. Shopify expertise with KNET payment integration and local delivery solutions.",
-        "results": "150% conversion improvement",
+        "title": "Adoption & enablement",
+        "outcome": "Teams that use the solution and leaders who can see the impact",
+        "description": "Technology only pays off when people use it. I help you roll out, train your teams and set up the measures management needs to follow results.",
         "features": [
-          "Shopify Store Setup & Optimization",
-          "KNET Payment Integration",
-          "Kuwait City-Level Shipping Zones",
-          "Conversion Rate Optimization",
-          "Product SEO & Catalog Management"
-        ]
-      },
-      {
-        "icon": "📈",
-        "title": "Digital Marketing & SEO",
-        "description": "Data-driven digital marketing strategies tailored for Kuwait and GCC markets. Bilingual campaigns that drive measurable ROI.",
-        "results": "300% avg ROI increase",
-        "features": [
-          "SEO/SEM Strategy & Execution",
-          "Social Media Campaign Management",
-          "PPC & Google/Meta Ads",
-          "Content Marketing (Arabic/English)",
-          "Analytics & Performance Tracking"
-        ]
-      },
-      {
-        "icon": "🏛️",
-        "title": "Government & Enterprise Consulting",
-        "description": "Digital transformation consulting for government sector and enterprise organizations. Modular architecture design with compliance-first approach.",
-        "results": "12+ department digitization",
-        "features": [
-          "Government Sector Digital Transformation",
-          "Modular Platform Architecture",
-          "RTL-First Arabic Compliance Design",
-          "Workflow Automation & Process Mapping",
-          "Multi-Department System Integration"
-        ]
-      },
-      {
-        "icon": "☁️",
-        "title": "Cloud Infrastructure & DevOps",
-        "description": "Scalable cloud infrastructure with edge computing, self-hosted solutions, and modern DevOps practices for performance and cost optimization.",
-        "results": "60% cost reduction",
-        "features": [
-          "Cloudflare Workers & Edge Computing",
-          "Self-Hosted Infrastructure (Hetzner)",
-          "Docker Containerization & Deployment",
-          "Database Optimization (PostgreSQL, Redis)",
-          "CI/CD Pipeline Setup"
+          "Rollout and change planning",
+          "Team training and playbooks",
+          "Usage and impact measures for management",
+          "Ongoing improvement after go-live"
         ]
       }
     ],
     "cta": {
-      "title": "Ready to Transform Your Business?",
-      "subtitle": "Book a free strategy session to discuss how AI and digital solutions can accelerate your growth.",
+      "title": "Not sure where to start?",
+      "subtitle": "A short discovery call is the easiest way to find out whether AI can make a real difference for your business.",
       "buttons": {
-        "primary": "Book Strategy Session →",
-        "secondary": "View Project Portfolio"
+        "primary": "Request a discovery call",
+        "secondary": "See how I work"
       }
     }
   },
-  "Testimonials": {
-    "title": "Client Feedback",
-    "subtitle": "Results from businesses that partnered with Ahmed Zewar for digital transformation.",
-    "items": [
+  "Process": {
+    "title": "How we work together",
+    "subtitle": "A clear, four-step process, with management involved at every decision point.",
+    "steps": [
       {
-        "name": "Khaled M.",
-        "role": "E-commerce Operations, Retail Sector",
-        "quote": "The e-commerce transformation tripled our conversion rate and streamlined our fulfillment process across Kuwait with proper KNET integration and city-level shipping."
+        "title": "Discover",
+        "description": "A conversation about your goals, constraints and where AI could help. You leave with a clearer view, whether or not we work together."
       },
       {
-        "name": "Noura A.",
-        "role": "Project Director, Government Sector",
-        "quote": "Ahmed designed a modular digital platform handling complex workflows across 12 departments with full Arabic RTL support and state-machine driven processes."
+        "title": "Design",
+        "description": "We agree the scope, the success measures and the right solution for your systems, data and team."
       },
       {
-        "name": "Faisal R.",
-        "role": "Marketing Director, Telecom Industry",
-        "quote": "Our social media engagement grew by 400% under Ahmed's direction, making us the leading brand in our sector with 500K+ followers across platforms."
+        "title": "Deliver",
+        "description": "I build and integrate the solution in short, visible stages, so you see progress and can adjust early."
       },
       {
-        "name": "Maha S.",
-        "role": "Founder, Healthcare Practice",
-        "quote": "Ahmed built our bilingual medical website with modern design, Arabic/English support, and exceptional performance on Cloudflare — exactly what our patients needed."
+        "title": "Adopt & measure",
+        "description": "We roll out, train your team and follow the agreed measures, then improve based on real usage."
       }
     ]
   },
   "Portfolio": {
-    "title": "Portfolio",
-    "subtitle": "Selected projects showcasing AI, development, and digital strategy results",
-    "keyResults": "KEY RESULTS",
+    "title": "Typical engagements",
+    "subtitle": "Three common types of work. Client details are kept confidential.",
+    "labels": {
+      "challenge": "The challenge",
+      "approach": "The approach",
+      "outcome": "The outcome"
+    },
     "items": [
       {
-        "title": "AI Knowledge Graph Platform",
-        "client": "Enterprise AI Project",
-        "description": "Built a dual-brain architecture combining SQL and graph databases with RRF fusion search, deployed as a Cloudflare Worker gateway with 15 hardened API tools and auto-extraction via LLM",
-        "tags": ["AI Agents", "Knowledge Graph", "Cloudflare Workers", "GraphRAG"],
-        "results": [
-          "15 production API tools deployed",
-          "Dual-brain RRF fusion search",
-          "Auto-extraction via GPT-4o-mini"
-        ]
+        "title": "Turning interest in AI into a plan",
+        "context": "Mid-sized company whose leadership is exploring AI",
+        "challenge": "Leadership saw the potential of AI but had many ideas, no priorities and no shared view of the risks.",
+        "approach": "Structured workshops with management and key teams, a review of data and systems, and a short list of opportunities with clear business cases.",
+        "outcome": "A roadmap leadership agreed on, with first initiatives chosen for value and feasibility, each with a clear owner."
       },
       {
-        "title": "Government Sector Digital Platform",
-        "client": "Government Sector, Kuwait",
-        "description": "Designed and developed a modular monolith platform with 8 bounded contexts, AI microservice layer, and state-machine driven workflow for a major government institution",
-        "tags": ["Government", "Modular Architecture", "AI Services", "Arabic RTL"],
-        "results": [
-          "8 bounded context modules",
-          "12 departments digitized",
-          "Full Arabic RTL compliance"
-        ]
+        "title": "An AI assistant for everyday questions",
+        "context": "Organisation handling a high volume of repetitive enquiries",
+        "challenge": "Staff and customers spent too long looking for answers spread across documents and systems.",
+        "approach": "An Arabic and English AI assistant grounded in the organisation's own content, connected to existing systems, with clear limits on what it answers.",
+        "outcome": "Faster, more consistent answers, and teams free to focus on the cases that need human judgement."
       },
       {
-        "title": "E-commerce Platform Transformation",
-        "client": "Retail Technology, Kuwait",
-        "description": "Led complete overhaul of e-commerce platform including Shopify optimization, KNET payment integration, and Kuwait city-level shipping configuration",
-        "tags": ["E-commerce", "Shopify", "KNET", "SEO"],
-        "results": [
-          "200% conversion increase",
-          "150% ROI improvement",
-          "50% faster load times"
-        ]
-      },
-      {
-        "title": "Enterprise Social Media Strategy",
-        "client": "Major Telecom Provider, GCC",
-        "description": "Built enterprise social media presence from ground up for a major telecommunications provider, managing multi-channel content strategy and community engagement",
-        "tags": ["Social Strategy", "Content Creation", "Community Management"],
-        "results": [
-          "500K+ followers achieved",
-          "400% engagement growth",
-          "Leading brand in telecom sector"
-        ]
-      },
-      {
-        "title": "Bilingual Healthcare Platform",
-        "client": "Medical Practice, Kuwait",
-        "description": "Full-stack Next.js bilingual medical website with Arabic/English RTL support, deployed on Cloudflare with modern responsive design and SEO optimization",
-        "tags": ["Next.js", "Bilingual RTL", "Cloudflare", "Healthcare"],
-        "results": [
-          "Arabic/English RTL support",
-          "Sub-2s load times",
-          "Full SEO optimization"
-        ]
-      },
-      {
-        "title": "Multi-Channel Digital Campaign",
-        "client": "Consumer Brand, Kuwait",
-        "description": "Developed and executed comprehensive digital marketing strategy across social media, PPC, and email for a consumer products brand in the Kuwait market",
-        "tags": ["Digital Marketing", "PPC", "Social Media", "Email"],
-        "results": [
-          "300% social engagement",
-          "250% lead generation",
-          "180% sales growth"
-        ]
+        "title": "Making documents searchable and usable",
+        "context": "Organisation with a large archive of documents",
+        "challenge": "Important information was locked inside long documents that were slow to search and hard to reuse.",
+        "approach": "A document intelligence portal that extracts, organises and indexes content, with review steps wherever accuracy matters.",
+        "outcome": "Information that is quick to find and reuse, with less manual effort and more consistency."
       }
     ],
     "cta": {
-      "text": "Interested in similar results for your business?",
-      "button": "Start a Conversation"
+      "text": "Facing a similar challenge?",
+      "button": "Request a discovery call"
     }
   },
-  "Contact": {
-    "urgency": {
-      "badge": "⚡ Accepting New Projects — Online & In-Person"
-    },
-    "title": "Ready to <gradient>Transform</gradient> Your Business?",
-    "subtitle": "Freelance AI, development, and digital strategy services — available online worldwide and in-person in Kuwait",
-    "socialProof": [
-      "24-48h response",
-      "Free consultation",
-      "ROI guarantee"
-    ],
-    "form": {
-      "title": "Start Your Free Consultation",
-      "pricing": {
-        "regular": "Strategy Session",
-        "offer": "FREE Consultation"
+  "FAQ": {
+    "title": "Frequently asked questions",
+    "subtitle": "Short answers to what clients usually ask before starting.",
+    "items": [
+      {
+        "question": "How do engagements usually work?",
+        "answer": "Most clients start with a short strategy and readiness phase, move on to delivering one or two priority solutions, and then to adoption support. Each phase has a defined scope and is agreed separately, so you only commit to the next step."
       },
+      {
+        "question": "How long does a typical project take?",
+        "answer": "It depends on scope. A readiness assessment usually takes a few weeks, and a first working solution typically follows in stages over a few months. We agree a realistic plan with clear milestones during the design step."
+      },
+      {
+        "question": "How do you handle data privacy and security?",
+        "answer": "Privacy is part of the design from day one. We agree at the start which data may be used, where it is processed and who can access it, and the solution follows your internal policies and any regulations that apply to you."
+      },
+      {
+        "question": "Can AI work with our existing systems?",
+        "answer": "Yes. Most of my work is connecting AI to the platforms you already run, such as document stores, business applications and websites, rather than replacing them. The readiness review confirms what is practical."
+      },
+      {
+        "question": "Do your solutions support Arabic?",
+        "answer": "Yes. I work in Arabic and English, and solutions are designed for both languages from the start, including right-to-left interfaces and Arabic content."
+      },
+      {
+        "question": "How do we get started?",
+        "answer": "Request a discovery call through the form below or on WhatsApp. We discuss your goals and current situation, and I suggest a sensible first step."
+      }
+    ]
+  },
+  "Contact": {
+    "title": "Let's talk about <gradient>your goals</gradient>",
+    "subtitle": "Tell me briefly what you want to achieve. I will reply personally to arrange a discovery call.",
+    "form": {
+      "title": "Request a discovery call",
       "fields": {
         "name": {
-          "label": "Your Name *",
+          "label": "Name *",
           "placeholder": "Your full name",
           "errors": {
             "required": "Name is required",
@@ -344,7 +250,7 @@
           }
         },
         "email": {
-          "label": "Business Email *",
+          "label": "Work email *",
           "placeholder": "you@company.com",
           "errors": {
             "required": "Email is required",
@@ -352,225 +258,123 @@
           }
         },
         "company": {
-          "label": "Company/Organization",
-          "placeholder": "Your company name"
+          "label": "Company",
+          "placeholder": "Company name"
         },
         "phone": {
-          "label": "WhatsApp Number",
-          "placeholder": "+965 XXXX XXXX",
+          "label": "Phone (optional)",
+          "placeholder": "+965",
           "errors": {
             "invalid": "Please enter a valid phone number"
           }
         },
         "projectType": {
-          "label": "Project Type *",
-          "placeholder": "Select Project Type",
+          "label": "Area of interest (optional)",
+          "placeholder": "Select an area",
           "options": [
-            "AI Agent / Automation Solution",
-            "Full-Stack Web Development",
-            "E-commerce / Shopify Store",
-            "Digital Marketing Campaign",
-            "SEO Optimization",
-            "Government / Enterprise Consulting",
-            "Cloud Infrastructure / DevOps",
-            "Other"
-          ],
-          "errors": {
-            "required": "Please select a project type"
-          }
-        },
-        "budgetRange": {
-          "label": "Investment Range *",
-          "placeholder": "Select Budget Range",
-          "options": [
-            "Under 5,000 KWD",
-            "5,000 - 15,000 KWD",
-            "15,000 - 50,000 KWD",
-            "50,000+ KWD",
-            "Enterprise (Custom Quote)"
-          ],
-          "errors": {
-            "required": "Please select a budget range"
-          }
+            "AI strategy & readiness",
+            "AI solution delivery & integration",
+            "Adoption & enablement",
+            "Not sure yet"
+          ]
         },
         "message": {
-          "label": "Project Details *",
-          "placeholder": "Describe your project goals, current challenges, and what you'd like to achieve...",
+          "label": "What would you like to achieve? *",
+          "placeholder": "A few lines about your goals, current situation and timing",
           "errors": {
-            "required": "Please describe your project",
-            "minLength": "Please provide more details (minimum 20 characters)"
+            "required": "Please write a short message",
+            "minLength": "Please add a little more detail (at least 20 characters)"
           }
+        },
+        "honeypot": {
+          "label": "Leave this field empty"
         }
       },
       "submit": {
-        "idle": "🚀 Book FREE Consultation",
-        "loading": "⚡ Sending Your Request...",
-        "success": "✅ Request Sent Successfully!"
+        "idle": "Request a discovery call",
+        "loading": "Sending…",
+        "success": "Request sent"
       },
       "status": {
         "success": {
-          "title": "🎯 Consultation Request Received!",
-          "message": "Ahmed will personally respond within 24 hours with initial thoughts on your project."
+          "title": "Thank you, your request has been received",
+          "message": "I will reply personally to arrange a convenient time."
         },
         "error": {
-          "message": "Failed to submit. Please try WhatsApp contact below or email directly."
+          "message": "Something went wrong. Please try again, or contact me by email or WhatsApp."
         }
       }
     },
     "whatsapp": {
-      "title": "Instant Response Available",
-      "description": "For urgent projects or immediate consultation, contact Ahmed directly via WhatsApp.",
-      "button": "📱 WhatsApp: +965 6067 2773"
+      "title": "Prefer WhatsApp?",
+      "description": "Send a short message and we can arrange a call at a time that suits you.",
+      "button": "WhatsApp",
+      "linkText": "Hello Ahmed, I would like to arrange a discovery call about AI for our company."
     },
-    "trustSignals": {
-      "title": "✅ Why Businesses Choose Ahmed",
+    "nextSteps": {
+      "title": "What happens next",
       "items": [
-        "<strong>20+ Years</strong> of proven expertise in AI, development, and digital marketing",
-        "<strong>AI & Full-Stack</strong> — from knowledge graphs to production Next.js applications",
-        "<strong>300% Average ROI</strong> improvement for digital marketing clients",
-        "<strong>Government Sector Experience</strong> — enterprise-grade platform architecture",
-        "<strong>Kuwait & GCC Specialist</strong> — bilingual Arabic/English, RTL-first design"
+        "I review your message and reply personally.",
+        "We hold a short discovery call about your goals and situation.",
+        "If there is a good fit, I propose a clear first step with its scope and approach."
       ]
     },
-    "availability": {
-      "title": "⏰ Availability",
-      "slots": {
-        "online": {
-          "month": "Online Services",
-          "status": "Available Worldwide"
-        },
-        "inPerson": {
-          "month": "In-Person (Kuwait)",
-          "status": "Accepting Projects"
-        }
-      },
-      "note": "⚡ Freelance availability — flexible engagement models for projects of any size."
-    },
     "contactMethods": {
-      "title": "Other Contact Methods",
-      "email": {
-        "label": "Email",
-        "value": "ahmed@zewar.xyz"
-      },
-      "linkedin": {
-        "label": "LinkedIn",
-        "value": "linkedin.com/in/ahmedziwar"
-      },
+      "title": "Other ways to reach me",
+      "email": "Email",
+      "linkedin": "LinkedIn",
       "location": {
         "label": "Location",
-        "value": "Kuwait City, Kuwait"
+        "value": "Kuwait"
       }
-    },
-    "finalCta": {
-      "title": "⚡ Let's Build Something Great Together",
-      "description": "Whether you need AI automation, a full-stack platform, or a results-driven marketing strategy — let's discuss how technology can accelerate your business.",
-      "urgency": "⏰ Currently accepting new projects for Q2 2026",
-      "button": "Start Your Project →"
     }
   },
   "Footer": {
     "cta": {
-      "title": "🚀 Ready to Transform Your Business?",
-      "subtitle": "AI solutions, full-stack development, and digital strategy — all in one place",
-      "button": "Book Your FREE Consultation →"
+      "title": "Ready to make AI work for your business?",
+      "subtitle": "Start with a short discovery call.",
+      "button": "Request a discovery call"
     },
     "contact": {
       "title": "Contact",
-      "email": "ahmed@zewar.xyz",
-      "phone": "+965 6067 2773 (WhatsApp)",
-      "location": "Kuwait City, Kuwait",
-      "linkedin": "linkedin.com/in/ahmedziwar"
+      "whatsapp": "WhatsApp",
+      "location": "Kuwait"
     },
     "services": {
       "title": "Services",
       "items": [
-        "AI Agent Development",
-        "Full-Stack Development",
-        "E-commerce & Shopify",
-        "Digital Marketing & SEO",
-        "Enterprise Consulting"
+        "AI strategy & readiness",
+        "AI solution delivery & integration",
+        "Adoption & enablement"
       ]
     },
-    "guarantees": {
-      "title": "Guarantees",
+    "approach": {
+      "title": "How I work",
       "items": [
-        "24-48 hour response",
-        "300% avg ROI increase",
-        "100% money-back guarantee",
-        "Free initial consultation",
-        "Kuwait & GCC specialist"
+        "Business outcomes first",
+        "Hands-on from strategy to go-live",
+        "Arabic and English",
+        "Privacy built into the design"
       ]
     },
-    "copyright": "© 2026 Ahmed Zewar • AI & Digital Strategy Consultant • Kuwait & GCC",
-    "tagline": "All rights reserved. Transforming businesses through AI and strategic digital solutions since 2005."
+    "copyright": "Ahmed Ziwar · AI consultant · Kuwait & GCC",
+    "rights": "All rights reserved."
   },
-  "Common": {
-    "buttons": {
-      "learnMore": "Learn More",
-      "getStarted": "Get Started",
-      "contact": "Contact",
-      "viewAll": "View All",
-      "back": "Back",
-      "next": "Next",
-      "submit": "Submit",
-      "cancel": "Cancel"
-    },
-    "status": {
-      "loading": "Loading...",
-      "error": "Error",
-      "success": "Success"
-    }
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has moved.",
+    "suggestions": "You may find what you need here:",
+    "home": "Return to the homepage",
+    "help": "Looking for something specific? <link>Get in touch</link>."
   },
   "Metadata": {
-    "title": "Ahmed Zewar | AI & Full-Stack Developer | Kuwait",
-    "description": "Freelance AI agent developer and full-stack consultant in Kuwait. Custom automation, Next.js development, Shopify e-commerce, and ROI-driven digital marketing across the GCC.",
-    "keywords": "AI consultant Kuwait, AI agent developer Kuwait, freelance web developer Kuwait, full-stack developer Kuwait, Next.js developer, Shopify developer Kuwait, business automation Kuwait, digital marketing Kuwait, e-commerce optimization, government digital transformation Kuwait, knowledge graph, MCP developer, SEO consultant Kuwait, web developer for hire Kuwait, GCC digital strategy",
-    "creator": "Ahmed Zewar",
+    "title": "AI Consultant in Kuwait | Ahmed Ziwar",
+    "description": "AI consultant in Kuwait helping mid-sized companies across the GCC with AI strategy, delivery and adoption: AI your team uses and management can measure.",
+    "creator": "Ahmed Ziwar",
     "publisher": "AZ Digital Hub",
-    "appName": "AZ Digital Hub"
-  },
-  "ROIChart": {
-    "header": {
-      "title": "Performance Metrics",
-      "subtitle": "Results Across Key Service Areas"
-    },
-    "metrics": {
-      "ecommerce": {
-        "category": "E-commerce Optimization",
-        "description": "Complete e-commerce transformation with KNET integration and conversion optimization",
-        "timeline": "3-6 months average"
-      },
-      "marketing": {
-        "category": "Digital Marketing Campaigns",
-        "description": "Multi-channel campaigns optimized for Kuwait and GCC markets",
-        "timeline": "2-4 months average"
-      },
-      "penetration": {
-        "category": "AI & Automation Solutions",
-        "description": "AI agent development and workflow automation for business efficiency",
-        "timeline": "1-3 months average"
-      },
-      "infrastructure": {
-        "category": "Cloud & Infrastructure",
-        "description": "Edge computing, self-hosted solutions, and DevOps optimization",
-        "timeline": "2-6 months average"
-      }
-    },
-    "details": {
-      "basedOn": "Based on 150+ implementations"
-    },
-    "footer": {
-      "projects": "Projects",
-      "response": "Response",
-      "guarantee": "Guarantee"
-    }
-  },
-  "ServiceIcons": {
-    "webDevelopment": "Web Development",
-    "digitalMarketing": "Digital Marketing",
-    "analytics": "Analytics",
-    "seoOptimization": "SEO Optimization",
-    "mobileApps": "AI Solutions",
-    "itConsulting": "IT Consulting"
+    "appName": "AZ Digital Hub",
+    "jobTitle": "AI Consultant",
+    "personDescription": "Kuwait-based digital solutions and AI integration consultant with more than 15 years across IT, digital marketing and AI delivery.",
+    "serviceDescription": "AI strategy, AI solution delivery and adoption support for mid-sized companies in Kuwait and the GCC."
   }
 }
