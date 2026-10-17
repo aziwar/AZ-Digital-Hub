@@ -57,7 +57,7 @@ jobs:
 
       - name: Open, update or close the lighthouse issue
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           OUTCOME: ${{ steps.assert.outcome }}
         with:

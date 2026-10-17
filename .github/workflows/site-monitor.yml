@@ -31,7 +31,7 @@ jobs:
           bash .github/scripts/site-check.sh https://www.zewar.xyz | tee site-check.log
 
       - name: Open, update or close the site-monitor issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           OK: ${{ steps.checks.outputs.ok }}
           FAILED: ${{ steps.checks.outputs.failed }}
