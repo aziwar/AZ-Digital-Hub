@@ -1,11 +1,13 @@
 'use client'
 
-// ENTJ Commander Services - Strategic Leadership Solutions
+import { CpuChipIcon, PresentationChartLineIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
 import { LazyVideo } from '@/components/ui/VideoBackground';
 import { useScrollObserver } from '@/hooks/useScrollObserver';
+
+const serviceIcons = [PresentationChartLineIcon, CpuChipIcon, UserGroupIcon];
 
 const Services: React.FC = () => {
   const t = useTranslations('Services');
@@ -13,11 +15,17 @@ const Services: React.FC = () => {
   const { elementRef: headerRef, isVisible: headerVisible } = useScrollObserver({ threshold: 0.3 })
   const { elementRef: ctaRef, isVisible: ctaVisible } = useScrollObserver({ threshold: 0.4 })
 
+  const items = t.raw('items') as Array<{
+    title: string;
+    outcome: string;
+    description: string;
+    features: string[];
+  }>;
+
   return (
     <>
-      {/* Section Divider */}
       <div className="section-divider mx-auto max-w-4xl" />
-      
+
       <section
         id="services"
         ref={sectionRef as React.RefObject<HTMLElement>}
@@ -26,28 +34,24 @@ const Services: React.FC = () => {
         }`}
       >
       <div className="max-w-7xl mx-auto">
-        
-        {/* Commander Leadership Header */}
+
         <div
           ref={headerRef as React.RefObject<HTMLDivElement>}
-          className={`text-center mb-12 sm:mb-16 md:mb-20 transition-all duration-800 ${
+          className={`text-center mb-12 sm:mb-16 transition-all duration-800 ${
             headerVisible ? 'observe-slide-left is-visible' : 'observe-slide-left'
           }`}
         >
-          <div className="inline-flex items-center gap-2 sm:gap-3 bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500">
-            <span className="text-purple-300 font-bold text-xs sm:text-sm md:text-base">{t('badge')}</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 animate-fade-from-bottom text-hover-glow px-2 sm:px-0">
+          <p className="inline-flex items-center bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 text-purple-200 font-semibold text-xs sm:text-sm">
+            {t('badge')}
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
             {t('title')}
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed animate-fade-from-bottom motion-safe:delay-200 px-4 sm:px-0">
-            {t.rich('subtitle', {
-              strong: (chunks) => <strong className="font-bold text-purple-400">{chunks}</strong>
-            })}
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            {t('subtitle')}
           </p>
         </div>
 
-        {/* Services Video Showcase */}
         <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
           <LazyVideo
             mp4Src="/videos/services-showcase.mp4"
@@ -56,61 +60,55 @@ const Services: React.FC = () => {
           />
         </div>
 
-        {/* Strategic Services Grid */}
-        <div className={`grid sm:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-14 md:mb-16 transition-all duration-1000 ${
+        <div className={`grid lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-10 transition-all duration-1000 ${
           sectionVisible ? 'observe-stagger-children is-visible' : 'observe-stagger-children'
         }`}>
-          {(t.raw('items') as Array<{
-            icon: string;
-            title: string;
-            description: string;
-            results: string;
-            features: string[];
-          }>).map((service, index) => (
-            <div
-              key={index}
-              className="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-xl p-4 sm:p-6 md:p-8 hover:bg-slate-800/60 hover:border-purple-500/50 transition-all duration-300 group animate-stagger btn-enhanced"
-              style={{ "--stagger-delay": `${index * 0.1}s` } as React.CSSProperties}
-            >
-              <div className="flex items-start gap-3 sm:gap-4">
-                <div className="text-3xl sm:text-4xl flex-shrink-0 service-icon">{service.icon}</div>
-                <div className="flex-1">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors service-title">
-                    {service.title}
-                  </h3>
-                  <div className="mb-3 sm:mb-4">
-                    <div className="inline-flex items-center bg-purple-600/20 rounded-full px-2.5 sm:px-3 py-1 mb-2 sm:mb-3">
-                      <span className="text-purple-300 text-xs sm:text-sm font-semibold">{service.results}</span>
-                    </div>
-                  </div>
-                  <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg leading-relaxed service-description">
-                    {service.description}
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 services-features-grid">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start text-xs sm:text-sm text-gray-300 service-feature-text">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full me-2 sm:me-3 mt-1 flex-shrink-0 feature-bullet"></div>
-                        <span className="flex-1">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          {items.map((service, index) => {
+            const Icon = serviceIcons[index] ?? CpuChipIcon;
+            return (
+              <article
+                key={service.title}
+                className="flex flex-col bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-xl p-5 sm:p-6 md:p-8 hover:border-purple-500/50 transition-colors duration-300 animate-stagger"
+                style={{ "--stagger-delay": `${index * 0.1}s` } as React.CSSProperties}
+              >
+                <Icon className="w-10 h-10 text-purple-300 mb-4" aria-hidden="true" />
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">
+                  {service.title}
+                </h3>
+                <p className="text-sm sm:text-base text-cyan-200 font-medium mb-4">
+                  <span className="sr-only">{t('outcomeLabel')}: </span>
+                  {service.outcome}
+                </p>
+                <p className="text-gray-300 mb-6 text-sm sm:text-base leading-relaxed">
+                  {service.description}
+                </p>
+                <ul className="mt-auto space-y-2 sm:space-y-3">
+                  {service.features.map((feature) => (
+                    <li key={feature} className="flex items-start text-xs sm:text-sm text-gray-300">
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full me-2 sm:me-3 mt-1.5 flex-shrink-0" aria-hidden="true"></span>
+                      <span className="flex-1">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
         </div>
 
-        {/* Commander CTA */}
+        <p className="max-w-3xl mx-auto text-center text-sm sm:text-base text-gray-300 mb-12 sm:mb-16">
+          {t('audience')}
+        </p>
+
         <div
           ref={ctaRef as React.RefObject<HTMLDivElement>}
-          className={`text-center bg-gradient-to-r from-purple-900/50 to-slate-900/50 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 transition-all duration-800 ${
+          className={`text-center bg-gradient-to-r from-purple-900/50 to-slate-900/50 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-800 ${
             ctaVisible ? 'observe-slide-right is-visible' : 'observe-slide-right'
           }`}
         >
-          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 px-2 sm:px-0">
+          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
             {t('cta.title')}
           </h3>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2 sm:px-0">
+          <p className="text-base sm:text-lg text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
             {t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -121,8 +119,8 @@ const Services: React.FC = () => {
               {t('cta.buttons.primary')}
             </a>
             <a
-              href="#portfolio"
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold text-sm sm:text-base rounded-lg border border-purple-400/30 btn-magnetic focus-enhanced min-h-[44px]"
+              href="#process"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-semibold text-sm sm:text-base rounded-lg border border-purple-400/30 focus-enhanced min-h-[44px]"
             >
               {t('cta.buttons.secondary')}
             </a>
