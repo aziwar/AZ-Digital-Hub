@@ -19,9 +19,9 @@ const About: React.FC = () => {
 
         <div className="max-w-4xl mx-auto">
           <div className="space-y-4 sm:space-y-6 text-center">
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{t('intro')}</p>
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{t('approach')}</p>
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{t('experienceLine')}</p>
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed sm:leading-7">{t('intro')}</p>
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed sm:leading-7">{t('approach')}</p>
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed sm:leading-7">{t('experienceLine')}</p>
 
             <div className="pt-4 sm:pt-6">
               <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">{t('competencies.title')}</h3>
@@ -43,7 +43,7 @@ const About: React.FC = () => {
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-4 sm:p-5 md:p-6 text-center flex flex-col-reverse"
+                className="bg-slate-800/50 backdrop-blur-xs border border-slate-700 rounded-lg p-4 sm:p-5 md:p-6 text-center flex flex-col-reverse"
               >
                 <dt className="text-xs sm:text-sm text-gray-300">{item.label}</dt>
                 <dd dir="auto" className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-400 mb-1 sm:mb-2">
@@ -55,12 +55,12 @@ const About: React.FC = () => {
         </div>
 
         {/* Career path */}
-        <div className="mt-12 sm:mt-14 md:mt-16 max-w-4xl mx-auto bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8">
+        <div className="mt-12 sm:mt-14 md:mt-16 max-w-4xl mx-auto bg-slate-800/30 backdrop-blur-xs border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8">
           <h3 className="text-xl sm:text-2xl font-semibold text-white mb-4 sm:mb-6">{t('experience.title')}</h3>
           <ol className="space-y-4 sm:space-y-5">
             {roles.map((role) => (
               <li key={role.title} className="flex items-start gap-3 sm:gap-4">
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-500 rounded-full mt-2 flex-shrink-0" aria-hidden="true"></div>
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-500 rounded-full mt-2 shrink-0" aria-hidden="true"></div>
                 <div className="flex-1">
                   <h4 className="text-base sm:text-lg font-semibold text-white">{role.title}</h4>
                   <p className="text-sm sm:text-base text-gray-300 mt-1">{role.description}</p>

@@ -29,7 +29,7 @@ const Services: React.FC = () => {
       <section
         id="services"
         ref={sectionRef as React.RefObject<HTMLElement>}
-        className={`py-12 sm:py-16 md:py-20 lg:py-24 px-4 bg-gradient-to-b from-slate-900 to-purple-900/20 transition-all duration-1000 ${
+        className={`py-12 sm:py-16 md:py-20 lg:py-24 px-4 bg-linear-to-b/srgb from-slate-900 to-purple-900/20 transition-all duration-1000 ${
           sectionVisible ? 'observe-fade-in is-visible' : 'observe-fade-in'
         }`}
       >
@@ -41,13 +41,13 @@ const Services: React.FC = () => {
             headerVisible ? 'observe-slide-left is-visible' : 'observe-slide-left'
           }`}
         >
-          <p className="inline-flex items-center bg-purple-600/20 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 text-purple-200 font-semibold text-xs sm:text-sm">
+          <p className="inline-flex items-center bg-purple-600/20 backdrop-blur-sm border border-purple-400/30 rounded-full px-4 sm:px-6 py-2 mb-4 sm:mb-6 text-purple-200 font-semibold text-xs sm:text-sm">
             {t('badge')}
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
             {t('title')}
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed sm:leading-7">
             {t('subtitle')}
           </p>
         </div>
@@ -79,13 +79,13 @@ const Services: React.FC = () => {
                   <span className="sr-only">{t('outcomeLabel')}: </span>
                   {service.outcome}
                 </p>
-                <p className="text-gray-300 mb-6 text-sm sm:text-base leading-relaxed">
+                <p className="text-gray-300 mb-6 text-sm sm:text-base leading-relaxed sm:leading-6">
                   {service.description}
                 </p>
                 <ul className="mt-auto space-y-2 sm:space-y-3">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-start text-xs sm:text-sm text-gray-300">
-                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full me-2 sm:me-3 mt-1.5 flex-shrink-0" aria-hidden="true"></span>
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-400 rounded-full me-2 sm:me-3 mt-1.5 shrink-0" aria-hidden="true"></span>
                       <span className="flex-1">{feature}</span>
                     </li>
                   ))}
@@ -101,7 +101,7 @@ const Services: React.FC = () => {
 
         <div
           ref={ctaRef as React.RefObject<HTMLDivElement>}
-          className={`text-center bg-gradient-to-r from-purple-900/50 to-slate-900/50 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-800 ${
+          className={`text-center bg-linear-to-r/srgb from-purple-900/50 to-slate-900/50 backdrop-blur-md border border-purple-500/30 rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-800 ${
             ctaVisible ? 'observe-slide-right is-visible' : 'observe-slide-right'
           }`}
         >

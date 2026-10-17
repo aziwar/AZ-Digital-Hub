@@ -42,11 +42,11 @@ export default async function FAQ() {
             >
               <summary className="flex items-center justify-between gap-4 cursor-pointer list-none p-4 sm:p-5 text-base sm:text-lg font-semibold text-white focus-enhanced rounded-lg [&::-webkit-details-marker]:hidden">
                 <span>{item.question}</span>
-                <svg className="w-5 h-5 flex-shrink-0 text-purple-300 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg className="w-5 h-5 shrink-0 text-purple-300 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </summary>
-              <p className="px-4 sm:px-5 pb-5 text-sm sm:text-base text-gray-300 leading-relaxed">
+              <p className="px-4 sm:px-5 pb-5 text-sm sm:text-base text-gray-300 leading-relaxed sm:leading-6">
                 {item.answer}
               </p>
             </details>

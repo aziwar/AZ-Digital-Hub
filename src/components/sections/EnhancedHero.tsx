@@ -26,14 +26,14 @@ const EnhancedHero: React.FC = () => {
           {/* Main Content */}
           <div className="lg:col-span-7 text-center lg:text-start">
 
-            <p className="mb-6 sm:mb-8 inline-flex items-center gap-2 bg-white/5 backdrop-blur border border-purple-400/30 rounded-full px-4 sm:px-5 py-2 text-purple-200 font-medium text-xs sm:text-sm">
+            <p className="mb-6 sm:mb-8 inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-purple-400/30 rounded-full px-4 sm:px-5 py-2 text-purple-200 font-medium text-xs sm:text-sm">
               <span className="w-2 h-2 bg-cyan-400 rounded-full" aria-hidden="true"></span>
               {t('eyebrow')}
             </p>
 
-            <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6">
+            <h1 className="hero-title text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight sm:leading-none mb-4 sm:mb-6">
               <span className="block animate-fade-from-bottom motion-safe:delay-200">{t('headline.name')}</span>
-              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent animate-fade-from-bottom motion-safe:delay-500">
+              <span className="block bg-linear-to-r/srgb from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent animate-fade-from-bottom motion-safe:delay-500">
                 {t('headline.tagline')}
               </span>
             </h1>
@@ -42,12 +42,12 @@ const EnhancedHero: React.FC = () => {
               <p className="hero-subtitle text-lg sm:text-xl md:text-2xl font-semibold text-gray-100 mb-4">
                 {t('subtitle')}
               </p>
-              <p className="hero-description text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed mb-4">
+              <p className="hero-description text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed sm:leading-7 mb-4">
                 {t.rich('description', {
                   strong: (chunks) => <strong className="font-semibold text-purple-300">{chunks}</strong>
                 })}
               </p>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed sm:leading-6">
                 {t('whyMe')}
               </p>
             </div>
@@ -60,7 +60,7 @@ const EnhancedHero: React.FC = () => {
               >
                 <span className="flex items-center justify-center">
                   {t('cta.primary')}
-                  <span className="ms-2 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" aria-hidden="true">→</span>
+                  <span className="ms-2 rtl:rotate-180 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform" aria-hidden="true">→</span>
                 </span>
               </a>
 
@@ -88,8 +88,8 @@ const EnhancedHero: React.FC = () => {
           {/* Profile Image */}
           <div className="lg:col-span-5">
             <div className="relative mx-auto w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/25 to-cyan-500/25 rounded-full blur-2xl" aria-hidden="true" />
-              <div className="relative w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 rounded-full border-4 border-purple-400/40 overflow-hidden">
+              <div className="absolute inset-0 bg-linear-to-br/srgb from-purple-500/25 to-cyan-500/25 rounded-full blur-2xl" aria-hidden="true" />
+              <div className="relative w-full h-full bg-linear-to-br/srgb from-slate-700 to-slate-800 rounded-full border-4 border-purple-400/40 overflow-hidden">
                 <Image
                   src={imageConfig.profile.profileImage}
                   alt={t('profile.imageAlt')}
@@ -104,7 +104,7 @@ const EnhancedHero: React.FC = () => {
         </div>
 
         {/* Scroll indicator */}
-        <a href="#services" className="hidden sm:flex absolute bottom-2 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex-col items-center gap-2 text-purple-300 hover:text-purple-200 text-sm font-medium">
+        <a href="#services" className="hidden sm:flex absolute bottom-2 inset-s-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex-col items-center gap-2 text-purple-300 hover:text-purple-200 text-sm font-medium">
           <span>{t('scroll.text')}</span>
           <svg className="w-5 h-5 motion-safe:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />

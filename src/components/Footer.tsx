@@ -11,7 +11,7 @@ export default async function Footer() {
     <footer className="bg-slate-900 border-t border-slate-800 py-12">
       <div className="max-w-7xl mx-auto px-4">
 
-        <div className="text-center mb-10 p-6 bg-gradient-to-r from-purple-900/30 to-cyan-900/30 rounded-xl border border-purple-500/30">
+        <div className="text-center mb-10 p-6 bg-linear-to-r/srgb from-purple-900/30 to-cyan-900/30 rounded-xl border border-purple-500/30">
           <h2 className="text-2xl font-bold text-white mb-2">{t('cta.title')}</h2>
           <p className="text-gray-300 mb-4">{t('cta.subtitle')}</p>
           <a

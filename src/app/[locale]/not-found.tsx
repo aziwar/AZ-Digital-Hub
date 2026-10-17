@@ -22,9 +22,9 @@ export default function NotFound() {
   const nav = useTranslations('Navigation')
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br/srgb from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center px-4">
       <div className="max-w-2xl w-full text-center space-y-8">
-        <p dir="ltr" className="text-8xl sm:text-9xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-500">
+        <p dir="ltr" className="text-8xl sm:text-9xl font-bold text-transparent bg-clip-text bg-linear-to-r/srgb from-purple-400 via-pink-500 to-cyan-500">
           404
         </p>
 
