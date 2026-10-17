@@ -83,9 +83,16 @@ export async function POST(req: NextRequest) {
         );
       }
     } catch {
-      // Rate limiting unavailable (Upstash not configured) - proceed without it
+      // Rate limiting unavailable (Upstash not configured or unreachable):
+      // fail closed in production, allow in development
       // eslint-disable-next-line no-console
-      console.warn('[contact] Rate limiting DISABLED: UPSTASH_REDIS_REST_URL/TOKEN not configured or unreachable.');
+      console.error('[contact] Rate limiting unavailable: UPSTASH_REDIS_REST_URL/TOKEN not configured or unreachable.');
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json(
+          { message: 'Contact form is temporarily unavailable.' },
+          { status: 503 }
+        );
+      }
     }
     // --- End Rate Limiting Check ---
 
