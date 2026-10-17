@@ -7,6 +7,8 @@
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/loading
  */
 
+'use client'
+
 import { useTranslations } from 'next-intl'
 
 export default function Loading() {
