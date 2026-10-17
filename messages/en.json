@@ -376,5 +376,14 @@
     "jobTitle": "AI Consultant",
     "personDescription": "Kuwait-based digital solutions and AI integration consultant with more than 15 years across IT, digital marketing and AI delivery.",
     "serviceDescription": "AI strategy, AI solution delivery and adoption support for mid-sized companies in Kuwait and the GCC."
+  },
+  "Common": {
+    "loading": "Loading...",
+    "preparing": "Preparing your experience",
+    "playVideo": "Play video",
+    "pauseVideo": "Pause video",
+    "videoPoster": "Services showcase",
+    "switchToEnglish": "Switch to English",
+    "switchToArabic": "Switch to Arabic"
   }
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import React, { useRef, useEffect, useState } from 'react';
 
 interface VideoBackgroundProps {
@@ -80,6 +81,7 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const t = useTranslations('Common');
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -133,13 +135,13 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleTapToPlay(); }}
       role="button"
       tabIndex={0}
-      aria-label={isPlaying ? 'Pause video' : 'Play video'}
+      aria-label={isPlaying ? t('pauseVideo') : t('playVideo')}
     >
       {/* Poster */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={posterSrc}
-        alt="Services showcase"
+        alt={t('videoPoster')}
         className={`w-full aspect-video object-cover ${isVisible && isPlaying ? 'hidden' : 'block'}`}
       />
 

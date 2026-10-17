@@ -7,7 +7,11 @@
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/loading
  */
 
+import { useTranslations } from 'next-intl'
+
 export default function Loading() {
+  const t = useTranslations('Common')
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center">
       <div className="text-center space-y-8">
@@ -42,10 +46,10 @@ export default function Loading() {
         {/* Loading Text */}
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-white">
-            Loading...
+            {t('loading')}
           </h2>
           <p className="text-gray-400">
-            Preparing your experience
+            {t('preparing')}
           </p>
         </div>
 

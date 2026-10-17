@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { useTransition } from 'react'
 
 import { usePathname, useRouter } from '@/i18n/navigation'
@@ -10,6 +11,7 @@ export default function LanguageSwitcher() {
   const router = useRouter()
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
+  const t = useTranslations('Common')
 
   const currentLocale = params.locale as string
 
@@ -29,7 +31,7 @@ export default function LanguageSwitcher() {
             ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg'
             : 'text-gray-400 hover:text-white hover:bg-slate-700'
         } ${isPending ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-        aria-label="Switch to English"
+        aria-label={t('switchToEnglish')}
         aria-current={currentLocale === 'en' ? 'true' : 'false'}
       >
         EN
@@ -42,7 +44,7 @@ export default function LanguageSwitcher() {
             ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg'
             : 'text-gray-400 hover:text-white hover:bg-slate-700'
         } ${isPending ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-        aria-label="Switch to Arabic"
+        aria-label={t('switchToArabic')}
         aria-current={currentLocale === 'ar' ? 'true' : 'false'}
       >
         AR
