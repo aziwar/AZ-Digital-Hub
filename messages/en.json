@@ -5,7 +5,7 @@
       "about": "About",
       "services": "Services",
       "process": "Process",
-      "engagements": "Engagements",
+      "engagements": "What I build",
       "faq": "FAQ",
       "contact": "Contact"
     },
@@ -16,14 +16,14 @@
     }
   },
   "Hero": {
-    "eyebrow": "AI consulting for mid-sized companies · Kuwait & GCC",
+    "eyebrow": "AI & digital transformation · Kuwait & GCC",
     "headline": {
       "name": "Ahmed Ziwar",
-      "tagline": "AI your team actually uses."
+      "tagline": "AI built properly, for how your business works."
     },
-    "subtitle": "AI strategy and delivery for mid-sized companies in Kuwait and the GCC",
-    "description": "I help management teams move AI from presentations to <strong>working solutions their people adopt</strong> and <strong>results leadership can measure</strong>.",
-    "whyMe": "More than 15 years across IT, digital marketing and AI delivery. I bring both the technology and the know-how to get it adopted, and I stay hands-on from the first workshop to go-live.",
+    "subtitle": "AI and digital transformation consultant for mid-sized companies in Kuwait and the GCC",
+    "description": "I design and build <strong>AI assistants, document intelligence, automation agents and AI model gateways</strong>, delivered <strong>in Arabic and English</strong>.",
+    "whyMe": "Over the past year I have been delivering AI solutions for large enterprises and public-sector organisations. I bring the same approach to mid-sized companies whose management values quality over price.",
     "cta": {
       "primary": "Request a discovery call",
       "whatsapp": {
@@ -32,12 +32,12 @@
       }
     },
     "highlights": [
-      "15+ years across technology and marketing",
-      "Hands-on delivery, not just advice",
+      "AI delivery for large enterprises and public sector",
+      "15+ years in technology and digital",
       "Arabic and English"
     ],
     "profile": {
-      "imageAlt": "Ahmed Ziwar, AI consultant in Kuwait"
+      "imageAlt": "Ahmed Ziwar, AI and digital transformation consultant in Kuwait"
     },
     "scroll": {
       "text": "How I can help"
@@ -45,30 +45,30 @@
   },
   "About": {
     "title": "About",
-    "intro": "I am a Kuwait-based digital solutions and AI integration consultant. For more than 15 years I have worked where business meets technology: IT and network administration, IT consulting, digital media and marketing, and, since 2022, the design and delivery of AI solutions.",
-    "approach": "That mix matters. A marketing background means I think about the people who will use a solution as much as the technology behind it, which is why the solutions I deliver get used rather than shelved.",
-    "experienceLine": "I have experience delivering AI solutions for large enterprises and public-sector organisations.",
+    "intro": "I am a Kuwait-based AI and digital transformation consultant, living and working in Kuwait since 2009. For more than 15 years I have worked where business meets technology: IT and network administration, IT consulting, digital media and marketing, and, since 2022, digital solutions and AI.",
+    "approach": "That path matters. The technical foundation means I build and run systems myself; the marketing years mean I think about the people who will use a solution as much as the technology behind it.",
+    "experienceLine": "Over the past 12 months I have been delivering AI solutions for large enterprises and public-sector organisations: AI avatar and assistant systems, document-intelligence and legal-content portals, AI model gateways and process automation agents.",
     "competencies": {
       "title": "What I bring",
       "skills": [
-        "AI strategy and readiness",
-        "AI assistants and avatar experiences",
-        "Document intelligence and search",
+        "AI readiness and strategy",
+        "AI assistants and avatar systems",
+        "Document intelligence and legal-content portals",
         "AI model gateways and governance",
-        "Process automation",
-        "Adoption, training and change support",
-        "Digital and customer experience",
+        "Process automation agents",
+        "Multi-model orchestration and cost control",
+        "Self-hosted AI infrastructure",
         "Arabic and English delivery"
       ]
     },
     "highlights": [
       {
         "value": "15+",
-        "label": "Years across technology and marketing"
+        "label": "Years across technology and digital"
       },
       {
         "value": "Kuwait",
-        "label": "Based locally, serving the GCC"
+        "label": "Based in Kuwait since 2009, serving the GCC"
       },
       {
         "value": "EN · AR",
@@ -83,8 +83,8 @@
       "title": "Career path",
       "roles": [
         {
-          "title": "Digital solutions & AI delivery (since 2022)",
-          "description": "Designing and delivering AI solutions such as AI assistants and avatars, document intelligence portals, AI model gateways and process automation."
+          "title": "Digital solutions & AI (since 2022)",
+          "description": "Designing and delivering AI solutions for large enterprises and public-sector organisations: AI avatar and assistant systems, document-intelligence and legal-content portals, AI model gateways and process automation agents."
         },
         {
           "title": "Digital media & marketing",
@@ -100,47 +100,47 @@
   "Services": {
     "badge": "Services",
     "title": "How I help",
-    "subtitle": "Three ways to work together, each focused on a business outcome rather than a technology.",
-    "audience": "I work with mid-sized companies in Kuwait and the GCC with an established management team, who value quality, clear accountability and long-term results over the lowest price.",
+    "subtitle": "Three ways to work together, from deciding where AI fits to building it and keeping it under control.",
+    "audience": "I work with mid-sized companies in Kuwait and the GCC with mature management, who value quality and clear accountability over the lowest price.",
     "outcomeLabel": "Outcome",
     "items": [
       {
-        "title": "AI strategy & readiness",
-        "outcome": "A clear, prioritised AI roadmap your leadership agrees on",
-        "description": "We identify where AI creates real value in your business, assess how ready your data, systems and teams are, and agree which opportunities to pursue first.",
+        "title": "AI readiness & strategy",
+        "outcome": "A clear view of where AI fits your business and what to do first",
+        "description": "We look at your processes, data and systems together, identify where AI is worth applying, and agree a prioritised plan your management stands behind.",
         "features": [
-          "Opportunity and use-case workshops",
+          "Use-case and opportunity workshops",
           "Data and systems readiness review",
-          "Prioritised roadmap with business cases",
+          "Prioritised plan with clear scope",
           "Build, buy or partner recommendations"
         ]
       },
       {
-        "title": "AI solution delivery & integration",
+        "title": "AI solution build & delivery",
         "outcome": "Working AI solutions connected to the systems you already use",
-        "description": "From pilot to production: AI assistants, document intelligence, automation and model gateways, delivered and integrated with your existing platforms, securely and in Arabic and English.",
+        "description": "I design and build the solution with your team, in Arabic and English, and connect it to your existing platforms.",
         "features": [
-          "AI assistants and avatar experiences",
-          "Document intelligence and search",
-          "Process and workflow automation",
-          "Secure AI model gateways"
+          "AI assistants and avatar systems",
+          "Document intelligence and content portals",
+          "Process automation agents",
+          "Integration with existing systems"
         ]
       },
       {
-        "title": "Adoption & enablement",
-        "outcome": "Teams that use the solution and leaders who can see the impact",
-        "description": "Technology only pays off when people use it. I help you roll out, train your teams and set up the measures management needs to follow results.",
+        "title": "AI governance & model gateways",
+        "outcome": "AI use that stays secure, visible and within budget",
+        "description": "A controlled layer between your applications and the AI models they use, so management decides which models are used, by whom, and at what cost.",
         "features": [
-          "Rollout and change planning",
-          "Team training and playbooks",
-          "Usage and impact measures for management",
-          "Ongoing improvement after go-live"
+          "AI model gateway design and setup",
+          "Choice of commercial and open models",
+          "Access control and usage visibility",
+          "Cost control across models and teams"
         ]
       }
     ],
     "cta": {
       "title": "Not sure where to start?",
-      "subtitle": "A short discovery call is the easiest way to find out whether AI can make a real difference for your business.",
+      "subtitle": "A short discovery call is the easiest way to see whether AI is worth applying in your business, and where.",
       "buttons": {
         "primary": "Request a discovery call",
         "secondary": "See how I work"
@@ -157,77 +157,113 @@
       },
       {
         "title": "Design",
-        "description": "We agree the scope, the success measures and the right solution for your systems, data and team."
+        "description": "We agree the scope, the success criteria, the models to use and where your data is processed."
       },
       {
-        "title": "Deliver",
+        "title": "Build",
         "description": "I build and integrate the solution in short, visible stages, so you see progress and can adjust early."
       },
       {
-        "title": "Adopt & measure",
-        "description": "We roll out, train your team and follow the agreed measures, then improve based on real usage."
+        "title": "Hand over & improve",
+        "description": "Your team takes the solution into daily use with clear documentation, and we refine it based on real usage."
       }
     ]
   },
   "Portfolio": {
-    "title": "Typical engagements",
-    "subtitle": "Three common types of work. Client details are kept confidential.",
-    "labels": {
-      "challenge": "The challenge",
-      "approach": "The approach",
-      "outcome": "The outcome"
-    },
+    "title": "What I build",
+    "subtitle": "Over the past 12 months I have delivered these types of AI solutions for large enterprises and public-sector organisations. Client names and details stay confidential.",
     "items": [
       {
-        "title": "Turning interest in AI into a plan",
-        "context": "Mid-sized company whose leadership is exploring AI",
-        "challenge": "Leadership saw the potential of AI but had many ideas, no priorities and no shared view of the risks.",
-        "approach": "Structured workshops with management and key teams, a review of data and systems, and a short list of opportunities with clear business cases.",
-        "outcome": "A roadmap leadership agreed on, with first initiatives chosen for value and feasibility, each with a clear owner."
+        "title": "AI avatar and assistant systems",
+        "description": "Conversational assistants, including on-screen AI avatars, that answer questions from an organisation's own approved content.",
+        "points": [
+          "Arabic and English conversations",
+          "Answers drawn from approved sources",
+          "Connected to existing channels and systems"
+        ]
       },
       {
-        "title": "An AI assistant for everyday questions",
-        "context": "Organisation handling a high volume of repetitive enquiries",
-        "challenge": "Staff and customers spent too long looking for answers spread across documents and systems.",
-        "approach": "An Arabic and English AI assistant grounded in the organisation's own content, connected to existing systems, with clear limits on what it answers.",
-        "outcome": "Faster, more consistent answers, and teams free to focus on the cases that need human judgement."
+        "title": "Document-intelligence and legal-content portals",
+        "description": "Portals that organise large bodies of documents, including legal content, so people can find, read and question them quickly.",
+        "points": [
+          "Search and questions in plain language",
+          "Structured navigation of legal content",
+          "Review steps where accuracy matters"
+        ]
       },
       {
-        "title": "Making documents searchable and usable",
-        "context": "Organisation with a large archive of documents",
-        "challenge": "Important information was locked inside long documents that were slow to search and hard to reuse.",
-        "approach": "A document intelligence portal that extracts, organises and indexes content, with review steps wherever accuracy matters.",
-        "outcome": "Information that is quick to find and reuse, with less manual effort and more consistency."
+        "title": "AI model gateways",
+        "description": "A single, controlled entry point between an organisation's applications and the AI models they use.",
+        "points": [
+          "One access point for several models",
+          "Access control and usage visibility",
+          "Cost control by team or use case"
+        ]
+      },
+      {
+        "title": "Process automation agents",
+        "description": "AI agents that take on repetitive steps in a business process and hand over to people where judgement is needed.",
+        "points": [
+          "Built around existing workflows",
+          "Human approval at defined points",
+          "Connected to the systems already in use"
+        ]
       }
     ],
+    "stack": {
+      "title": "My own AI operations stack",
+      "description": "I do not only advise on these systems; I built and run my own. My daily work runs on an AI operations stack I operate myself:",
+      "items": [
+        {
+          "title": "Persistent AI memory",
+          "description": "A knowledge system that keeps context and decisions available across work sessions."
+        },
+        {
+          "title": "Self-hosted secrets management",
+          "description": "Credentials and keys kept on infrastructure I control."
+        },
+        {
+          "title": "Self-hosted web intelligence",
+          "description": "A crawling service that gathers and structures web information."
+        },
+        {
+          "title": "Multi-model orchestration",
+          "description": "Claude, Codex/GPT and open models working together, with cost control."
+        }
+      ]
+    },
     "cta": {
-      "text": "Facing a similar challenge?",
+      "text": "Want something similar for your business?",
       "button": "Request a discovery call"
     }
   },
   "FAQ": {
     "title": "Frequently asked questions",
-    "subtitle": "Short answers to what clients usually ask before starting.",
+    "subtitle": "Short answers to what management teams usually ask before starting.",
     "items": [
       {
+        "question": "Who do you work with?",
+        "answer": "Mid-sized companies in Kuwait and the GCC with mature management, who value quality over price. My recent delivery work has been for large enterprises and public-sector organisations, and I bring the same standard to mid-sized companies."
+      },
+      {
         "question": "How do engagements usually work?",
-        "answer": "Most clients start with a short strategy and readiness phase, move on to delivering one or two priority solutions, and then to adoption support. Each phase has a defined scope and is agreed separately, so you only commit to the next step."
+        "answer": "We start with a discovery call. From there, the first step is usually either a readiness and strategy phase or a clearly defined build. Each phase has its own scope and is agreed separately, so you only commit to the next step."
       },
       {
-        "question": "How long does a typical project take?",
-        "answer": "It depends on scope. A readiness assessment usually takes a few weeks, and a first working solution typically follows in stages over a few months. We agree a realistic plan with clear milestones during the design step."
+        "question": "Do your solutions work in Arabic?",
+        "answer": "Yes. I work in Arabic and English, and solutions are designed for both languages from the start, including Arabic content and right-to-left interfaces."
       },
       {
-        "question": "How do you handle data privacy and security?",
-        "answer": "Privacy is part of the design from day one. We agree at the start which data may be used, where it is processed and who can access it, and the solution follows your internal policies and any regulations that apply to you."
+        "question": "How do you handle data security? Can the solution be self-hosted?",
+        "answer": "Where your data is processed and who can access it are agreed in the design step, in line with your internal policies. Self-hosting is part of that discussion: I run self-hosted components in my own operations stack, including secrets management and a web-intelligence service."
       },
       {
-        "question": "Can AI work with our existing systems?",
-        "answer": "Yes. Most of my work is connecting AI to the platforms you already run, such as document stores, business applications and websites, rather than replacing them. The readiness review confirms what is practical."
+        "question": "Which AI models do you work with?",
+        "answer": "I work with several model families, including Claude, Codex/GPT and open models. The choice depends on the task, your data requirements and cost, and an AI model gateway lets you use more than one without being tied to a single provider."
       },
       {
-        "question": "Do your solutions support Arabic?",
-        "answer": "Yes. I work in Arabic and English, and solutions are designed for both languages from the start, including right-to-left interfaces and Arabic content."
+        "question": "How do you keep AI costs under control?",
+        "answer": "Through governance built into the design: an AI model gateway gives management visibility of usage and control over which models are used for what. I run the same kind of cost control across models in my own work."
       },
       {
         "question": "How do we get started?",
@@ -272,9 +308,9 @@
           "label": "Area of interest (optional)",
           "placeholder": "Select an area",
           "options": [
-            "AI strategy & readiness",
-            "AI solution delivery & integration",
-            "Adoption & enablement",
+            "AI readiness & strategy",
+            "AI solution build & delivery",
+            "AI governance & model gateways",
             "Not sure yet"
           ]
         },
@@ -343,18 +379,18 @@
     "services": {
       "title": "Services",
       "items": [
-        "AI strategy & readiness",
-        "AI solution delivery & integration",
-        "Adoption & enablement"
+        "AI readiness & strategy",
+        "AI solution build & delivery",
+        "AI governance & model gateways"
       ]
     },
     "approach": {
       "title": "How I work",
       "items": [
         "Business outcomes first",
-        "Hands-on from strategy to go-live",
+        "Hands-on from strategy to delivery",
         "Arabic and English",
-        "Privacy built into the design"
+        "Security and cost control by design"
       ]
     },
     "copyright": "Ahmed Ziwar · AI consultant · Kuwait & GCC",
@@ -369,13 +405,13 @@
   },
   "Metadata": {
     "title": "AI Consultant in Kuwait | Ahmed Ziwar",
-    "description": "AI consultant in Kuwait helping mid-sized companies across the GCC with AI strategy, delivery and adoption: AI your team uses and management can measure.",
+    "description": "Kuwait-based AI and digital transformation consultant. AI readiness, AI assistants, document intelligence, automation agents and AI model gateways for mid-sized companies across the GCC, in Arabic and English.",
     "creator": "Ahmed Ziwar",
     "publisher": "AZ Digital Hub",
     "appName": "AZ Digital Hub",
-    "jobTitle": "AI Consultant",
-    "personDescription": "Kuwait-based digital solutions and AI integration consultant with more than 15 years across IT, digital marketing and AI delivery.",
-    "serviceDescription": "AI strategy, AI solution delivery and adoption support for mid-sized companies in Kuwait and the GCC."
+    "jobTitle": "AI & Digital Transformation Consultant",
+    "personDescription": "Kuwait-based AI and digital transformation consultant with more than 15 years across IT, digital media and marketing, and AI. Delivers AI solutions for large enterprises and public-sector organisations: AI avatar and assistant systems, document-intelligence and legal-content portals, AI model gateways and process automation agents.",
+    "serviceDescription": "AI readiness and strategy, AI solution build and delivery (assistants, document intelligence, automation agents), and AI governance with model gateways and cost control, for mid-sized companies in Kuwait and the GCC. Arabic and English."
   },
   "Common": {
     "loading": "Loading...",
