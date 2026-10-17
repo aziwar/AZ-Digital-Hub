@@ -37,7 +37,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Useful scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run type-check`, `npm run quality-gates`.
+Useful scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run type-check`.
 
 ## Environment variables
 
