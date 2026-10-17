@@ -50,12 +50,12 @@ See `.env.example`. The code reads:
 | `EMAILJS_TEMPLATE_ID` | EmailJS template |
 | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` | EmailJS public key |
 | `EMAILJS_PRIVATE_KEY` | EmailJS private key (server-side) |
-| `UPSTASH_REDIS_REST_URL` | Optional: Upstash Redis for API rate limiting |
-| `UPSTASH_REDIS_REST_TOKEN` | Optional: Upstash Redis token |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis for contact rate limiting (required in production) |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token (required in production) |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Optional: reCAPTCHA v3 site key |
 | `RECAPTCHA_SECRET_KEY` | Optional: reCAPTCHA v3 secret (server-side) |
 
-Rate limiting and reCAPTCHA degrade gracefully when not configured.
+In production the contact API returns 503 unless Upstash is configured (rate limiting fails closed); in development it runs without it. reCAPTCHA is optional.
 
 ## Contact
 
