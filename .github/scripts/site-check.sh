@@ -47,16 +47,11 @@ check_health() {
   local status
   status="$(grep -oE '"status":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
   [[ "$status" == ok || "$status" == degraded ]] || { echo "unexpected status '$status'"; return 1; }
-  # Contact form: "handoff" (leads go via WhatsApp/email) is a valid mode; otherwise server
-  # email must be fully ready (upstash and emailjs true).
-  local contact svc missing=()
+  # Contact form: "handoff" (leads go via WhatsApp/email) or "email" (server email via
+  # Cloudflare Email Service or EmailJS; rate limiting falls back to in-memory without Upstash).
+  local contact
   contact="$(grep -oE '"contact":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
-  if [[ "$contact" != handoff ]]; then
-    for svc in upstash emailjs; do
-      grep -qE "\"$svc\":true" "$TMP/body" || missing+=("$svc")
-    done
-    ((${#missing[@]} == 0)) || { echo "status=$status contact=${contact:-?}, contact form unavailable: ${missing[*]} not ready"; return 1; }
-  fi
+  [[ "$contact" == handoff || "$contact" == email ]] || { echo "status=$status unexpected contact mode '${contact:-?}'"; return 1; }
   echo "200 status=$status contact=$contact"
 }
 
