@@ -99,7 +99,8 @@ async function sendViaCloudflare(lead: ContactLead): Promise<void> {
         subject,
         html,
         text,
-        replyTo: { email: lead.email.trim(), name: clean(lead.name) }
+        // REST API schema uses snake_case `reply_to` with a plain address (the Workers binding uses replyTo)
+        reply_to: lead.email.trim()
       }),
       signal: AbortSignal.timeout(15_000)
     }
