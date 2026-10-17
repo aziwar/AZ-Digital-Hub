@@ -9,7 +9,7 @@ Live site: [https://www.zewar.xyz](https://www.zewar.xyz) (English at `/en`, Ara
 - Next.js 16 (App Router) with React 19 and TypeScript
 - Tailwind CSS 4 (logical-property utilities for RTL)
 - next-intl for English/Arabic content (`messages/en.json`, `messages/ar.json`)
-- Contact form via EmailJS (server-side), with optional reCAPTCHA v3 and Upstash rate limiting
+- Contact form: server email via Cloudflare Email Service (or EmailJS) when configured; otherwise it hands the lead to WhatsApp or email (no accounts needed)
 - Deployed on Vercel
 
 ## Project structure
@@ -37,7 +37,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Useful scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run type-check`, `npm run quality-gates`.
+Useful scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run type-check`.
 
 ## Environment variables
 
@@ -46,16 +46,20 @@ See `.env.example`. The code reads:
 | Variable | Purpose |
 |----------|---------|
 | `NEXT_PUBLIC_BASE_URL` | Canonical site URL (defaults to `https://www.zewar.xyz`) |
-| `EMAILJS_SERVICE_ID` | EmailJS service for the contact form |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account for Email Service (primary contact email provider) |
+| `CLOUDFLARE_EMAIL_API_TOKEN` | Cloudflare API token with "Email Sending: Edit" (server-side) |
+| `CONTACT_TO_EMAIL` | Optional: owner inbox for leads (default `ahmed@zewar.xyz`; must be a verified destination) |
+| `CONTACT_FROM_EMAIL` | Optional: sender address (default `website@zewar.xyz`) |
+| `EMAILJS_SERVICE_ID` | EmailJS service for the contact form (fallback provider) |
 | `EMAILJS_TEMPLATE_ID` | EmailJS template |
 | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` | EmailJS public key |
 | `EMAILJS_PRIVATE_KEY` | EmailJS private key (server-side) |
-| `UPSTASH_REDIS_REST_URL` | Upstash Redis for contact rate limiting (required in production) |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token (required in production) |
+| `UPSTASH_REDIS_REST_URL` | Optional: Upstash Redis for shared contact rate limiting (else in-memory) |
+| `UPSTASH_REDIS_REST_TOKEN` | Optional: Upstash Redis token |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Optional: reCAPTCHA v3 site key |
 | `RECAPTCHA_SECRET_KEY` | Optional: reCAPTCHA v3 secret (server-side) |
 
-In production the contact API returns 503 when Upstash is missing or unreachable (rate limiting fails closed); in development it runs without it. reCAPTCHA is optional.
+Server email is an optional upgrade. Without a provider (`GET /api/contact/status` reports `handoff`) the form validates the lead and hands it off to WhatsApp or a prefilled email to the owner. Provider order: Cloudflare Email Service (`CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_EMAIL_API_TOKEN`), then EmailJS (all four variables); the form switches to server email automatically. The lead email has the visitor as reply-to. If a server send fails (5xx), the form falls back to the same handoff. Rate limiting (5 requests / 10 min per IP) uses Upstash when configured, otherwise an in-memory limiter. reCAPTCHA is optional. Cloudflare setup steps: `docs/MONITORING.md`.
 
 ## Contact
 
