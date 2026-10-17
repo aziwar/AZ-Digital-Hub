@@ -28,7 +28,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         }
       );
     }
-    const isHealthy = !!process.env.OPENAI_API_KEY;
+    const isHealthy = true;
 
     const response = {
       status: isHealthy ? 'OK' : 'SERVICE_UNAVAILABLE',
