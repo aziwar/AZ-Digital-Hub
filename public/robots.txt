@@ -5,7 +5,7 @@ User-Agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://az-digital-hub.vercel.app/sitemap.xml
+Sitemap: https://www.zewar.xyz/sitemap.xml
 
 # Block internal paths
 Disallow: /api/

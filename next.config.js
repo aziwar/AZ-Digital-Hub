@@ -60,8 +60,9 @@ const nextConfig = {
   },
 
   // Environment variables
+  // Keep default in sync with lib/site.ts (SITE_URL)
   env: {
-    SITE_URL: process.env.SITE_URL || 'https://az-digital-hub-ahmed-zewars-projects.vercel.app',
+    SITE_URL: (process.env.NEXT_PUBLIC_BASE_URL || 'https://www.zewar.xyz').replace(/\/+$/, ''),
     SITE_NAME: 'AZ Digital Hub - Ahmed Zewar',
     SITE_DESCRIPTION: 'Ahmed Zewar - Strategic Digital Marketing Commander | ROI-Driven Solutions for Kuwait & GCC',
   },
