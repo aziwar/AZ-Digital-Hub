@@ -14,11 +14,12 @@ interface ContactFormRequest {
   name: string;
   email: string;
   company?: string;
-  project_type: string;
-  budget_range: string;
+  project_type?: string;
+  budget_range?: string;
   message: string;
   phone?: string;
   recaptchaToken?: string;
+  company_website?: string; // honeypot: must stay empty
 }
 
 // Server-side input validation
@@ -34,16 +35,18 @@ const validateContactForm = (data: Partial<ContactFormRequest>): { isValid: bool
     errors.push('A valid email address is required.');
   }
 
-  if (!data.project_type || typeof data.project_type !== 'string' || data.project_type.trim().length === 0) {
-    errors.push('Project type is required.');
-  }
-
-  if (!data.budget_range || typeof data.budget_range !== 'string' || data.budget_range.trim().length === 0) {
-    errors.push('Budget range is required.');
-  }
-
   if (!data.message || typeof data.message !== 'string' || data.message.trim().length < 20) {
     errors.push('Message is required and must be at least 20 characters long.');
+  }
+
+  const maxLengths: Partial<Record<keyof ContactFormRequest, number>> = {
+    name: 100, email: 254, company: 200, phone: 32, project_type: 100, budget_range: 100, message: 5000,
+  };
+  for (const [field, max] of Object.entries(maxLengths) as [keyof ContactFormRequest, number][]) {
+    const value = data[field];
+    if (value !== undefined && (typeof value !== 'string' || value.length > max)) {
+      errors.push(`${field} must be text of at most ${max} characters.`);
+    }
   }
 
   // Company field is optional, no validation needed if empty.
@@ -80,7 +83,16 @@ export async function POST(req: NextRequest) {
         );
       }
     } catch {
-      // Rate limiting unavailable (Upstash not configured) - proceed without it
+      // Rate limiting unavailable (Upstash not configured or unreachable):
+      // fail closed in production, allow in development
+      // eslint-disable-next-line no-console
+      console.error('[contact] Rate limiting unavailable: UPSTASH_REDIS_REST_URL/TOKEN not configured or unreachable.');
+      if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json(
+          { message: 'Contact form is temporarily unavailable.' },
+          { status: 503 }
+        );
+      }
     }
     // --- End Rate Limiting Check ---
 
@@ -94,20 +106,40 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+      return NextResponse.json(
+        { message: 'Invalid request body' },
+        { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+      );
+    }
+
+    // Honeypot: real users never fill this hidden field. Pretend success to bots.
+    if (typeof body.company_website === 'string' && body.company_website.trim().length > 0) {
+      // eslint-disable-next-line no-console
+      console.warn('[contact] Honeypot triggered; submission dropped.');
+      return NextResponse.json({ message: 'Message sent successfully' }, { status: 200 });
+    }
+
     const { isValid, errors } = validateContactForm(body);
 
     if (!isValid) {
       return NextResponse.json({ message: 'Validation failed', errors }, { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } });
     }
 
-    // reCAPTCHA verification (optional - skipped if not configured)
+    // reCAPTCHA verification: required whenever RECAPTCHA_SECRET_KEY is configured
     const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
-    if (recaptchaSecretKey && body.recaptchaToken) {
-      const recaptchaVerifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-      const recaptchaResponse = await fetch(recaptchaVerifyUrl, {
+    if (recaptchaSecretKey) {
+      const token = typeof body.recaptchaToken === 'string' ? body.recaptchaToken : '';
+      if (!token) {
+        return NextResponse.json(
+          { message: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 403, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+        );
+      }
+      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${recaptchaSecretKey}&response=${body.recaptchaToken}`,
+        body: new URLSearchParams({ secret: recaptchaSecretKey, response: token }).toString(),
       });
       const recaptchaResult = await recaptchaResponse.json();
       if (!recaptchaResult.success || recaptchaResult.score < 0.5) {
@@ -119,7 +151,6 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-
 
     // Retrieve EmailJS credentials from environment variables
     const serviceId = process.env.EMAILJS_SERVICE_ID;
@@ -140,8 +171,8 @@ export async function POST(req: NextRequest) {
         from_name: body.name,
         from_email: body.email,
         company: body.company,
-        project_type: body.project_type,
-        budget_range: body.budget_range,
+        project_type: body.project_type || 'Not specified',
+        budget_range: body.budget_range || 'Not specified',
         message: body.message,
         phone: body.phone,
         to_name: 'Ahmed Zewar' // This could also be an env var if dynamic

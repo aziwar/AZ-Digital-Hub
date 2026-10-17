@@ -75,6 +75,24 @@ body {
   letter-spacing: var(--tracking-normal);
 }
 
+/* Arabic typography: IBM Plex Sans Arabic (self-hosted via next/font/local for the ar locale).
+   Letter-spacing breaks Arabic letter joining, so it is disabled for ar. */
+html[lang="ar"] body {
+  font-family: var(--font-arabic), system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+  line-height: 1.75;
+}
+
+html[lang="ar"] body *,
+html[lang="ar"] .text-hover-glow:hover {
+  letter-spacing: normal !important;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3 {
+  line-height: 1.4;
+}
+
 /* Mobile Optimization - Standardized CTA Buttons */
 .btn-primary {
   @apply px-8 py-4 min-h-[44px] bg-gradient-to-r from-purple-600 to-cyan-600;

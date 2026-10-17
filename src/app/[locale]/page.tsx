@@ -4,9 +4,10 @@ import Navigation from '@/components/Navigation'
 import About from '@/components/sections/About'
 import EnhancedContact from '@/components/sections/EnhancedContact'
 import EnhancedHero from '@/components/sections/EnhancedHero'
+import FAQ from '@/components/sections/FAQ'
 import Portfolio from '@/components/sections/Portfolio'
+import Process from '@/components/sections/Process'
 import Services from '@/components/sections/Services'
-import Testimonials from '@/components/sections/Testimonials'
 
 
 export default async function Home({
@@ -21,13 +22,13 @@ export default async function Home({
     <main className="min-h-screen bg-slate-950">
       <Navigation />
 
-      {/* Main Content */}
       <div className="pt-16">
         <EnhancedHero />
-        <About />
         <Services />
-        <Testimonials />
+        <Process />
         <Portfolio />
+        <About />
+        <FAQ />
         <EnhancedContact />
       </div>
 

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Digital Marketing Hub - Professional digital marketing services by Ahmed Zewar",
   "author": "Ahmed Zewar <ahmed@zewar.xyz>",
-  "homepage": "https://az-digital-hub.vercel.app",
+  "homepage": "https://www.zewar.xyz",
   "repository": {
     "type": "git",
     "url": "https://github.com/aziwar/AZ-Digital-Hub.git"
@@ -73,10 +73,9 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.541.0",
-    "next": "^15.5.14",
+    "next": "^15.5.28",
     "next-intl": "^4.3.9",
     "next-themes": "^0.4.6",
-    "openai": "^5.15.0",
     "postcss": "^8.5.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

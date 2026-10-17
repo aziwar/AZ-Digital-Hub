@@ -37,7 +37,7 @@ const LoadingScreen = () => {
         {/* Loading Text */}
         <div className="loading-text-container mb-8">
           <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-2">
-            Ahmed Zewar
+            Ahmed Ziwar
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
             Digital Marketing Manager & IT Consultant

@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
+import localFont from 'next/font/local'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -8,20 +9,33 @@ import Footer from '@/components/Footer'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
+const BASE_URL = (process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.zewar.xyz').replace(/\/$/, '')
+
+// Self-hosted IBM Plex Sans Arabic (OFL, src/fonts) — no build-time dependency on Google Fonts.
+const plexArabic = localFont({
+  src: [
+    { path: '../../fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2', weight: '400', style: 'normal' },
+    { path: '../../fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2', weight: '500', style: 'normal' },
+    { path: '../../fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2', weight: '600', style: 'normal' },
+    { path: '../../fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2', weight: '700', style: 'normal' },
+  ],
+  display: 'swap',
+  variable: '--font-arabic',
+})
+
 export async function generateMetadata({ params }: { params: Promise<{locale: string}> }): Promise<Metadata> {
   const {locale} = await params
   const t = await getTranslations({ locale, namespace: 'Metadata' })
 
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://az-digital-hub.vercel.app'),
-    
+    metadataBase: new URL(BASE_URL),
+
     title: t('title'),
     description: t('description'),
-    keywords: t('keywords'),
-    authors: [{ name: t('creator'), url: 'https://az-digital-hub.vercel.app' }],
+    authors: [{ name: t('creator'), url: BASE_URL }],
     creator: t('creator'),
     publisher: t('publisher'),
-    
+
     alternates: {
       canonical: `/${locale}`,
       languages: {
@@ -30,29 +44,23 @@ export async function generateMetadata({ params }: { params: Promise<{locale: st
         'x-default': '/en'
       }
     },
-    
+
+    // og:image / twitter image come from the opengraph-image file convention
     openGraph: {
       type: 'website',
-      locale: locale,
+      locale: locale === 'ar' ? 'ar_KW' : 'en_US',
       url: `/${locale}`,
       title: t('title'),
       description: t('description'),
       siteName: t('appName'),
-      images: [{
-        url: `/og-image-${locale}.jpg`,
-        width: 1200,
-        height: 630,
-        alt: t('title')
-      }]
     },
-    
+
     twitter: {
       card: 'summary_large_image',
       title: t('title'),
       description: t('description'),
-      images: [`/og-image-${locale}.jpg`]
     },
-    
+
     robots: {
       index: true,
       follow: true,
@@ -64,7 +72,7 @@ export async function generateMetadata({ params }: { params: Promise<{locale: st
         'max-snippet': -1
       }
     },
-    
+
     formatDetection: {
       email: false,
       address: false,
@@ -108,9 +116,61 @@ export default async function RootLayout({
   // Providing all messages to client-side is the simplest configuration
   // Reference: https://next-intl.dev/docs/usage/configuration#messages
   const messages = await getMessages()
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+  const isArabic = locale === 'ar'
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${BASE_URL}/#person`,
+        name: isArabic ? 'أحمد زيور' : 'Ahmed Ziwar',
+        alternateName: isArabic ? 'Ahmed Ziwar' : 'أحمد زيور',
+        jobTitle: t('jobTitle'),
+        description: t('personDescription'),
+        url: `${BASE_URL}/${locale}`,
+        email: 'ahmed@zewar.xyz',
+        image: `${BASE_URL}/images/ahmed-zewar-profile.png`,
+        sameAs: ['https://www.linkedin.com/in/ahmedziwar/'],
+        knowsAbout: [
+          'Artificial intelligence strategy',
+          'AI solution delivery and integration',
+          'AI adoption and change management',
+          'Document intelligence',
+          'AI assistants',
+          'Process automation',
+          'Digital and customer experience'
+        ],
+        hasCredential: {
+          '@type': 'EducationalOccupationalCredential',
+          name: 'Microsoft Professional Program in Data Science'
+        },
+        address: { '@type': 'PostalAddress', addressCountry: 'KW' }
+      },
+      {
+        '@type': 'ProfessionalService',
+        '@id': `${BASE_URL}/#service`,
+        name: t('appName'),
+        description: t('serviceDescription'),
+        url: `${BASE_URL}/${locale}`,
+        email: 'ahmed@zewar.xyz',
+        telephone: '+96560672773',
+        image: `${BASE_URL}/images/AMZ-logo-tr.png`,
+        address: { '@type': 'PostalAddress', addressCountry: 'KW' },
+        areaServed: [
+          { '@type': 'Country', name: 'Kuwait' },
+          { '@type': 'Place', name: 'Gulf Cooperation Council (GCC)' }
+        ],
+        availableLanguage: ['en', 'ar'],
+        founder: { '@id': `${BASE_URL}/#person` },
+        sameAs: ['https://www.linkedin.com/in/ahmedziwar/']
+      }
+    ]
+  }
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'} className={isArabic ? plexArabic.variable : undefined}>
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -121,106 +181,7 @@ export default async function RootLayout({
         <meta name="msapplication-tap-highlight" content="no" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Person",
-                  "@id": "https://az-digital-hub.vercel.app/#person",
-                  "name": "Ahmed Zewar",
-                  "jobTitle": "AI & Full-Stack Developer",
-                  "description": "AI agent development, full-stack solutions, and digital marketing consultant based in Kuwait. 20+ years of experience in AI infrastructure, Next.js, Shopify e-commerce, and government digital transformation.",
-                  "url": "https://az-digital-hub.vercel.app",
-                  "email": "ahmed@zewar.xyz",
-                  "telephone": "+96560672773",
-                  "image": "https://az-digital-hub.vercel.app/images/ahmed-zewar-profile.png",
-                  "sameAs": [
-                    "https://www.linkedin.com/in/ahmedziwar/",
-                    "https://github.com/aziwar"
-                  ],
-                  "knowsAbout": [
-                    "Artificial Intelligence",
-                    "AI Agent Development",
-                    "MCP Protocol",
-                    "Knowledge Graphs",
-                    "GraphRAG",
-                    "Next.js",
-                    "React",
-                    "TypeScript",
-                    "Python",
-                    "FastAPI",
-                    "Shopify",
-                    "E-commerce",
-                    "Digital Marketing",
-                    "SEO",
-                    "Government Digital Transformation",
-                    "Cloudflare Workers",
-                    "Full-Stack Development"
-                  ],
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Kuwait City",
-                    "addressCountry": "KW"
-                  },
-                  "worksFor": {
-                    "@type": "Organization",
-                    "name": "Smart Technology (STSCKW)"
-                  }
-                },
-                {
-                  "@type": "ProfessionalService",
-                  "@id": "https://az-digital-hub.vercel.app/#service",
-                  "name": "AZ Digital Hub",
-                  "description": "AI agent development, full-stack web development, e-commerce optimization, and digital marketing services in Kuwait and GCC.",
-                  "url": "https://az-digital-hub.vercel.app",
-                  "telephone": "+96560672773",
-                  "email": "ahmed@zewar.xyz",
-                  "image": "https://az-digital-hub.vercel.app/images/AMZ-logo-tr.png",
-                  "priceRange": "$$-$$$$",
-                  "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": "Kuwait City",
-                    "addressCountry": "KW"
-                  },
-                  "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": 29.3759,
-                    "longitude": 47.9774
-                  },
-                  "areaServed": [
-                    { "@type": "Country", "name": "Kuwait" },
-                    { "@type": "Place", "name": "GCC Region" }
-                  ],
-                  "hasOfferCatalog": {
-                    "@type": "OfferCatalog",
-                    "name": "Digital Services",
-                    "itemListElement": [
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Agent Solutions & Automation" } },
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Full-Stack Web Development" } },
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "E-commerce & Shopify Solutions" } },
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digital Marketing & SEO" } },
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Government & Enterprise Consulting" } },
-                      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cloud Infrastructure & DevOps" } }
-                    ]
-                  },
-                  "founder": { "@id": "https://az-digital-hub.vercel.app/#person" },
-                  "sameAs": [
-                    "https://www.linkedin.com/in/ahmedziwar/",
-                    "https://github.com/aziwar"
-                  ]
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": "https://az-digital-hub.vercel.app/#website",
-                  "name": "AZ Digital Hub",
-                  "url": "https://az-digital-hub.vercel.app",
-                  "inLanguage": ["en", "ar"],
-                  "publisher": { "@id": "https://az-digital-hub.vercel.app/#person" }
-                }
-              ]
-            })
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
         />
       </head>
       <body className="font-sans">
