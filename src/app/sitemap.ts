@@ -2,13 +2,16 @@ import type { MetadataRoute } from 'next'
 
 import { SITE_URL } from '../../lib/site'
 
+// Fixed so the sitemap does not report a new date on every build; bump when content changes
+const LAST_MODIFIED = new Date('2026-10-17')
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_URL
 
   return [
     {
       url: `${baseUrl}/en`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 1,
       alternates: {
@@ -20,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/ar`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 1,
       alternates: {

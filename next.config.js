@@ -19,13 +19,12 @@ const nextConfig = {
   // Performance optimizations for Next.js 15
   experimental: {
     optimizePackageImports: [
-      '@heroicons/react',
-      'lucide-react'
+      '@heroicons/react'
     ],
     webpackMemoryOptimizations: true,
   },
   
-  // Image optimization for Vercel + OpenAI DALL-E 3
+  // Image optimization (local assets plus a few allowed remote hosts)
   images: {
     remotePatterns: [
       {
@@ -34,25 +33,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.pixabay.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'oaidalleapiprodscus.blob.core.windows.net',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'vpqhbrekfovgkcwegvxn.supabase.co',
-        pathname: '/storage/v1/object/public/**',
       },
       {
         protocol: 'https',
@@ -68,13 +49,21 @@ const nextConfig = {
   // Keep default in sync with lib/site.ts (SITE_URL)
   env: {
     SITE_URL: (process.env.NEXT_PUBLIC_BASE_URL || 'https://www.zewar.xyz').replace(/\/+$/, ''),
-    SITE_NAME: 'AZ Digital Hub - Ahmed Zewar',
-    SITE_DESCRIPTION: 'Ahmed Zewar - Strategic Digital Marketing Commander | ROI-Driven Solutions for Kuwait & GCC',
   },
 
   // Security and performance headers
   async headers() {
     return [
+      {
+        // Self-hosted fonts never change in place; cache them for a year
+        source: '/fonts/:file*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         source: '/:path*',
         headers: [
@@ -92,11 +81,7 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            value: 'strict-origin-when-cross-origin',
           },
           {
             key: 'Strict-Transport-Security',
@@ -110,11 +95,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
+              "script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://images.unsplash.com https://cdn.pixabay.com https://avatars.githubusercontent.com https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co https://media.licdn.com",
+              "img-src 'self' data: blob: https://avatars.githubusercontent.com https://media.licdn.com",
               "font-src 'self' data:",
-              "connect-src 'self' https://vercel.live https://oaidalleapiprodscus.blob.core.windows.net https://vpqhbrekfovgkcwegvxn.supabase.co https://www.google.com/recaptcha/",
+              "connect-src 'self' https://vercel.live https://www.google.com/recaptcha/",
               "frame-src https://www.google.com/recaptcha/",
               "frame-ancestors 'none'",
               "base-uri 'self'",

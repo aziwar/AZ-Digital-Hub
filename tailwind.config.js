@@ -11,6 +11,11 @@ module.exports = {
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // Darker solid greens so white text on WhatsApp buttons meets WCAG AA (4.5:1)
+        green: {
+          600: "#15803d",
+          700: "#166534",
+        },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

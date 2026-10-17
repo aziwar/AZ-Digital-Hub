@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import React, { useRef, useEffect, useState } from 'react';
 
 interface VideoBackgroundProps {
@@ -32,13 +34,17 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
-      {/* Poster image (always loads - shown on mobile & as fallback) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* Poster image (always loads - shown on mobile & as fallback). It is the LCP element,
+          so it is server-rendered with high fetch priority and a viewport-sized variant. */}
+      <Image
         src={posterSrc}
         alt=""
         aria-hidden="true"
-        className={`absolute inset-0 w-full h-full object-cover ${showVideo ? 'hidden' : 'block'}`}
+        fill
+        priority
+        sizes="100vw"
+        quality={70}
+        className={`object-cover ${showVideo ? 'hidden' : 'block'}`}
       />
 
       {/* Video (desktop only, respects reduced-motion) */}
@@ -80,6 +86,7 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const t = useTranslations('Common');
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -133,13 +140,15 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleTapToPlay(); }}
       role="button"
       tabIndex={0}
-      aria-label={isPlaying ? 'Pause video' : 'Play video'}
+      aria-label={isPlaying ? t('pauseVideo') : t('playVideo')}
     >
       {/* Poster */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={posterSrc}
-        alt="Services showcase"
+        alt={t('videoPoster')}
+        loading="lazy"
+        decoding="async"
         className={`w-full aspect-video object-cover ${isVisible && isPlaying ? 'hidden' : 'block'}`}
       />
 

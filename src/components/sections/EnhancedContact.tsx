@@ -200,20 +200,41 @@ const EnhancedContact: React.FC = () => {
           <div className="lg:col-span-3 bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 md:p-8">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-6">{t('form.title')}</h3>
 
-            {submitStatus === 'success' && (
-              <div role="alert" aria-live="polite" className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
-                <h4 className="text-green-300 font-bold mb-1">{t('form.status.success.title')}</h4>
-                <p className="text-green-200 text-sm">{t('form.status.success.message')}</p>
-              </div>
-            )}
+            {/* Live region stays mounted so screen readers announce status changes */}
+            <div aria-live="polite" aria-atomic="true">
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
+                  <h4 className="text-green-300 font-bold mb-1">{t('form.status.success.title')}</h4>
+                  <p className="text-green-200 text-sm">{t('form.status.success.message')}</p>
+                </div>
+              )}
 
-            {submitStatus === 'error' && (
-              <div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-lg">
-                <p className="text-red-200 text-sm">{fieldErrors.general || t('form.status.error.message')}</p>
-              </div>
-            )}
+              {submitStatus === 'error' && (
+                <div role="alert" className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-lg">
+                  <p className="text-red-200 text-sm mb-3">{fieldErrors.general || t('form.status.error.message')}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t('whatsapp.linkText'))}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-lg transition-colors duration-200 min-h-[44px] focus-enhanced"
+                    >
+                      {t('whatsapp.button')}
+                      <span dir="ltr">{PHONE_DISPLAY}</span>
+                    </a>
+                    <a
+                      href={`mailto:${EMAIL}`}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm rounded-lg transition-colors duration-200 min-h-[44px] focus-enhanced"
+                    >
+                      {t('contactMethods.email')}
+                      <span dir="ltr">{EMAIL}</span>
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate aria-busy={isSubmitting}>
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label htmlFor="name" className={labelClass}>{t('form.fields.name.label')}</label>

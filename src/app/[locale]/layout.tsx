@@ -1,7 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
-import localFont from 'next/font/local'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -11,17 +10,15 @@ import '../globals.css'
 
 const BASE_URL = (process.env.NEXT_PUBLIC_BASE_URL ?? 'https://www.zewar.xyz').replace(/\/$/, '')
 
-// Self-hosted IBM Plex Sans Arabic (OFL, src/fonts) — no build-time dependency on Google Fonts.
-const plexArabic = localFont({
-  src: [
-    { path: '../../fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: '../../fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2', weight: '500', style: 'normal' },
-    { path: '../../fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2', weight: '600', style: 'normal' },
-    { path: '../../fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2', weight: '700', style: 'normal' },
-  ],
-  display: 'swap',
-  variable: '--font-arabic',
-})
+// Self-hosted IBM Plex Sans Arabic (OFL, public/fonts; @font-face in globals.css).
+// Declared as plain CSS rather than next/font so the files are preloaded only on the ar locale:
+// next/font preloads every font of a segment, which made EN pages download ~180KB of Arabic glyphs.
+const ARABIC_PRELOAD_FONTS = [
+  '/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2',
+  '/fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2',
+  '/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2',
+  '/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2',
+]
 
 export async function generateMetadata({ params }: { params: Promise<{locale: string}> }): Promise<Metadata> {
   const {locale} = await params
@@ -84,7 +81,6 @@ export async function generateMetadata({ params }: { params: Promise<{locale: st
       title: t('appName'),
     },
     applicationName: t('appName'),
-    manifest: '/manifest.json',
   }
 }
 
@@ -131,20 +127,28 @@ export default async function RootLayout({
         description: t('personDescription'),
         url: `${BASE_URL}/${locale}`,
         email: 'ahmed@zewar.xyz',
-        image: `${BASE_URL}/images/ahmed-zewar-profile.png`,
+        image: `${BASE_URL}/images/ahmed-ziwar-portrait.webp`,
         sameAs: ['https://www.linkedin.com/in/ahmedziwar/'],
         knowsAbout: [
-          'Artificial intelligence strategy',
-          'AI solution delivery and integration',
-          'AI adoption and change management',
+          'AI readiness and strategy',
+          'Digital transformation',
+          'AI assistants and AI avatar systems',
           'Document intelligence',
-          'AI assistants',
-          'Process automation',
-          'Digital and customer experience'
+          'Legal-content portals',
+          'AI model gateways',
+          'AI governance and cost control',
+          'Process automation agents',
+          'Multi-model orchestration',
+          'Self-hosted AI infrastructure',
+          'Data science',
+          'Digital media and marketing'
         ],
+        knowsLanguage: ['en', 'ar'],
         hasCredential: {
           '@type': 'EducationalOccupationalCredential',
-          name: 'Microsoft Professional Program in Data Science'
+          name: 'Microsoft Professional Program in Data Science',
+          credentialCategory: 'Professional certificate program',
+          recognizedBy: { '@type': 'Organization', name: 'Microsoft' }
         },
         address: { '@type': 'PostalAddress', addressCountry: 'KW' }
       },
@@ -170,11 +174,13 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'} className={isArabic ? plexArabic.variable : undefined}>
+    <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'}>
       <head>
+        {isArabic && ARABIC_PRELOAD_FONTS.map((href) => (
+          <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
+        ))}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -189,8 +195,13 @@ export default async function RootLayout({
           {children}
           <Footer />
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
+        {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
+        {process.env.VERCEL && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   )
