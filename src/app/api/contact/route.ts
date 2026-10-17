@@ -19,6 +19,7 @@ interface ContactFormRequest {
   message: string;
   phone?: string;
   recaptchaToken?: string;
+  company_website?: string; // honeypot: must stay empty
 }
 
 // Server-side input validation
@@ -81,6 +82,8 @@ export async function POST(req: NextRequest) {
       }
     } catch {
       // Rate limiting unavailable (Upstash not configured) - proceed without it
+      // eslint-disable-next-line no-console
+      console.warn('[contact] Rate limiting DISABLED: UPSTASH_REDIS_REST_URL/TOKEN not configured or unreachable.');
     }
     // --- End Rate Limiting Check ---
 
@@ -94,20 +97,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Honeypot: real users never fill this hidden field. Pretend success to bots.
+    if (typeof body.company_website === 'string' && body.company_website.trim().length > 0) {
+      // eslint-disable-next-line no-console
+      console.warn('[contact] Honeypot triggered; submission dropped.');
+      return NextResponse.json({ message: 'Message sent successfully' }, { status: 200 });
+    }
+
     const { isValid, errors } = validateContactForm(body);
 
     if (!isValid) {
       return NextResponse.json({ message: 'Validation failed', errors }, { status: 400, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } });
     }
 
-    // reCAPTCHA verification (optional - skipped if not configured)
+    // reCAPTCHA verification: required whenever RECAPTCHA_SECRET_KEY is configured
     const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
-    if (recaptchaSecretKey && body.recaptchaToken) {
-      const recaptchaVerifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-      const recaptchaResponse = await fetch(recaptchaVerifyUrl, {
+    if (recaptchaSecretKey) {
+      const token = typeof body.recaptchaToken === 'string' ? body.recaptchaToken : '';
+      if (!token) {
+        return NextResponse.json(
+          { message: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 403, headers: { ...(rateLimitResult ? getRateLimitHeaders(rateLimitResult) : {}) } }
+        );
+      }
+      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${recaptchaSecretKey}&response=${body.recaptchaToken}`,
+        body: new URLSearchParams({ secret: recaptchaSecretKey, response: token }).toString(),
       });
       const recaptchaResult = await recaptchaResponse.json();
       if (!recaptchaResult.success || recaptchaResult.score < 0.5) {
@@ -119,7 +135,6 @@ export async function POST(req: NextRequest) {
         );
       }
     }
-
 
     // Retrieve EmailJS credentials from environment variables
     const serviceId = process.env.EMAILJS_SERVICE_ID;
