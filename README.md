@@ -9,7 +9,7 @@ Live site: [https://www.zewar.xyz](https://www.zewar.xyz) (English at `/en`, Ara
 - Next.js 16 (App Router) with React 19 and TypeScript
 - Tailwind CSS 4 (logical-property utilities for RTL)
 - next-intl for English/Arabic content (`messages/en.json`, `messages/ar.json`)
-- Contact form via EmailJS (server-side), with optional reCAPTCHA v3 and Upstash rate limiting
+- Contact form: server email via EmailJS + Upstash rate limiting when configured; otherwise it hands the lead to WhatsApp or email (no accounts needed)
 - Deployed on Vercel
 
 ## Project structure
@@ -50,12 +50,12 @@ See `.env.example`. The code reads:
 | `EMAILJS_TEMPLATE_ID` | EmailJS template |
 | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` | EmailJS public key |
 | `EMAILJS_PRIVATE_KEY` | EmailJS private key (server-side) |
-| `UPSTASH_REDIS_REST_URL` | Upstash Redis for contact rate limiting (required in production) |
-| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token (required in production) |
+| `UPSTASH_REDIS_REST_URL` | Upstash Redis for contact rate limiting (required for server email in production) |
+| `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token (required for server email in production) |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Optional: reCAPTCHA v3 site key |
 | `RECAPTCHA_SECRET_KEY` | Optional: reCAPTCHA v3 secret (server-side) |
 
-In production the contact API returns 503 when Upstash is missing or unreachable (rate limiting fails closed); in development it runs without it. reCAPTCHA is optional.
+EmailJS + Upstash are an optional upgrade. Without them (`GET /api/contact/status` reports `handoff`) the form validates the lead and hands it off to WhatsApp or a prefilled email to the owner; once all EmailJS and Upstash variables are set it switches to server email automatically. If a server send fails (5xx), the form falls back to the same handoff. In production `/api/contact` returns 503 when Upstash is missing or unreachable (rate limiting fails closed). reCAPTCHA is optional.
 
 ## Contact
 

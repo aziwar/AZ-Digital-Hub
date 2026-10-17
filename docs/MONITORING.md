@@ -11,7 +11,7 @@ Everything here is free and GitHub-native: no paid services, no extra secrets (o
 | `lighthouse.yml` | Mondays 05:17 UTC + manual | Mobile Lighthouse on `/en` and `/ar` |
 | `dependabot.yml` | npm weekly, actions monthly | Minor/patch npm updates grouped into one PR; majors of next/react/tailwind ignored |
 
-Site checks: `/en` and `/ar` return 200 with expected `<title>` and meta description, `/en/opengraph-image` is `image/png`, `/sitemap.xml` and `/robots.txt` return 200, `/api/health` returns 200 JSON with `status` `ok` or `degraded`. A failing check is retried once after 30 s before it counts.
+Site checks: `/en` and `/ar` return 200 with expected `<title>` and meta description, `/en/opengraph-image` is `image/png`, `/sitemap.xml` and `/robots.txt` return 200, `/api/health` returns 200 JSON with `status` `ok` or `degraded`, and the contact form can deliver leads (`contact` is `handoff`, or `checks.upstash` and `checks.emailjs` are both true). A failing check is retried once after 30 s before it counts.
 
 Lighthouse thresholds: performance >= 85; accessibility, best-practices, SEO >= 90. HTML/JSON reports are uploaded as the `lighthouse-reports` artifact (30 days).
 
@@ -20,6 +20,7 @@ Lighthouse thresholds: performance >= 85; accessibility, best-practices, SEO >= 
 - **GitHub issues** labelled `site-monitor` or `lighthouse` (labels are created automatically). One open issue per label: new failures add a comment, recovery adds a comment and closes it. Watch the repo (Issues) to get email.
 - **Real-visitor errors**: the error boundaries (`src/app/[locale]/error.tsx`, `src/app/global-error.tsx`) beacon to `POST /api/client-error`, which logs one line `[client-error] {"message","digest","url","userAgent","boundary"}` to **Vercel runtime logs** (filter on `client-error`). URLs are stripped of query/hash; no other PII.
 - `/api/health` reports `checks.upstash|emailjs|recaptcha` as booleans; `degraded` means optional config is missing, not that the site is down.
+- `/api/health` also reports `contact`: `email` (EmailJS + Upstash configured, form posts to `/api/contact`) or `handoff` (form hands the lead to WhatsApp/email from the visitor's device). `GET /api/contact/status` returns the same `{ "mode" }` for the form.
 
 ## Run manually
 

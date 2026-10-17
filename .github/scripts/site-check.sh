@@ -47,13 +47,17 @@ check_health() {
   local status
   status="$(grep -oE '"status":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
   [[ "$status" == ok || "$status" == degraded ]] || { echo "unexpected status '$status'"; return 1; }
-  # The contact form fails without these, so "degraded" only passes when the missing piece is optional
-  local svc missing=()
-  for svc in upstash emailjs; do
-    grep -qE "\"$svc\":true" "$TMP/body" || missing+=("$svc")
-  done
-  ((${#missing[@]} == 0)) || { echo "status=$status, contact form unavailable: ${missing[*]} not ready"; return 1; }
-  echo "200 status=$status"
+  # Contact form: "handoff" (leads go via WhatsApp/email) is a valid mode; otherwise server
+  # email must be fully ready (upstash and emailjs true).
+  local contact svc missing=()
+  contact="$(grep -oE '"contact":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
+  if [[ "$contact" != handoff ]]; then
+    for svc in upstash emailjs; do
+      grep -qE "\"$svc\":true" "$TMP/body" || missing+=("$svc")
+    done
+    ((${#missing[@]} == 0)) || { echo "status=$status contact=${contact:-?}, contact form unavailable: ${missing[*]} not ready"; return 1; }
+  fi
+  echo "200 status=$status contact=$contact"
 }
 
 CHECKS=(
