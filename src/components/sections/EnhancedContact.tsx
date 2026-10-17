@@ -3,6 +3,8 @@
 import { useTranslations, useLocale } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 
+import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, WHATSAPP_NUMBER, PHONE_DISPLAY } from '@/components/contactDetails';
+
 // Extend Window interface to include grecaptcha
 declare global {
   interface Window {
@@ -13,23 +15,31 @@ declare global {
   }
 }
 
+type FieldName = 'name' | 'email' | 'company' | 'phone' | 'project_type' | 'message';
+
+const emptyForm: Record<FieldName, string> = {
+  name: '',
+  email: '',
+  company: '',
+  phone: '',
+  project_type: '',
+  message: ''
+};
+
+// The API still expects these two fields; the form no longer asks for a budget.
+const NOT_SPECIFIED = 'Not specified';
+
+const inputBase =
+  'w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-colors duration-200 focus-enhanced';
+
 const EnhancedContact: React.FC = () => {
   const t = useTranslations('Contact');
   const locale = useLocale();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    project_type: '',
-    budget_range: '',
-    message: '',
-    phone: ''
-  });
-  
+  const [formData, setFormData] = useState<Record<FieldName, string>>(emptyForm);
+  const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [focusedField, setFocusedField] = useState<string>('');
   const [fieldTouched, setFieldTouched] = useState<Record<string, boolean>>({});
 
   // Load reCAPTCHA script
@@ -39,10 +49,7 @@ const EnhancedContact: React.FC = () => {
       return;
     }
 
-    if (window.grecaptcha && window.grecaptcha.ready) {
-      window.grecaptcha.ready(() => {
-        // reCAPTCHA is ready
-      });
+    if (typeof window.grecaptcha !== 'undefined') {
       return;
     }
 
@@ -51,13 +58,6 @@ const EnhancedContact: React.FC = () => {
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
-    script.onload = () => {
-      if (window.grecaptcha && window.grecaptcha.ready) {
-        window.grecaptcha.ready(() => {
-          // reCAPTCHA is ready
-        });
-      }
-    };
 
     return () => {
       if (script.parentNode) {
@@ -66,9 +66,7 @@ const EnhancedContact: React.FC = () => {
     };
   }, [locale]);
 
-  // Real-time validation functions (these will now be primary for client-side UX,
-  // but server-side validation is the security critical one)
-  const validateField = (name: string, value: string): string => {
+  const validateField = (name: FieldName, value: string): string => {
     switch (name) {
       case 'name':
         if (!value.trim()) return t('form.fields.name.errors.required');
@@ -76,14 +74,7 @@ const EnhancedContact: React.FC = () => {
         return '';
       case 'email':
         if (!value.trim()) return t('form.fields.email.errors.required');
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) return t('form.fields.email.errors.invalid');
-        return '';
-      case 'project_type':
-        if (!value) return t('form.fields.projectType.errors.required');
-        return '';
-      case 'budget_range':
-        if (!value) return t('form.fields.budgetRange.errors.required');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('form.fields.email.errors.invalid');
         return '';
       case 'message':
         if (!value.trim()) return t('form.fields.message.errors.required');
@@ -100,50 +91,27 @@ const EnhancedContact: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-
-    // Real-time validation
+    const name = e.target.name as FieldName;
+    const { value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (fieldTouched[name]) {
-      const error = validateField(name, value);
-      setFieldErrors(prev => ({
-        ...prev,
-        [name]: error
-      }));
+      setFieldErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
     }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    
+    const name = e.target.name as FieldName;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
-    setFocusedField('');
-    
-    const error = validateField(name, value);
-    setFieldErrors(prev => ({
-      ...prev,
-      [name]: error
-    }));
-  };
-
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFocusedField(e.target.name);
+    setFieldErrors(prev => ({ ...prev, [name]: validateField(name, e.target.value) }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Client-side validation (for UX, not security)
+
     const errors: Record<string, string> = {};
-    Object.keys(formData).forEach(key => {
-      if (key !== 'company') { // company is optional
-        const error = validateField(key, formData[key as keyof typeof formData]);
-        if (error) errors[key] = error;
-      }
+    (Object.keys(formData) as FieldName[]).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) errors[key] = error;
     });
 
     setFieldErrors(errors);
@@ -154,40 +122,38 @@ const EnhancedContact: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Execute reCAPTCHA
       let recaptchaToken = '';
       const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
       if (window.grecaptcha && window.grecaptcha.execute && siteKey) {
         recaptchaToken = await window.grecaptcha.execute(siteKey, { action: 'contact_form_submit' });
-      } else {
-        // eslint-disable-next-line no-console
-        console.warn('reCAPTCHA not ready or site key missing. Proceeding without reCAPTCHA token.');
       }
 
-      // Submit to the new API route
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formData, recaptchaToken }), // Pass recaptchaToken
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          project_type: formData.project_type || NOT_SPECIFIED,
+          budget_range: NOT_SPECIFIED,
+          locale,
+          company_website: honeypot,
+          recaptchaToken
+        }),
       });
 
       let result: { message?: string; errors?: string[] } = {};
       try {
         result = await response.json();
       } catch {
-        result = { message: t('form.status.error.message') };
+        result = {};
       }
 
       if (response.ok) {
         setSubmitStatus('success');
-        setFormData({
-          name: '', email: '', company: '', project_type: '',
-          budget_range: '', message: '', phone: ''
-        });
+        setFormData(emptyForm);
+        setFieldTouched({});
       } else {
         setSubmitStatus('error');
         if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
@@ -198,43 +164,31 @@ const EnhancedContact: React.FC = () => {
       }
     } catch {
       setSubmitStatus('error');
-      setFieldErrors({ general: t('form.status.error.message') }); // Fallback for network errors
+      setFieldErrors({ general: t('form.status.error.message') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const projectTypes = [
-    t('form.fields.projectType.options.0'),
-    t('form.fields.projectType.options.1'),
-    t('form.fields.projectType.options.2'),
-    t('form.fields.projectType.options.3'),
-    t('form.fields.projectType.options.4'),
-    t('form.fields.projectType.options.5'),
-    t('form.fields.projectType.options.6'),
-    t('form.fields.projectType.options.7')
-  ];
+  const projectTypes = t.raw('form.fields.projectType.options') as string[];
+  const nextSteps = t.raw('nextSteps.items') as string[];
 
-  const budgetRanges = [
-    t('form.fields.budgetRange.options.0'),
-    t('form.fields.budgetRange.options.1'),
-    t('form.fields.budgetRange.options.2'),
-    t('form.fields.budgetRange.options.3'),
-    t('form.fields.budgetRange.options.4')
-  ];
+  const fieldClass = (name: FieldName) =>
+    `${inputBase} ${fieldErrors[name] ? 'border-red-500' : 'border-slate-600 focus:border-purple-500'}`;
+
+  const errorText = (name: FieldName) =>
+    fieldErrors[name] ? (
+      <p id={`${name}-error`} className="mt-1 text-red-400 text-xs">{fieldErrors[name]}</p>
+    ) : null;
+
+  const labelClass = 'block text-sm font-medium text-gray-200 mb-2';
 
   return (
     <section id="contact" className="py-12 sm:py-16 md:py-20 px-4 bg-gradient-to-b from-slate-900 to-purple-900/30">
       <div className="max-w-7xl mx-auto">
 
-        {/* URGENCY HEADER */}
-        <div className="text-center mb-12 sm:mb-14 md:mb-16">
-          <div className="inline-flex items-center gap-2 sm:gap-3 bg-red-600/20 backdrop-blur border border-red-400/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-4 sm:mb-6">
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full animate-pulse"></div>
-            <span className="text-red-300 font-bold text-xs sm:text-sm md:text-base">{t('urgency.badge')}</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 px-2 sm:px-0">
+        <div className="text-center mb-12 sm:mb-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
             {t.rich('title', {
               gradient: (chunks) => (
                 <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
@@ -243,471 +197,226 @@ const EnhancedContact: React.FC = () => {
               )
             })}
           </h2>
-
-          <div className="max-w-4xl mx-auto mb-6 sm:mb-8">
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6 px-2 sm:px-0">
-              {t('subtitle')}
-            </p>
-
-            {/* SOCIAL PROOF TICKER */}
-            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8 text-xs sm:text-sm text-purple-300">
-              <div className="flex items-center gap-2">
-                <span className="text-green-400" aria-hidden="true">✓</span>
-                <span>{t('socialProof.0')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-400" aria-hidden="true">✓</span>
-                <span>{t('socialProof.1')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-400" aria-hidden="true">✓</span>
-                <span>{t('socialProof.2')}</span>
-              </div>
-            </div>
-          </div>
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+            {t('subtitle')}
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
+        <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 md:gap-12">
 
-          {/* ENHANCED CONTACT FORM */}
-          <div className="bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 md:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2 sm:gap-0">
-              <h3 className="text-xl sm:text-2xl font-bold text-white">{t('form.title')}</h3>
-              <div className="text-start sm:text-end">
-                <div className="text-xs sm:text-sm text-purple-300">{t('form.pricing.regular')}</div>
-                <div className="text-base sm:text-lg font-bold text-green-400">{t('form.pricing.offer')}</div>
-              </div>
-            </div>
+          {/* Form */}
+          <div className="lg:col-span-3 bg-slate-800/50 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 sm:p-6 md:p-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-6">{t('form.title')}</h3>
 
             {submitStatus === 'success' && (
               <div role="alert" aria-live="polite" className="mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
-                <h4 className="text-green-400 font-bold mb-2">{t('form.status.success.title')}</h4>
-                <p className="text-green-300 text-sm">{t('form.status.success.message')}</p>
+                <h4 className="text-green-300 font-bold mb-1">{t('form.status.success.title')}</h4>
+                <p className="text-green-200 text-sm">{t('form.status.success.message')}</p>
               </div>
             )}
 
             {submitStatus === 'error' && (
               <div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-600/20 border border-red-500/30 rounded-lg">
-                <p className="text-red-300 text-sm">{fieldErrors.general || t('form.status.error.message')}</p>
+                <p className="text-red-200 text-sm">{fieldErrors.general || t('form.status.error.message')}</p>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="relative">
-                  <label htmlFor="name" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'name' || formData.name
-                      ? 'text-purple-400'
-                      : fieldErrors.name
-                        ? 'text-red-400'
-                        : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.name.label')} {fieldErrors.name && '⚠️'}
-                  </label>
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="name" className={labelClass}>{t('form.fields.name.label')}</label>
                   <input
                     type="text"
                     id="name"
                     name="name"
+                    autoComplete="name"
                     value={formData.name}
                     onChange={handleChange}
-                    onFocus={handleFocus}
                     onBlur={handleBlur}
                     required
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-200 focus-enhanced ${
-                      fieldErrors.name
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'name'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
+                    aria-invalid={!!fieldErrors.name}
+                    aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+                    className={fieldClass('name')}
                     placeholder={t('form.fields.name.placeholder')}
                   />
-                  {fieldErrors.name && (
-                    <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                      {fieldErrors.name}
-                    </div>
-                  )}
+                  {errorText('name')}
                 </div>
-                <div className="relative">
-                  <label htmlFor="email" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'email' || formData.email
-                      ? 'text-purple-400'
-                      : fieldErrors.email
-                        ? 'text-red-400'
-                        : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.email.label')} {fieldErrors.email && '⚠️'}
-                  </label>
+                <div>
+                  <label htmlFor="email" className={labelClass}>{t('form.fields.email.label')}</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
+                    dir="ltr"
+                    autoComplete="email"
                     value={formData.email}
                     onChange={handleChange}
-                    onFocus={handleFocus}
                     onBlur={handleBlur}
                     required
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-200 focus-enhanced ${
-                      fieldErrors.email
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'email'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
+                    aria-invalid={!!fieldErrors.email}
+                    aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                    className={`${fieldClass('email')} rtl:text-right`}
                     placeholder={t('form.fields.email.placeholder')}
                   />
-                  {fieldErrors.email && (
-                    <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                      {fieldErrors.email}
-                    </div>
-                  )}
+                  {errorText('email')}
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="relative">
-                  <label htmlFor="company" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'company' || formData.company
-                      ? 'text-purple-400'
-                      : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.company.label')}
-                  </label>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="company" className={labelClass}>{t('form.fields.company.label')}</label>
                   <input
                     type="text"
                     id="company"
                     name="company"
+                    autoComplete="organization"
                     value={formData.company}
                     onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-200 focus-enhanced ${
-                      focusedField === 'company'
-                        ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                        : 'border-slate-600 focus:border-purple-500'
-                    }`}
+                    className={fieldClass('company')}
                     placeholder={t('form.fields.company.placeholder')}
                   />
                 </div>
-                <div className="relative">
-                  <label htmlFor="phone" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'phone' || formData.phone
-                      ? 'text-purple-400'
-                      : fieldErrors.phone
-                        ? 'text-red-400'
-                        : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.phone.label')} {fieldErrors.phone && '⚠️'}
-                  </label>
+                <div>
+                  <label htmlFor="phone" className={labelClass}>{t('form.fields.phone.label')}</label>
                   <input
                     type="tel"
                     id="phone"
                     name="phone"
+                    dir="ltr"
+                    autoComplete="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    onFocus={handleFocus}
                     onBlur={handleBlur}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-200 focus-enhanced ${
-                      fieldErrors.phone
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'phone'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
+                    aria-invalid={!!fieldErrors.phone}
+                    aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
+                    className={`${fieldClass('phone')} rtl:text-right`}
                     placeholder={t('form.fields.phone.placeholder')}
                   />
-                  {fieldErrors.phone && (
-                    <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                      {fieldErrors.phone}
-                    </div>
-                  )}
+                  {errorText('phone')}
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="relative">
-                  <label htmlFor="project_type" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'project_type' || formData.project_type
-                      ? 'text-purple-400'
-                      : fieldErrors.project_type
-                        ? 'text-red-400'
-                        : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.projectType.label')} {fieldErrors.project_type && '⚠️'}
-                  </label>
-                  <select
-                    id="project_type"
-                    name="project_type"
-                    value={formData.project_type}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    required
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white focus:outline-none transition-all duration-200 focus-enhanced ${
-                      fieldErrors.project_type
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'project_type'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
-                  >
-                    <option value="">{t('form.fields.projectType.placeholder')}</option>
-                    {projectTypes.map((type) => (
-                      <option key={type} value={type}>{type}</option>
-                    ))}
-                  </select>
-                  {fieldErrors.project_type && (
-                    <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                      {fieldErrors.project_type}
-                    </div>
-                  )}
-                </div>
-                <div className="relative">
-                  <label htmlFor="budget_range" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                    focusedField === 'budget_range' || formData.budget_range
-                      ? 'text-purple-400'
-                      : fieldErrors.budget_range
-                        ? 'text-red-400'
-                        : 'text-gray-300'
-                  }`}>
-                    {t('form.fields.budgetRange.label')} {fieldErrors.budget_range && '⚠️'}
-                  </label>
-                  <select
-                    id="budget_range"
-                    name="budget_range"
-                    value={formData.budget_range}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    required
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white focus:outline-none transition-all duration-200 focus-enhanced ${
-                      fieldErrors.budget_range
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'budget_range'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
-                  >
-                    <option value="">{t('form.fields.budgetRange.placeholder')}</option>
-                    {budgetRanges.map((range) => (
-                      <option key={range} value={range}>{range}</option>
-                    ))}
-                  </select>
-                  {fieldErrors.budget_range && (
-                    <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                      {fieldErrors.budget_range}
-                    </div>
-                  )}
-                </div>
+              <div>
+                <label htmlFor="project_type" className={labelClass}>{t('form.fields.projectType.label')}</label>
+                <select
+                  id="project_type"
+                  name="project_type"
+                  value={formData.project_type}
+                  onChange={handleChange}
+                  className={fieldClass('project_type')}
+                >
+                  <option value="">{t('form.fields.projectType.placeholder')}</option>
+                  {projectTypes.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
               </div>
-              
-              <div className="relative">
-                <label htmlFor="message" className={`block text-sm font-medium transition-all duration-200 mb-2 ${
-                  focusedField === 'message' || formData.message
-                    ? 'text-purple-400'
-                    : fieldErrors.message
-                      ? 'text-red-400'
-                      : 'text-gray-300'
-                }`}>
-                  {t('form.fields.message.label')} {fieldErrors.message && '⚠️'}
-                </label>
-                <div className="relative">
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    required
-                    rows={4}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-200 resize-none focus-enhanced ${
-                      fieldErrors.message
-                        ? 'border-red-500 focus:border-red-400 animate-shake'
-                        : focusedField === 'message'
-                          ? 'border-purple-500 focus:border-purple-400 shadow-lg shadow-purple-500/20'
-                          : 'border-slate-600 focus:border-purple-500'
-                    }`}
-                    placeholder={t('form.fields.message.placeholder')}
-                  />
-                  <div className="absolute bottom-2 end-2 text-xs text-gray-500">
-                    {formData.message.length}/500
-                  </div>
-                </div>
-                {fieldErrors.message && (
-                  <div className="absolute -bottom-6 start-0 text-red-400 text-xs animate-slideInUp">
-                    {fieldErrors.message}
-                  </div>
-                )}
+
+              <div>
+                <label htmlFor="message" className={labelClass}>{t('form.fields.message.label')}</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                  rows={5}
+                  maxLength={2000}
+                  aria-invalid={!!fieldErrors.message}
+                  aria-describedby={fieldErrors.message ? 'message-error' : undefined}
+                  className={`${fieldClass('message')} resize-y`}
+                  placeholder={t('form.fields.message.placeholder')}
+                />
+                {errorText('message')}
+              </div>
+
+              {/* Honeypot: hidden from people and assistive tech; bots tend to fill it */}
+              <div
+                aria-hidden="true"
+                style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}
+              >
+                <label htmlFor="company_website">{t('form.fields.honeypot.label')}</label>
+                <input
+                  type="text"
+                  id="company_website"
+                  name="company_website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold text-sm sm:text-base rounded-lg shadow-lg focus-enhanced disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] ${
-                  submitStatus === 'success'
-                    ? 'animate-successPulse bg-gradient-to-r from-green-600 to-green-700'
-                    : isSubmitting
-                      ? 'animate-pulse cursor-wait'
-                      : 'btn-magnetic hover:shadow-purple-500/50'
-                }`}
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold text-sm sm:text-base rounded-lg shadow-lg focus-enhanced disabled:opacity-60 disabled:cursor-wait min-h-[44px]"
               >
                 {submitStatus === 'success'
                   ? t('form.submit.success')
                   : isSubmitting
                     ? t('form.submit.loading')
-                    : t('form.submit.idle')
-                }
+                    : t('form.submit.idle')}
               </button>
             </form>
           </div>
 
-          {/* CONTACT METHODS + TRUST SIGNALS */}
-          <div className="space-y-6 sm:space-y-8">
+          {/* Side column */}
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
 
-            {/* INSTANT CONTACT */}
-            <div className="bg-gradient-to-r from-green-600/20 to-green-800/20 backdrop-blur-md border border-green-500/30 rounded-xl p-4 sm:p-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 flex items-center">
-                <span className="me-2 sm:me-3" aria-hidden="true">💬</span>
-                {t('whatsapp.title')}
-              </h3>
-              <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
-                {t('whatsapp.description')}
-              </p>
+            <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-4">{t('nextSteps.title')}</h3>
+              <ol className="space-y-3 text-sm sm:text-base text-gray-300">
+                {nextSteps.map((step, index) => (
+                  <li key={step} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600/30 text-purple-200 text-xs font-bold flex items-center justify-center" aria-hidden="true">
+                      {index + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-600/15 to-green-800/15 border border-green-500/30 rounded-xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{t('whatsapp.title')}</h3>
+              <p className="text-sm sm:text-base text-gray-300 mb-4">{t('whatsapp.description')}</p>
               <a
-                href="https://wa.me/96560672773?text=Hi Ahmed, I'm interested in strategic digital marketing consultation for my business"
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t('whatsapp.linkText'))}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm sm:text-base rounded-lg transition-all duration-200 transform hover:scale-105 min-h-[44px]"
+                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm sm:text-base rounded-lg transition-colors duration-200 min-h-[44px]"
               >
                 {t('whatsapp.button')}
+                <span dir="ltr">{PHONE_DISPLAY}</span>
               </a>
             </div>
 
-            {/* TRUST SIGNALS */}
-            <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-xl p-4 sm:p-6">
-              <h4 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">{t('trustSignals.title')}</h4>
-              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-300">
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1" aria-hidden="true">🏆</span>
-                  <span>
-                    {t.rich('trustSignals.items.0', {
-                      strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
-                    })}
-                  </span>
+            <div className="space-y-3">
+              <h3 className="text-base sm:text-lg font-bold text-white">{t('contactMethods.title')}</h3>
+              <dl className="space-y-3 text-sm sm:text-base">
+                <div className="p-4 bg-slate-800/30 border border-slate-700 rounded-lg">
+                  <dt className="text-xs font-medium text-gray-400">{t('contactMethods.email')}</dt>
+                  <dd>
+                    <a href={`mailto:${EMAIL}`} dir="ltr" className="text-blue-300 hover:text-blue-200 transition-colors">{EMAIL}</a>
+                  </dd>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1" aria-hidden="true">💼</span>
-                  <span>
-                    {t.rich('trustSignals.items.1', {
-                      strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
-                    })}
-                  </span>
+                <div className="p-4 bg-slate-800/30 border border-slate-700 rounded-lg">
+                  <dt className="text-xs font-medium text-gray-400">{t('contactMethods.linkedin')}</dt>
+                  <dd>
+                    <a href={LINKEDIN_URL} dir="ltr" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 transition-colors">
+                      {LINKEDIN_DISPLAY}
+                    </a>
+                  </dd>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1" aria-hidden="true">🎯</span>
-                  <span>
-                    {t.rich('trustSignals.items.2', {
-                      strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
-                    })}
-                  </span>
+                <div className="p-4 bg-slate-800/30 border border-slate-700 rounded-lg">
+                  <dt className="text-xs font-medium text-gray-400">{t('contactMethods.location.label')}</dt>
+                  <dd className="text-white">{t('contactMethods.location.value')}</dd>
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1" aria-hidden="true">🌟</span>
-                  <span>
-                    {t.rich('trustSignals.items.3', {
-                      strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
-                    })}
-                  </span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-green-400 mt-1" aria-hidden="true">🔒</span>
-                  <span>
-                    {t.rich('trustSignals.items.4', {
-                      strong: (chunks) => <strong className="font-bold text-white">{chunks}</strong>
-                    })}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* AVAILABILITY CALENDAR */}
-            <div className="bg-purple-600/10 border border-purple-600/30 rounded-xl p-4 sm:p-6">
-              <h4 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4 flex items-center">
-                {t('availability.title')}
-              </h4>
-              <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-                <div className="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
-                  <span className="text-gray-300">{t('availability.slots.online.month')}</span>
-                  <span className="text-red-400 font-bold">{t('availability.slots.online.status')}</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-slate-800/50 rounded-lg">
-                  <span className="text-gray-300">{t('availability.slots.inPerson.month')}</span>
-                  <span className="text-yellow-400 font-bold">{t('availability.slots.inPerson.status')}</span>
-                </div>
-                <p className="text-purple-300 text-xs mt-4">
-                  {t('availability.note')}
-                </p>
-              </div>
-            </div>
-
-            {/* CONTACT INFO */}
-            <div className="space-y-3 sm:space-y-4">
-              <h4 className="text-base sm:text-lg font-bold text-white">{t('contactMethods.title')}</h4>
-
-              <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl" aria-hidden="true">📧</span>
-                <div>
-                  <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.email.label')}</h5>
-                  <a href="mailto:ahmed@zewar.xyz" className="text-blue-400 hover:text-blue-300 transition-colors">
-                    {t('contactMethods.email.value')}
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl" aria-hidden="true">💼</span>
-                <div>
-                  <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.linkedin.label')}</h5>
-                  <a
-                    href="https://www.linkedin.com/in/ahmedziwar/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    {t('contactMethods.linkedin.value')}
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 p-4 bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-lg">
-                <span className="text-2xl" aria-hidden="true">📍</span>
-                <div>
-                  <h5 className="text-sm font-medium text-gray-400">{t('contactMethods.location.label')}</h5>
-                  <span className="text-white">{t('contactMethods.location.value')}</span>
-                </div>
-              </div>
+              </dl>
             </div>
           </div>
-        </div>
-        
-        {/* FINAL URGENCY CTA */}
-        <div className="text-center mt-12 sm:mt-14 md:mt-16 p-6 sm:p-8 bg-gradient-to-r from-red-900/30 to-purple-900/30 backdrop-blur-md border border-red-500/30 rounded-2xl">
-          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 px-2 sm:px-0">
-            {t('finalCta.title')}
-          </h3>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6 max-w-3xl mx-auto px-2 sm:px-0">
-            {t('finalCta.description')}
-          </p>
-          <div className="text-base sm:text-lg text-red-300 font-bold mb-3 sm:mb-4">
-            {t('finalCta.urgency')}
-          </div>
-          <a
-            href="#contact"
-            className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-bold text-sm sm:text-base rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg min-h-[44px]"
-          >
-            {t('finalCta.button')}
-          </a>
         </div>
       </div>
     </section>
