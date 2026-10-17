@@ -16,12 +16,11 @@ const nextConfig = {
   // Previous configuration caused 58% deployment failure rate
   // Quality gate enforcement now active for all builds
   
-  // Performance optimizations for Next.js 15
+  // Performance optimizations (webpackMemoryOptimizations dropped: Next 16 builds with Turbopack)
   experimental: {
     optimizePackageImports: [
       '@heroicons/react'
     ],
-    webpackMemoryOptimizations: true,
   },
   
   // Image optimization (local assets plus a few allowed remote hosts)
@@ -43,6 +42,9 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 7, // 1 week
+    // Next 16 defaults: qualities [75] only and no 16px size; keep the v15 behaviour
+    qualities: [70, 75],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
   // Environment variables

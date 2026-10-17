@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 interface VideoBackgroundProps {
   mp4Src: string;
@@ -12,6 +12,12 @@ interface VideoBackgroundProps {
   overlay?: boolean;
 }
 
+const noopSubscribe = () => () => {};
+
+// Only show video on desktop (>768px) and if user doesn't prefer reduced motion
+const shouldShowVideo = () =>
+  window.innerWidth > 768 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   mp4Src,
   webmSrc,
@@ -20,17 +26,8 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
   overlay = true,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [showVideo, setShowVideo] = useState(false);
-
-  useEffect(() => {
-    // Only show video on desktop (>768px) and if user doesn't prefer reduced motion
-    const isDesktop = window.innerWidth > 768;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (isDesktop && !prefersReducedMotion) {
-      setShowVideo(true);
-    }
-  }, []);
+  // Decided once after hydration (server snapshot is false), like the previous mount effect
+  const showVideo = useSyncExternalStore(noopSubscribe, shouldShowVideo, () => false);
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>

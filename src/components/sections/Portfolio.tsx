@@ -1,5 +1,4 @@
 import { getTranslations } from 'next-intl/server';
-import React from 'react';
 
 interface Capability {
   title: string;

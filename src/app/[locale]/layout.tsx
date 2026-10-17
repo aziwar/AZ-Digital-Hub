@@ -174,7 +174,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'} data-scroll-behavior="smooth">
       <head>
         {isArabic && ARABIC_PRELOAD_FONTS.map((href) => (
           <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
