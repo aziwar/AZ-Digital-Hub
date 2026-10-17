@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 
 import { imageConfig } from '@/lib/images.config';
+import { createTranslator, type MessageTree } from '@/lib/messages';
 
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -17,8 +17,13 @@ const menuItems = [
   { href: '#contact', key: 'contact' },
 ] as const;
 
-const Navigation: React.FC = () => {
-  const t = useTranslations('Navigation');
+interface NavigationProps {
+  messages: MessageTree;
+  languageLabels: React.ComponentProps<typeof LanguageSwitcher>['labels'];
+}
+
+const Navigation: React.FC<NavigationProps> = ({ messages, languageLabels }) => {
+  const t = createTranslator(messages, 'Navigation');
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -43,7 +48,7 @@ const Navigation: React.FC = () => {
                 {t(`menu.${item.key}`)}
               </a>
             ))}
-            <LanguageSwitcher />
+            <LanguageSwitcher labels={languageLabels} />
           </div>
 
           {/* Mobile menu button */}
@@ -79,7 +84,7 @@ const Navigation: React.FC = () => {
               </a>
             ))}
             <div className="px-4 py-3">
-              <LanguageSwitcher />
+              <LanguageSwitcher labels={languageLabels} />
             </div>
           </div>
         </div>

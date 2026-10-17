@@ -1,9 +1,9 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
 import React, { useState, useEffect } from 'react';
 
 import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, WHATSAPP_NUMBER, PHONE_DISPLAY } from '@/components/contactDetails';
+import { createTranslator, type MessageTree } from '@/lib/messages';
 
 // Extend Window interface to include grecaptcha
 declare global {
@@ -32,9 +32,15 @@ const NOT_SPECIFIED = 'Not specified';
 const inputBase =
   'w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-hidden transition-colors duration-200 focus-enhanced';
 
-const EnhancedContact: React.FC = () => {
-  const t = useTranslations('Contact');
-  const locale = useLocale();
+interface EnhancedContactProps {
+  locale: string;
+  /** The Contact namespace (plain strings); the rich title is formatted on the server */
+  messages: MessageTree;
+  title: React.ReactNode;
+}
+
+const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, title }) => {
+  const t = createTranslator(messages, 'Contact');
   const [formData, setFormData] = useState<Record<FieldName, string>>(emptyForm);
   const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -181,13 +187,7 @@ const EnhancedContact: React.FC = () => {
 
         <div className="text-center mb-12 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
-            {t.rich('title', {
-              gradient: (chunks) => (
-                <span className="bg-linear-to-r/srgb from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  {chunks}
-                </span>
-              )
-            })}
+            {title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
             {t('subtitle')}

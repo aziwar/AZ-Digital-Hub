@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import Footer from '@/components/Footer'
 import { routing } from '@/i18n/routing'
@@ -109,9 +109,6 @@ export default async function RootLayout({
   const {locale} = await params
   setRequestLocale(locale)
   
-  // Providing all messages to client-side is the simplest configuration
-  // Reference: https://next-intl.dev/docs/usage/configuration#messages
-  const messages = await getMessages()
   const t = await getTranslations({ locale, namespace: 'Metadata' })
   const isArabic = locale === 'ar'
 
@@ -191,7 +188,10 @@ export default async function RootLayout({
         />
       </head>
       <body className="font-sans">
-        <NextIntlClientProvider messages={messages}>
+        {/* No messages on the client: client components get their strings as props from
+            server components (lib/messages.ts), so no message JSON ships to the browser.
+            The provider still supplies the locale to next-intl's Link (error and not-found pages). */}
+        <NextIntlClientProvider messages={null}>
           {children}
           <Footer />
         </NextIntlClientProvider>

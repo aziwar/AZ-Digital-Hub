@@ -1,17 +1,20 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import { useTransition } from 'react'
 
 import { usePathname, useRouter } from '@/i18n/navigation'
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  labels: { switchToEnglish: string; switchToArabic: string }
+}
+
+export default function LanguageSwitcher({ labels }: LanguageSwitcherProps) {
   const params = useParams()
   const router = useRouter()
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
-  const t = useTranslations('Common')
+  const t = (key: keyof LanguageSwitcherProps['labels']) => labels[key]
 
   const currentLocale = params.locale as string
 

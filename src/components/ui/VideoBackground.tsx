@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 interface VideoBackgroundProps {
@@ -73,18 +72,20 @@ interface LazyVideoProps {
   mp4Src: string;
   posterSrc: string;
   className?: string;
+  labels: { playVideo: string; pauseVideo: string; videoPoster: string };
 }
 
 export const LazyVideo: React.FC<LazyVideoProps> = ({
   mp4Src,
   posterSrc,
   className = '',
+  labels,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const t = useTranslations('Common');
+  const t = (key: keyof LazyVideoProps['labels']) => labels[key];
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
