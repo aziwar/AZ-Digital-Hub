@@ -75,7 +75,7 @@ body {
   letter-spacing: var(--tracking-normal);
 }
 
-/* Arabic typography: IBM Plex Sans Arabic (loaded via next/font for the ar locale).
+/* Arabic typography: IBM Plex Sans Arabic (self-hosted via next/font/local for the ar locale).
    Letter-spacing breaks Arabic letter joining, so it is disabled for ar. */
 html[lang="ar"] body {
   font-family: var(--font-arabic), system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;

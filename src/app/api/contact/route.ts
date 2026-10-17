@@ -14,8 +14,8 @@ interface ContactFormRequest {
   name: string;
   email: string;
   company?: string;
-  project_type: string;
-  budget_range: string;
+  project_type?: string;
+  budget_range?: string;
   message: string;
   phone?: string;
   recaptchaToken?: string;
@@ -33,14 +33,6 @@ const validateContactForm = (data: Partial<ContactFormRequest>): { isValid: bool
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!data.email || typeof data.email !== 'string' || !emailRegex.test(data.email)) {
     errors.push('A valid email address is required.');
-  }
-
-  if (!data.project_type || typeof data.project_type !== 'string' || data.project_type.trim().length === 0) {
-    errors.push('Project type is required.');
-  }
-
-  if (!data.budget_range || typeof data.budget_range !== 'string' || data.budget_range.trim().length === 0) {
-    errors.push('Budget range is required.');
   }
 
   if (!data.message || typeof data.message !== 'string' || data.message.trim().length < 20) {
@@ -155,8 +147,8 @@ export async function POST(req: NextRequest) {
         from_name: body.name,
         from_email: body.email,
         company: body.company,
-        project_type: body.project_type,
-        budget_range: body.budget_range,
+        project_type: body.project_type || 'Not specified',
+        budget_range: body.budget_range || 'Not specified',
         message: body.message,
         phone: body.phone,
         to_name: 'Ahmed Zewar' // This could also be an env var if dynamic
