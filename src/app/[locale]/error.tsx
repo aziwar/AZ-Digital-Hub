@@ -12,6 +12,7 @@
 import { useEffect } from 'react'
 
 import { Link } from '@/i18n/navigation'
+import { reportClientError } from '@/lib/report-client-error'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -22,13 +23,8 @@ export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Log error to monitoring service in production
     if (process.env.NODE_ENV === 'production') {
-      // TODO: Add error reporting service integration (e.g., Sentry)
-      // eslint-disable-next-line no-console
-      console.error('[Error Boundary]', {
-        message: error.message,
-        digest: error.digest,
-        timestamp: new Date().toISOString()
-      })
+      // Forwarded to Vercel runtime logs via /api/client-error (once per error)
+      reportClientError(error, 'route')
     } else {
       // Development: detailed console logging
       // eslint-disable-next-line no-console
