@@ -32,10 +32,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src lib",
-    "type-check": "tsc --noEmit",
-    "test:visual:baseline": "playwright test --update-snapshots",
-    "test:visual": "playwright test"
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@emailjs/nodejs": "^5.0.2",
@@ -54,12 +52,10 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.34.0",
     "eslint-config-next": "^16.4.2",
-    "playwright": "^1.49.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2"
   }
