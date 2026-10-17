@@ -339,6 +339,23 @@
         "error": {
           "message": "Something went wrong. Please try again, or contact me by email or WhatsApp."
         }
+      },
+      "handoff": {
+        "title": "One last step to send your message",
+        "description": "Your message is ready. Choose how you would like to send it and it will reach me directly.",
+        "whatsappButton": "Send your message via WhatsApp",
+        "emailButton": "Send by email",
+        "back": "Edit my message",
+        "emailSubject": "Discovery call request",
+        "greeting": "Hello Ahmed, I would like to arrange a discovery call. My details:",
+        "labels": {
+          "name": "Name",
+          "company": "Company",
+          "email": "Email",
+          "phone": "Phone",
+          "interest": "Interest",
+          "message": "Message"
+        }
       }
     },
     "whatsapp": {

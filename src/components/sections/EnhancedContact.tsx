@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, WHATSAPP_NUMBER, PHONE_DISPLAY } from '@/components/contactDetails';
 import { createTranslator, type MessageTree } from '@/lib/messages';
@@ -29,6 +29,9 @@ const emptyForm: Record<FieldName, string> = {
 // The API still expects these two fields; the form no longer asks for a budget.
 const NOT_SPECIFIED = 'Not specified';
 
+type DeliveryMode = 'email' | 'handoff';
+type SubmitStatus = 'idle' | 'success' | 'error' | 'handoff';
+
 const inputBase =
   'w-full px-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-gray-400 focus:outline-hidden transition-colors duration-200 focus-enhanced';
 
@@ -44,9 +47,33 @@ const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, tit
   const [formData, setFormData] = useState<Record<FieldName, string>>(emptyForm);
   const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [fieldTouched, setFieldTouched] = useState<Record<string, boolean>>({});
+  const deliveryModeRef = useRef<Promise<DeliveryMode | null> | null>(null);
+  const handoffHeadingRef = useRef<HTMLHeadingElement>(null);
+  const returnFocusRef = useRef(false);
+
+  // Server email (EmailJS + Upstash) may not be configured; then the lead is handed off
+  // to WhatsApp/email from the visitor's device. Fetched lazily so the page stays static.
+  const getDeliveryMode = (): Promise<DeliveryMode | null> => {
+    deliveryModeRef.current ??= fetch('/api/contact/status', { cache: 'no-store' })
+      .then(res => (res.ok ? res.json() : null))
+      .then((data: { mode?: unknown } | null) =>
+        data?.mode === 'email' || data?.mode === 'handoff' ? data.mode : null
+      )
+      .catch(() => null);
+    return deliveryModeRef.current;
+  };
+
+  useEffect(() => {
+    if (submitStatus === 'handoff') {
+      handoffHeadingRef.current?.focus();
+    } else if (submitStatus === 'idle' && returnFocusRef.current) {
+      returnFocusRef.current = false;
+      document.getElementById('name')?.focus();
+    }
+  }, [submitStatus]);
 
   // Load reCAPTCHA script
   useEffect(() => {
@@ -129,6 +156,13 @@ const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, tit
 
     setIsSubmitting(true);
 
+    const mode = await getDeliveryMode();
+    if (mode === 'handoff') {
+      setIsSubmitting(false);
+      showHandoff();
+      return;
+    }
+
     try {
       let recaptchaToken = '';
       const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -155,18 +189,57 @@ const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, tit
         setSubmitStatus('success');
         setFormData(emptyForm);
         setFieldTouched({});
+      } else if (response.status >= 500) {
+        // Server email unavailable: hand the lead off instead of a dead end
+        showHandoff();
       } else {
         // Server messages are English-only; always show the localized error
         setSubmitStatus('error');
         setFieldErrors({ general: t('form.status.error.message') });
       }
     } catch {
-      setSubmitStatus('error');
-      setFieldErrors({ general: t('form.status.error.message') });
+      showHandoff();
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const showHandoff = () => {
+    // Honeypot: bots get the same fake success as the server gives them, never a handoff
+    if (honeypot.trim()) {
+      setSubmitStatus('success');
+      setFormData(emptyForm);
+      setFieldTouched({});
+      return;
+    }
+    setFieldErrors({});
+    setSubmitStatus('handoff');
+  };
+
+  // Plain-text lead in the page's locale, for WhatsApp and the email body
+  const buildLead = (lineBreak: string): string => {
+    const label = (key: string) => t(`form.handoff.labels.${key}`);
+    const field = (key: string, value: string) => (value.trim() ? `${label(key)}: ${value.trim()}` : null);
+    return [
+      t('form.handoff.greeting'),
+      '',
+      field('name', formData.name),
+      field('company', formData.company),
+      field('email', formData.email),
+      field('phone', formData.phone),
+      field('interest', formData.project_type),
+      '',
+      `${label('message')}:`,
+      formData.message.trim()
+    ]
+      .filter((line): line is string => line !== null)
+      .join(lineBreak);
+  };
+
+  const whatsappHandoffHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildLead('\n'))}`;
+  const emailHandoffHref = `mailto:${EMAIL}?subject=${encodeURIComponent(
+    `${t('form.handoff.emailSubject')} - ${formData.name.trim()}`
+  )}&body=${encodeURIComponent(buildLead('\r\n'))}`;
 
   const projectTypes = t.raw('form.fields.projectType.options') as string[];
   const nextSteps = t.raw('nextSteps.items') as string[];
@@ -232,9 +305,52 @@ const EnhancedContact: React.FC<EnhancedContactProps> = ({ locale, messages, tit
                   </div>
                 </div>
               )}
+
+              {submitStatus === 'handoff' && (
+                <div className="p-5 sm:p-6 bg-slate-900/50 border border-purple-500/30 rounded-lg">
+                  <h4
+                    ref={handoffHeadingRef}
+                    tabIndex={-1}
+                    className="text-lg sm:text-xl font-bold text-white mb-2 focus:outline-hidden"
+                  >
+                    {t('form.handoff.title')}
+                  </h4>
+                  <p className="text-gray-300 text-sm sm:text-base mb-5">{t('form.handoff.description')}</p>
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+                    <a
+                      href={whatsappHandoffHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(whatsappHandoffHref, '_blank', 'noopener,noreferrer');
+                      }}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-green-600 hover:bg-green-700 text-white font-bold text-sm sm:text-base rounded-lg transition-colors duration-200 min-h-[44px] focus-enhanced"
+                    >
+                      {t('form.handoff.whatsappButton')}
+                    </a>
+                    <a
+                      href={emailHandoffHref}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm sm:text-base rounded-lg transition-colors duration-200 min-h-[44px] focus-enhanced"
+                    >
+                      {t('form.handoff.emailButton')}
+                    </a>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      returnFocusRef.current = true;
+                      setSubmitStatus('idle');
+                    }}
+                    className="mt-4 text-sm text-gray-300 hover:text-white underline underline-offset-4 min-h-[44px] focus-enhanced"
+                  >
+                    {t('form.handoff.back')}
+                  </button>
+                </div>
+              )}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5" noValidate aria-busy={isSubmitting}>
+            <form onSubmit={handleSubmit} onFocus={() => void getDeliveryMode()} className="space-y-5" noValidate aria-busy={isSubmitting} hidden={submitStatus === 'handoff'}>
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label htmlFor="name" className={labelClass}>{t('form.fields.name.label')}</label>
