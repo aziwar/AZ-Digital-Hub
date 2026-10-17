@@ -38,7 +38,8 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
         alt=""
         aria-hidden="true"
         fill
-        priority
+        preload
+        fetchPriority="high"
         sizes="100vw"
         quality={70}
         className={`object-cover ${showVideo ? 'hidden' : 'block'}`}
