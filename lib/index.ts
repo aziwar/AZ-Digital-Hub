@@ -3,12 +3,10 @@
 
 // Rate limiting utilities
 export {
-  strictRateLimiter,
   standardRateLimiter,
   getClientIdentifier,
   checkRateLimit,
   getRateLimitHeaders,
-  createMemoryRateLimiter,
-  memoryStrictRateLimiter,
+  isUpstashConfigured,
   type RateLimitResult
 } from './ratelimit'

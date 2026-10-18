@@ -39,7 +39,6 @@ export default async function Home({
         <About />
         <FAQ />
         <EnhancedContact
-          locale={locale}
           messages={messages.Contact}
           title={contact.rich('title', {
             gradient: (chunks) => (

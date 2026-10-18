@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import { standardRateLimiter, getClientIdentifier, checkRateLimit } from '@/lib'
+import { standardRateLimiter, getClientIdentifier, checkRateLimit, isUpstashConfigured } from '@/lib'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +21,7 @@ const clip = (value: unknown, max: number): string | undefined =>
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const noContent = new NextResponse(null, { status: 204 })
 
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  if (isUpstashConfigured()) {
     try {
       const result = await checkRateLimit(standardRateLimiter, getClientIdentifier(request))
       if (!result.success) return new NextResponse(null, { status: 429 })

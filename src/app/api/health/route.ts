@@ -5,17 +5,9 @@ import {
   standardRateLimiter,
   getClientIdentifier,
   checkRateLimit,
-  getRateLimitHeaders
-} from '@/lib'
-import {
-  getContactDeliveryMode,
-  getContactEmailProvider,
-  getRateLimitBackend,
-  isCloudflareEmailConfigured,
-  isEmailJsConfigured,
-  isRecaptchaConfigured,
+  getRateLimitHeaders,
   isUpstashConfigured
-} from '@/lib/contactDelivery'
+} from '@/lib'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,16 +17,8 @@ export const dynamic = 'force-dynamic'
  * (never values) and rate-limits only when Upstash is configured.
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  const checks = {
-    upstash: isUpstashConfigured(),
-    cloudflareEmail: isCloudflareEmailConfigured(),
-    emailjs: isEmailJsConfigured(),
-    recaptcha: isRecaptchaConfigured()
-  }
-  // Config-based, matching /api/contact/status: "handoff" = form sends leads via WhatsApp/email
-  const contact = getContactDeliveryMode()
-  const provider = getContactEmailProvider()
-  const rateLimit = getRateLimitBackend()
+  const upstashConfigured = isUpstashConfigured()
+  const checks = { upstash: upstashConfigured }
 
   const headers: Record<string, string> = { 'Cache-Control': 'no-store' }
 
@@ -51,11 +35,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // "ok" = server email ready with reCAPTCHA; "degraded" = optional config missing
-  const status = contact === 'email' && checks.recaptcha ? 'ok' : 'degraded'
-
   return NextResponse.json(
-    { status, contact, provider, rateLimit, checks, timestamp: new Date().toISOString() },
+    // "degraded" = Upstash configured but unreachable, so rate limiting was skipped
+    { status: upstashConfigured && !checks.upstash ? 'degraded' : 'ok', checks, timestamp: new Date().toISOString() },
     { status: 200, headers }
   )
 }

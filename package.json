@@ -36,7 +36,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emailjs/nodejs": "^5.0.2",
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.3.0",
