@@ -267,99 +267,15 @@
       },
       {
         "question": "How do we get started?",
-        "answer": "Request a discovery call through the form below or on WhatsApp. We discuss your goals and current situation, and I suggest a sensible first step."
+        "answer": "Request a discovery call on WhatsApp. We discuss your goals and current situation, and I suggest a sensible first step."
       }
     ]
   },
   "Contact": {
     "title": "Let's talk about <gradient>your goals</gradient>",
     "subtitle": "Tell me briefly what you want to achieve. I will reply personally to arrange a discovery call.",
-    "form": {
-      "title": "Request a discovery call",
-      "fields": {
-        "name": {
-          "label": "Name *",
-          "placeholder": "Your full name",
-          "errors": {
-            "required": "Name is required",
-            "minLength": "Name must be at least 2 characters"
-          }
-        },
-        "email": {
-          "label": "Work email *",
-          "placeholder": "you@company.com",
-          "errors": {
-            "required": "Email is required",
-            "invalid": "Please enter a valid email address"
-          }
-        },
-        "company": {
-          "label": "Company",
-          "placeholder": "Company name"
-        },
-        "phone": {
-          "label": "Phone (optional)",
-          "placeholder": "+965",
-          "errors": {
-            "invalid": "Please enter a valid phone number"
-          }
-        },
-        "projectType": {
-          "label": "Area of interest (optional)",
-          "placeholder": "Select an area",
-          "options": [
-            "AI readiness & strategy",
-            "AI solution build & delivery",
-            "AI governance & model gateways",
-            "Not sure yet"
-          ]
-        },
-        "message": {
-          "label": "What would you like to achieve? *",
-          "placeholder": "A few lines about your goals, current situation and timing",
-          "errors": {
-            "required": "Please write a short message",
-            "minLength": "Please add a little more detail (at least 20 characters)"
-          }
-        },
-        "honeypot": {
-          "label": "Leave this field empty"
-        }
-      },
-      "submit": {
-        "idle": "Request a discovery call",
-        "loading": "Sending…",
-        "success": "Request sent"
-      },
-      "status": {
-        "success": {
-          "title": "Thank you, your request has been received",
-          "message": "I will reply personally to arrange a convenient time."
-        },
-        "error": {
-          "message": "Something went wrong. Please try again, or contact me by email or WhatsApp."
-        }
-      },
-      "handoff": {
-        "title": "One last step to send your message",
-        "description": "Your message is ready. Choose how you would like to send it and it will reach me directly.",
-        "whatsappButton": "Send your message via WhatsApp",
-        "emailButton": "Send by email",
-        "back": "Edit my message",
-        "emailSubject": "Discovery call request",
-        "greeting": "Hello Ahmed, I would like to arrange a discovery call. My details:",
-        "labels": {
-          "name": "Name",
-          "company": "Company",
-          "email": "Email",
-          "phone": "Phone",
-          "interest": "Interest",
-          "message": "Message"
-        }
-      }
-    },
     "whatsapp": {
-      "title": "Prefer WhatsApp?",
+      "title": "Message me on WhatsApp",
       "description": "Send a short message and we can arrange a call at a time that suits you.",
       "button": "WhatsApp",
       "linkText": "Hello Ahmed, I would like to arrange a discovery call about AI for our company."

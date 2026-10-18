@@ -1,8 +1,7 @@
 /**
  * Rate Limiting Utility for API Routes
  *
- * Implements Upstash Redis-based rate limiting to protect against API abuse
- * and excessive OpenAI API costs.
+ * Implements Upstash Redis-based rate limiting to protect against API abuse.
  *
  * Security Requirements:
  * - OWASP Top 10 2021: A04:2021 – Insecure Design (CWE-770)
@@ -17,7 +16,6 @@ import { Redis } from '@upstash/redis';
 
 // Lazy Redis and rate limiter initialization
 let redis: Redis | null = null;
-let strictLimiter: Ratelimit | null = null;
 let standardLimiter: Ratelimit | null = null;
 
 function getRedisClient(): Redis {
@@ -43,25 +41,6 @@ function getRedisClient(): Redis {
 }
 
 /**
- * Get strict rate limiter instance (lazy initialization)
- *
- * Limits: 5 requests per 10 minutes
- * Algorithm: Fixed window with sliding window properties
- * Use for: /api/generate-assets (high cost operations)
- */
-function getStrictRateLimiter(): Ratelimit {
-  if (!strictLimiter) {
-    strictLimiter = new Ratelimit({
-      redis: getRedisClient(),
-      limiter: Ratelimit.fixedWindow(5, '600 s'), // 5 requests per 10 minutes
-      prefix: 'ratelimit:strict',
-      analytics: true,
-    });
-  }
-  return strictLimiter;
-}
-
-/**
  * Get standard rate limiter instance (lazy initialization)
  *
  * Limits: 60 requests per minute
@@ -81,10 +60,6 @@ function getStandardRateLimiter(): Ratelimit {
 }
 
 // Export lazy getters instead of direct instances
-export const strictRateLimiter = {
-  limit: async (identifier: string) => getStrictRateLimiter().limit(identifier)
-};
-
 export const standardRateLimiter = {
   limit: async (identifier: string) => getStandardRateLimiter().limit(identifier)
 };
@@ -160,42 +135,3 @@ export function getRateLimitHeaders(result: RateLimitResult): Record<string, str
     'X-RateLimit-Reset': result.reset.toString(),
   };
 }
-
-/**
- * In-memory sliding-window limiter, used when Upstash is not configured.
- * Per server instance only (serverless instances do not share it), which is
- * enough to stop casual abuse of the contact form without extra services.
- */
-export function createMemoryRateLimiter(max: number, windowMs: number) {
-  const hits = new Map<string, number[]>();
-  let lastPrune = Date.now();
-
-  const prune = (now: number) => {
-    for (const [key, stamps] of hits) {
-      const recent = stamps.filter((t) => now - t < windowMs);
-      if (recent.length) hits.set(key, recent);
-      else hits.delete(key);
-    }
-    lastPrune = now;
-  };
-
-  return {
-    limit: async (identifier: string): Promise<RateLimitResult> => {
-      const now = Date.now();
-      if (now - lastPrune > windowMs || hits.size > 10_000) prune(now);
-      const recent = (hits.get(identifier) ?? []).filter((t) => now - t < windowMs);
-      const success = recent.length < max;
-      if (success) recent.push(now);
-      hits.set(identifier, recent);
-      return {
-        success,
-        limit: max,
-        remaining: Math.max(0, max - recent.length),
-        reset: (recent[0] ?? now) + windowMs,
-      };
-    },
-  };
-}
-
-/** Contact form fallback limiter: 5 requests per 10 minutes per client. */
-export const memoryStrictRateLimiter = createMemoryRateLimiter(5, 10 * 60 * 1000);

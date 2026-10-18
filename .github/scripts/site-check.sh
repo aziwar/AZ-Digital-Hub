@@ -46,13 +46,8 @@ check_health() {
   check_status /api/health application/json >/dev/null || { check_status /api/health application/json; return 1; }
   local status
   status="$(grep -oE '"status":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
-  [[ "$status" == ok || "$status" == degraded ]] || { echo "unexpected status '$status'"; return 1; }
-  # Contact form: "handoff" (leads go via WhatsApp/email) or "email" (server email via
-  # Cloudflare Email Service or EmailJS; rate limiting falls back to in-memory without Upstash).
-  local contact
-  contact="$(grep -oE '"contact":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
-  [[ "$contact" == handoff || "$contact" == email ]] || { echo "status=$status unexpected contact mode '${contact:-?}'"; return 1; }
-  echo "200 status=$status contact=$contact"
+  [[ "$status" == ok ]] || { echo "unexpected status '$status'"; return 1; }
+  echo "200 status=$status"
 }
 
 CHECKS=(
