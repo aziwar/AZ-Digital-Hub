@@ -5,7 +5,8 @@ import {
   standardRateLimiter,
   getClientIdentifier,
   checkRateLimit,
-  getRateLimitHeaders
+  getRateLimitHeaders,
+  isUpstashConfigured
 } from '@/lib'
 
 export const dynamic = 'force-dynamic'
@@ -16,9 +17,8 @@ export const dynamic = 'force-dynamic'
  * (never values) and rate-limits only when Upstash is configured.
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  const checks = {
-    upstash: Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
-  }
+  const upstashConfigured = isUpstashConfigured()
+  const checks = { upstash: upstashConfigured }
 
   const headers: Record<string, string> = { 'Cache-Control': 'no-store' }
 
@@ -36,7 +36,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json(
-    { status: 'ok', checks, timestamp: new Date().toISOString() },
+    // "degraded" = Upstash configured but unreachable, so rate limiting was skipped
+    { status: upstashConfigured && !checks.upstash ? 'degraded' : 'ok', checks, timestamp: new Date().toISOString() },
     { status: 200, headers }
   )
 }

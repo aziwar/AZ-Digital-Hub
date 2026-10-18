@@ -9,7 +9,7 @@ Live site: [https://www.zewar.xyz](https://www.zewar.xyz) (English at `/en`, Ara
 - Next.js 16 (App Router) with React 19 and TypeScript
 - Tailwind CSS 4 (logical-property utilities for RTL)
 - next-intl for English/Arabic content (`messages/en.json`, `messages/ar.json`)
-- Contact: WhatsApp only (no contact form, no server email)
+- Contact: a WhatsApp call to action plus email and LinkedIn links (no contact form, no server email)
 - Deployed on Vercel
 
 ## Project structure

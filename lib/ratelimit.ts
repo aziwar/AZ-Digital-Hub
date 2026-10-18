@@ -6,13 +6,17 @@
  * Security Requirements:
  * - OWASP Top 10 2021: A04:2021 – Insecure Design (CWE-770)
  * - Prevents resource exhaustion attacks
- * - Protects expensive third-party API costs
  *
  * @see https://upstash.com/docs/redis/sdks/ratelimit-ts/overview
  */
 
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+
+/** True when both Upstash env vars are set (presence only, never values). */
+export function isUpstashConfigured(): boolean {
+  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+}
 
 // Lazy Redis and rate limiter initialization
 let redis: Redis | null = null;

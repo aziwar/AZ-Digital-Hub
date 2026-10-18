@@ -7,5 +7,6 @@ export {
   getClientIdentifier,
   checkRateLimit,
   getRateLimitHeaders,
+  isUpstashConfigured,
   type RateLimitResult
 } from './ratelimit'

@@ -46,7 +46,8 @@ check_health() {
   check_status /api/health application/json >/dev/null || { check_status /api/health application/json; return 1; }
   local status
   status="$(grep -oE '"status":"[a-z_]+"' "$TMP/body" | head -1 | cut -d'"' -f4)"
-  [[ "$status" == ok ]] || { echo "unexpected status '$status'"; return 1; }
+  # "degraded" = Upstash is configured but unreachable (rate limiting skipped); the site is up.
+  [[ "$status" == ok || "$status" == degraded ]] || { echo "unexpected status '$status'"; return 1; }
   echo "200 status=$status"
 }
 
