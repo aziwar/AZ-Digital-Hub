@@ -1,7 +1,11 @@
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
+import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
+import { hasLocale } from 'next-intl'
+
+import { routing } from '@/i18n/routing'
 
 export const alt = 'Ahmed Ziwar'
 export const size = { width: 1200, height: 630 }
@@ -22,6 +26,8 @@ const font = (name: string) => readFile(join(process.cwd(), 'assets', 'fonts', n
 
 export default async function Image({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
+  // Unknown first segments (e.g. /api/opengraph-image) must not run the image function
+  if (!hasLocale(routing.locales, locale)) notFound()
   const isAr = locale === 'ar'
   const t = TITLES[isAr ? 'ar' : 'en']
 
