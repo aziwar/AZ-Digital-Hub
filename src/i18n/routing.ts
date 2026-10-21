@@ -5,5 +5,9 @@ export const routing = defineRouting({
   locales: ['en', 'ar'],
 
   // Used when no locale matches
-  defaultLocale: 'en'
+  defaultLocale: 'en',
+
+  // No hreflang `Link` response header from the proxy: it was also sent on 404s
+  // (/en/nope -> /ar/nope). The pages declare hreflang in their HTML metadata instead.
+  alternateLinks: false
 });

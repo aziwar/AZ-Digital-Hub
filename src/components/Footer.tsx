@@ -2,8 +2,9 @@ import { getTranslations } from 'next-intl/server'
 
 import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, PHONE_DISPLAY, WHATSAPP_NUMBER } from '@/components/contactDetails'
 
-export default async function Footer() {
-  const t = await getTranslations('Footer')
+// Explicit locale: src/app/global-not-found.tsx renders outside the [locale] request locale
+export default async function Footer({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'Footer' })
   const services = t.raw('services.items') as string[]
   const approach = t.raw('approach.items') as string[]
 

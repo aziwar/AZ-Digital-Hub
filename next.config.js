@@ -18,6 +18,8 @@ const nextConfig = {
   
   // Performance optimizations (webpackMemoryOptimizations dropped: Next 16 builds with Turbopack)
   experimental: {
+    // src/app/global-not-found.tsx: server-rendered, localized 404 for unmatched URLs
+    globalNotFound: true,
     optimizePackageImports: [
       '@heroicons/react'
     ],

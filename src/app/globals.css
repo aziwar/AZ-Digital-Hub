@@ -348,6 +348,9 @@ html[lang="ar"] h3 {
 /* Enhanced Smooth Scrolling & Performance */
 html {
   scroll-behavior: smooth;
+  /* Keep in-page anchor targets (#faq, #content...) clear of the fixed header:
+     h-14 (56px) on mobile, sm:h-16 (64px) above, plus its 1px border */
+  scroll-padding-top: 4.5rem;
 }
 
 /* Performance Optimizations */

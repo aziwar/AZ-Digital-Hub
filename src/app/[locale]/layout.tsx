@@ -1,7 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
-import { NextIntlClientProvider } from 'next-intl'
+import { notFound } from 'next/navigation'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import Footer from '@/components/Footer'
@@ -22,6 +23,7 @@ const ARABIC_PRELOAD_FONTS = [
 
 export async function generateMetadata({ params }: { params: Promise<{locale: string}> }): Promise<Metadata> {
   const {locale} = await params
+  if (!hasLocale(routing.locales, locale)) notFound()
   const t = await getTranslations({ locale, namespace: 'Metadata' })
 
   return {
@@ -99,6 +101,10 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}))
 }
 
+// Only the locales above exist: any other first segment (e.g. /api/whatever, which the proxy
+// matcher skips) is a 404 instead of rendering the site with lang="api" and a bogus canonical.
+export const dynamicParams = false
+
 export default async function RootLayout({
   children,
   params
@@ -107,8 +113,9 @@ export default async function RootLayout({
   params: Promise<{locale: string}>
 }) {
   const {locale} = await params
+  if (!hasLocale(routing.locales, locale)) notFound()
   setRequestLocale(locale)
-  
+
   const t = await getTranslations({ locale, namespace: 'Metadata' })
   const isArabic = locale === 'ar'
 
@@ -193,7 +200,7 @@ export default async function RootLayout({
             The provider still supplies the locale to next-intl's Link (error and not-found pages). */}
         <NextIntlClientProvider messages={null}>
           {children}
-          <Footer />
+          <Footer locale={locale} />
         </NextIntlClientProvider>
         {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
         {process.env.VERCEL && (
