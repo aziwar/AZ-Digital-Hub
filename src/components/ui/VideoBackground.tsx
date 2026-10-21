@@ -85,6 +85,10 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  // The <video> has no poster of its own (that would fetch the full-size original next to the
+  // optimized one), so the Image stays up until the video has a frame to show.
+  const [hasFrame, setHasFrame] = useState(false);
+  const showVideo = isPlaying && hasFrame;
   const t = (key: keyof LazyVideoProps['labels']) => labels[key];
 
   useEffect(() => {
@@ -150,7 +154,7 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
         height={1080}
         loading="lazy"
         sizes="(min-width: 928px) 896px, calc(100vw - 32px)"
-        className={`w-full aspect-video object-cover ${isVisible && isPlaying ? 'hidden' : 'block'}`}
+        className={`w-full aspect-video object-cover ${isVisible && showVideo ? 'hidden' : 'block'}`}
       />
 
       {/* Video (lazy-loaded) */}
@@ -160,8 +164,8 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
           muted
           loop
           playsInline
-          className={`w-full aspect-video object-cover ${isPlaying ? 'block' : 'hidden'}`}
-          poster={posterSrc}
+          className={`w-full aspect-video object-cover ${showVideo ? 'block' : 'hidden'}`}
+          onLoadedData={() => setHasFrame(true)}
         >
           <source src={mp4Src} type="video/mp4" />
         </video>
