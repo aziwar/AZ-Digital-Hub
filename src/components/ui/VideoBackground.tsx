@@ -166,6 +166,8 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
           playsInline
           className={`w-full aspect-video object-cover ${showVideo ? 'block' : 'hidden'}`}
           onLoadedData={() => setHasFrame(true)}
+          // Data-saver modes can skip loadeddata; playing always fires once frames are rendering
+          onPlaying={() => setHasFrame(true)}
         >
           <source src={mp4Src} type="video/mp4" />
         </video>
