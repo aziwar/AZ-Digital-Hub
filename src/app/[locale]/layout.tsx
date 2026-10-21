@@ -200,7 +200,7 @@ export default async function RootLayout({
             The provider still supplies the locale to next-intl's Link (error and not-found pages). */}
         <NextIntlClientProvider messages={null}>
           {children}
-          <Footer />
+          <Footer locale={locale} />
         </NextIntlClientProvider>
         {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
         {process.env.VERCEL && (
