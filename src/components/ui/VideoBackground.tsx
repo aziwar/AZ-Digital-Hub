@@ -141,13 +141,15 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
       tabIndex={0}
       aria-label={isPlaying ? t('pauseVideo') : t('playVideo')}
     >
-      {/* Poster */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* Poster: a responsive variant instead of the 1920x1080 original (the container is at most
+          max-w-4xl = 896px wide, minus the section's 16px side padding on small screens) */}
+      <Image
         src={posterSrc}
         alt={t('videoPoster')}
+        width={1920}
+        height={1080}
         loading="lazy"
-        decoding="async"
+        sizes="(min-width: 928px) 896px, calc(100vw - 32px)"
         className={`w-full aspect-video object-cover ${isVisible && isPlaying ? 'hidden' : 'block'}`}
       />
 
