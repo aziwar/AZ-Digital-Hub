@@ -35,6 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${t('title')} | ${meta('appName')}`,
     description: t('description'),
+    // Next's own noindex tag is missing from this page on Vercel, so set the same value here
+    robots: { index: false },
   }
 }
 
