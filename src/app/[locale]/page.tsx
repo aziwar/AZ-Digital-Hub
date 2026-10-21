@@ -28,6 +28,7 @@ export default async function Home({
     <main className="min-h-screen bg-slate-950">
       <Navigation
         messages={messages.Navigation}
+        locale={locale}
         languageLabels={{ switchToEnglish: common('switchToEnglish'), switchToArabic: common('switchToArabic') }}
       />
 

@@ -19,10 +19,11 @@ const menuItems = [
 
 interface NavigationProps {
   messages: MessageTree;
+  locale: string;
   languageLabels: React.ComponentProps<typeof LanguageSwitcher>['labels'];
 }
 
-const Navigation: React.FC<NavigationProps> = ({ messages, languageLabels }) => {
+const Navigation: React.FC<NavigationProps> = ({ messages, locale, languageLabels }) => {
   const t = createTranslator(messages, 'Navigation');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,24 +49,29 @@ const Navigation: React.FC<NavigationProps> = ({ messages, languageLabels }) => 
                 {t(`menu.${item.key}`)}
               </a>
             ))}
-            <LanguageSwitcher labels={languageLabels} />
+            <LanguageSwitcher currentLocale={locale} labels={languageLabels} />
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden text-gray-300 hover:text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? t('aria.closeMenu') : t('aria.openMenu')}
-            aria-expanded={isOpen}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          {/* Mobile: the language links stay in the bar, so they work without JS (the menu needs JS) */}
+          <div className="md:hidden flex items-center gap-1">
+            <LanguageSwitcher currentLocale={locale} labels={languageLabels} />
+
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden text-gray-300 hover:text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? t('aria.closeMenu') : t('aria.openMenu')}
+              aria-expanded={isOpen}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -83,9 +89,6 @@ const Navigation: React.FC<NavigationProps> = ({ messages, languageLabels }) => 
                 {t(`menu.${item.key}`)}
               </a>
             ))}
-            <div className="px-4 py-3">
-              <LanguageSwitcher labels={languageLabels} />
-            </div>
           </div>
         </div>
       )}
