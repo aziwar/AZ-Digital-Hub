@@ -25,14 +25,22 @@ export default async function Home({
   const contact = await getTranslations('Contact')
 
   return (
-    <main className="min-h-screen bg-slate-950">
+    <>
+      {/* First focusable element: lets keyboard users jump past the navigation */}
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-100 focus:rounded-lg focus:bg-purple-600 focus:px-4 focus:py-3 focus:font-semibold focus:text-white focus:shadow-lg focus:outline-2 focus:outline-offset-2 focus:outline-white"
+      >
+        {common('skipToContent')}
+      </a>
+
       <Navigation
         messages={messages.Navigation}
         locale={locale}
         languageLabels={{ switchToEnglish: common('switchToEnglish'), switchToArabic: common('switchToArabic') }}
       />
 
-      <div className="pt-16">
+      <main id="content" tabIndex={-1} className="min-h-screen bg-slate-950 pt-16 focus:outline-none">
         <EnhancedHero />
         <Services />
         <Process />
@@ -49,8 +57,7 @@ export default async function Home({
             )
           })}
         />
-      </div>
-
-    </main>
+      </main>
+    </>
   )
 }
