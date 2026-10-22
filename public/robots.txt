@@ -1,41 +1,28 @@
 # AZ Digital Hub - Ahmed Zewar
 # AI & Digital Strategy Consultant - Kuwait
 
-User-Agent: *
-Allow: /
-
 # Sitemap
 Sitemap: https://www.zewar.xyz/sitemap.xml
 
-# Block internal paths
+# All crawlers: site allowed, internal paths blocked
+User-Agent: *
+Allow: /
 Disallow: /api/
 Disallow: /_next/
 Disallow: /_vercel/
 
-# AI Search Crawlers - Explicitly Allowed
+# AI search crawlers: explicitly allowed. A crawler named in its own group ignores
+# the * group, so the internal-path rules are repeated here.
 User-agent: ChatGPT-User
-Allow: /
-
 User-agent: GPTBot
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: GoogleOther
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: cohere-ai
-Allow: /
-
 User-agent: Bytespider
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /_vercel/
