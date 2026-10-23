@@ -7,12 +7,14 @@
       "process": "Process",
       "engagements": "What I build",
       "faq": "FAQ",
+      "articles": "Articles",
       "contact": "Contact"
     },
     "aria": {
       "home": "Back to top",
       "openMenu": "Open menu",
-      "closeMenu": "Close menu"
+      "closeMenu": "Close menu",
+      "homePage": "Home page"
     }
   },
   "Hero": {
@@ -297,6 +299,17 @@
         "value": "Kuwait"
       }
     }
+  },
+  "Articles": {
+    "title": "Articles",
+    "metaTitle": "Articles | Ahmed Ziwar",
+    "description": "Articles by Ahmed Ziwar on AI strategy, delivery and adoption for companies in Kuwait and the GCC, in English and Arabic.",
+    "empty": "No articles have been published yet.",
+    "backToHome": "Back to the homepage",
+    "allArticles": "All articles",
+    "published": "Published",
+    "updated": "Updated",
+    "ogSubtitle": "Ahmed Ziwar · Articles"
   },
   "Footer": {
     "cta": {
