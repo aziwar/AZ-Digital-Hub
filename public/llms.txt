@@ -18,6 +18,7 @@
 
 - [Articles (English)](https://www.zewar.xyz/en/articles): Articles on AI strategy, delivery and adoption for companies in Kuwait and the GCC
 - [Articles (Arabic)](https://www.zewar.xyz/ar/articles): Arabic version of the articles
+- [All Green, Zero Work: AI Agent Monitoring That Checks the Work](https://www.zewar.xyz/en/articles/monitoring-that-checks-the-work): Why a green status screen can hide stopped work, and how monitoring that checks completed work, capacity and independent alerts fixes it (Arabic: https://www.zewar.xyz/ar/articles/monitoring-that-checks-the-work)
 
 ## Services
 
