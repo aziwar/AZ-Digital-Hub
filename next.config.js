@@ -10,6 +10,8 @@ const nextConfig = {
   // opengraph-image reads these fonts at request time; ship them with the function
   outputFileTracingIncludes: {
     '/[locale]/opengraph-image': ['./assets/fonts/**'],
+    '/[locale]/articles/opengraph-image': ['./assets/fonts/**'],
+    '/[locale]/articles/[slug]/opengraph-image': ['./assets/fonts/**'],
   },
   
   // SYSTEMATIC PATTERN ELIMINATION: Dangerous bypass flags removed
