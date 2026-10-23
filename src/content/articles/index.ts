@@ -7,12 +7,18 @@ const ARTICLES: readonly Article[] = []
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DATE = /^\d{4}-\d{2}-\d{2}$/
+// YYYY-MM-DD and a real calendar day (rejects e.g. 2026-02-30, which Date would roll into March)
+const isDate = (value: string) => {
+  if (!DATE.test(value)) return false
+  const parsed = new Date(`${value}T00:00:00Z`)
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().startsWith(value)
+}
 
 // Fail the build on a malformed entry instead of publishing a broken page
 for (const article of ARTICLES) {
   if (!SLUG.test(article.slug)) throw new Error(`Article slug "${article.slug}" must be lowercase ASCII words joined by hyphens`)
-  if (!DATE.test(article.datePublished) || (article.dateModified && !DATE.test(article.dateModified))) {
-    throw new Error(`Article "${article.slug}": dates must be YYYY-MM-DD`)
+  if (!isDate(article.datePublished) || (article.dateModified && !isDate(article.dateModified))) {
+    throw new Error(`Article "${article.slug}": dates must be real calendar days as YYYY-MM-DD`)
   }
   if (ARTICLES.filter((a) => a.slug === article.slug).length > 1) throw new Error(`Duplicate article slug "${article.slug}"`)
 }
