@@ -18,6 +18,7 @@
 
 - [Articles (English)](https://www.zewar.xyz/en/articles): Articles on AI strategy, delivery and adoption for companies in Kuwait and the GCC
 - [Articles (Arabic)](https://www.zewar.xyz/ar/articles): Arabic version of the articles
+- [One AI Coordinator, Many AI Workers: An AI Workflow You Can Trust](https://www.zewar.xyz/en/articles/one-coordinator-many-ai-workers): How one AI coordinator, written briefs and an independent checker turned AI coding agents into an accountable workflow (Arabic: https://www.zewar.xyz/ar/articles/one-coordinator-many-ai-workers)
 
 ## Services
 

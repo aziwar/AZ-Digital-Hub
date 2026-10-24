@@ -1,9 +1,10 @@
+import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import type { Article } from './types'
 
 export type { Article, ArticleBlock, ArticleTranslation } from './types'
 
 // Register every post here (import its module and add it to the list); see README.md.
-const ARTICLES: readonly Article[] = []
+const ARTICLES: readonly Article[] = [oneCoordinatorManyAiWorkers]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DATE = /^\d{4}-\d{2}-\d{2}$/
