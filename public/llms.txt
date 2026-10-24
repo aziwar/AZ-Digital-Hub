@@ -14,6 +14,11 @@
 - [Contact](https://www.zewar.xyz/en#contact): Request a discovery call
 - [Full profile for AI systems](https://www.zewar.xyz/llms-full.txt): Extended version of this file
 
+## Articles
+
+- [Articles (English)](https://www.zewar.xyz/en/articles): Articles on AI strategy, delivery and adoption for companies in Kuwait and the GCC
+- [Articles (Arabic)](https://www.zewar.xyz/ar/articles): Arabic version of the articles
+
 ## Services
 
 - AI readiness & strategy: Where AI fits the business and what to do first. Use-case workshops, data and systems readiness review, prioritised plan, build/buy/partner recommendations.

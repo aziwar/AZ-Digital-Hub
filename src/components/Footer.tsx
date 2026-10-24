@@ -5,6 +5,7 @@ import { EMAIL, LINKEDIN_DISPLAY, LINKEDIN_URL, PHONE_DISPLAY, WHATSAPP_NUMBER }
 // Explicit locale: src/app/global-not-found.tsx renders outside the [locale] request locale
 export default async function Footer({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'Footer' })
+  const nav = await getTranslations({ locale, namespace: 'Navigation' })
   const services = t.raw('services.items') as string[]
   const approach = t.raw('approach.items') as string[]
 
@@ -16,7 +17,7 @@ export default async function Footer({ locale }: { locale: string }) {
           <h2 className="text-2xl font-bold text-white mb-2">{t('cta.title')}</h2>
           <p className="text-gray-300 mb-4">{t('cta.subtitle')}</p>
           <a
-            href="#contact"
+            href={`/${locale}#contact`}
             className="inline-block px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg transition-colors duration-200 min-h-[44px]"
           >
             {t('cta.button')}
@@ -59,6 +60,11 @@ export default async function Footer({ locale }: { locale: string }) {
         </div>
 
         <div className="text-center pt-8 border-t border-slate-800">
+          <p className="mb-4">
+            <a href={`/${locale}/articles`} className="inline-flex items-center min-h-[44px] px-2 font-medium text-gray-300 hover:text-white underline-offset-4 hover:underline">
+              {nav('menu.articles')}
+            </a>
+          </p>
           <p className="text-gray-300">
             © {new Date().getFullYear()} {t('copyright')}
           </p>
