@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -55,7 +56,7 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound()
 
   const t = await getTranslations({ locale, namespace: 'Articles' })
-  const { title, description, body } = article[asArticleLocale(locale)]
+  const { title, description, imageAlt, body } = article[asArticleLocale(locale)]
   const modified = getArticleModified(article)
   const url = `${SITE_URL}/${locale}/articles/${slug}`
 
@@ -72,7 +73,7 @@ export default async function ArticlePage({ params }: Props) {
     inLanguage: locale,
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    image: `${url}/opengraph-image`,
+    image: article.image ? [`${SITE_URL}${article.image}`, `${url}/opengraph-image`] : `${url}/opengraph-image`,
     isPartOf: { '@id': `${SITE_URL}/${locale}/articles#blog` },
   }
 
@@ -102,6 +103,21 @@ export default async function ArticlePage({ params }: Props) {
               )}
             </p>
           </header>
+
+          {article.image && (
+            // Content column is max-w-3xl (768px) minus the 16px side padding
+            <Image
+              src={article.image}
+              alt={imageAlt ?? ''}
+              width={1600}
+              height={900}
+              preload
+              fetchPriority="high"
+              sizes="(min-width: 768px) 736px, calc(100vw - 32px)"
+              quality={70}
+              className="mb-10 w-full h-auto rounded-xl border border-slate-800"
+            />
+          )}
 
           <ArticleBody blocks={body} />
 

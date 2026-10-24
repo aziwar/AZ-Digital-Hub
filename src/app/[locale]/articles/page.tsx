@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { asArticleLocale, BackLink, formatArticleDate, JsonLd } from '@/components/articles/shared'
@@ -96,6 +97,18 @@ export default async function ArticlesIndex({ params }: Props) {
               {articles.map((article) => (
                 <li key={article.slug}>
                   <article className="p-6 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-purple-500/60 transition-colors">
+                    {article.image && (
+                      // Decorative here: the linked title right below names the post
+                      <Image
+                        src={article.image}
+                        alt=""
+                        width={1600}
+                        height={900}
+                        sizes="(min-width: 768px) 686px, calc(100vw - 82px)"
+                        quality={70}
+                        className="mb-5 w-full h-auto rounded-lg"
+                      />
+                    )}
                     <h2 className="text-xl sm:text-2xl font-bold text-white">
                       <a href={`/${locale}/articles/${article.slug}`} className="hover:text-purple-200">
                         {article[lang].title}

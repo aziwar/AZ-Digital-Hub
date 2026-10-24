@@ -33,6 +33,10 @@ required: every post has an English and an Arabic version under the same slug.
    export default article
    ```
 
+   Optional cover image: put a 1600x900 WebP at `public/images/articles/<slug>.webp`, set
+   `image: '/images/articles/<slug>.webp'` and add `imageAlt` to both `en` and `ar`. It shows under the
+   post header and on the index card. No text in the image (the site has two languages).
+
    Body blocks (see `types.ts`): `p`, `h2`, `h3`, `ul`, `ol`, `quote`. Text is plain: no HTML or Markdown.
    The page already renders the title as the `<h1>`, so start sections at `h2`.
 
