@@ -31,7 +31,7 @@ Run lint, type-check and build before every PR.
   2. The Vercel preview is ready.
   3. There is no merge conflict.
   4. Codex's latest review on the current head commit has no findings.
-  5. Every CodeRabbit and Codex finding is fixed or answered.
+  5. Every Codex finding is fixed or answered. Do not wait for CodeRabbit reviews and do not act on CodeRabbit findings (owner rule).
   Then continue to the next step of the plan.
 - Ask the owner first before anything involving money, secrets or environment variables, DNS, naming clients, or new claims.
 
