@@ -23,6 +23,9 @@ for (const article of ARTICLES) {
   if (!isDate(article.datePublished) || (article.dateModified && !isDate(article.dateModified))) {
     throw new Error(`Article "${article.slug}": dates must be real calendar days as YYYY-MM-DD`)
   }
+  if (article.image && !(article.image.startsWith('/') && article.en.imageAlt && article.ar.imageAlt)) {
+    throw new Error(`Article "${article.slug}": image must be a /public path with imageAlt in both locales`)
+  }
   if (ARTICLES.filter((a) => a.slug === article.slug).length > 1) throw new Error(`Duplicate article slug "${article.slug}"`)
 }
 

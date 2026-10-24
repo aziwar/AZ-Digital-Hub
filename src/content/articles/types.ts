@@ -14,6 +14,8 @@ export interface ArticleTranslation {
   title: string
   /** One or two sentences: meta description, index teaser, OG/JSON-LD description */
   description: string
+  /** Alt text for the post's cover image; required when the post has an `image` */
+  imageAlt?: string
   body: ArticleBlock[]
 }
 
@@ -24,6 +26,8 @@ export interface Article {
   datePublished: string
   /** ISO date, YYYY-MM-DD; defaults to datePublished */
   dateModified?: string
+  /** Cover image under /public, 1600x900 (16:9), e.g. '/images/articles/my-post-slug.webp' */
+  image?: string
   en: ArticleTranslation
   ar: ArticleTranslation
 }

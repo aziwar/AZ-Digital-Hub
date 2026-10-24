@@ -3,10 +3,13 @@ import type { Article } from './types'
 const article: Article = {
   slug: 'monitoring-that-checks-the-work',
   datePublished: '2026-10-23',
+  dateModified: '2026-10-24',
+  image: '/images/articles/monitoring-that-checks-the-work.webp',
   en: {
-    title: 'All Green, Zero Work: AI Agent Monitoring That Checks the Work',
+    title: 'All Green, Zero Work: AI Monitoring That Checks the Work',
     description:
       'My dashboard showed all green while zero tasks were completed in 4.5 hours. How I rebuilt AI agent monitoring to check the work, not just the lights.',
+    imageAlt: 'An empty, idle conveyor line in front of a wall of green status lights, with one amber warning light glowing beside it.',
     body: [
       {
         type: 'p',
@@ -43,7 +46,7 @@ const article: Article = {
         type: 'ul',
         items: [
           'Work actually done: the system now checks whether tasks are being completed in the time I would expect. If nothing has finished for too long, that is treated as a problem, even when everything reports that it is up.',
-          'Simple capacity: it also watches basic things such as disk space. They are easy to forget, and they can quietly stop work without anything crashing.',
+          'Simple capacity: it also watches basic things such as storage space. They are easy to forget, and they can quietly stop work without anything crashing.',
           'Automatic recovery: when a worker sits idle while tasks are waiting, the system wakes it up automatically instead of waiting for me to notice.',
           'Independent alerts: the alerts no longer depend on the thing they are watching. If one part fails, the warning still gets through on a separate path.',
         ],
@@ -77,13 +80,14 @@ const article: Article = {
     ],
   },
   ar: {
-    title: 'كل المؤشرات خضراء ولا عمل يُنجز: مراقبة وكلاء الذكاء الاصطناعي بما يُنجز فعلًا',
+    title: 'كل المؤشرات خضراء ولا عمل يُنجز: مراقبة تتحقق من العمل الفعلي',
     description:
-      'لوحة المتابعة أظهرت أن كل شيء سليم بينما لم تُنجز أي مهمة خلال 4.5 ساعات. هكذا أعدت بناء المراقبة لتتحقق من العمل المنجز لا من المؤشرات فقط.',
+      'لوحة المتابعة أظهرت أن كل شيء سليم بينما لم تُنجز أي مهمة خلال أربع ساعات ونصف. هكذا أعدت بناء المراقبة لتتحقق من العمل المنجز لا من المؤشرات فقط.',
+    imageAlt: 'خط إنتاج فارغ ومتوقف أمام جدار من مؤشرات خضراء، وبجانبه ضوء تحذير كهرماني واحد.',
     body: [
       {
         type: 'p',
-        text: 'طوال أربع ساعات ونصف كانت كل المؤشرات على شاشة المتابعة خضراء. وفي الفترة نفسها أنجز وكلاء الذكاء الاصطناعي لديّ صفر مهام. لم يتعطل شيء، ولم يصدر أي تنبيه؛ العمل ببساطة توقف، والشاشة لم تكن قادرة على أن تعرف ذلك.',
+        text: 'طوال أربع ساعات ونصف كانت كل المؤشرات على شاشة المتابعة خضراء. وفي الفترة نفسها لم ينجز وكلاء الذكاء الاصطناعي لديّ أي مهمة. لم يتعطل شيء، ولم يصدر أي تنبيه؛ العمل ببساطة توقف، والشاشة لم تكن قادرة على أن تعرف ذلك.',
       },
       { type: 'h2', text: 'المشكلة: «النظام يعمل» لا تعني «العمل يُنجز»' },
       {
@@ -92,7 +96,7 @@ const article: Article = {
       },
       {
         type: 'p',
-        text: 'لكن النظام قد يكون قائمًا بالكامل بينما لا يحدث أي شيء مفيد: طلبات تنتظر في قائمة لا يلتقطها أحد، واستفسارات تصل ولا يُرد عليها، وإجراء مؤتمت متوقف ينتظر شيئًا لن يأتي. كل الفحوصات تنجح، لأن كل الفحوصات تطرح السؤال الخطأ.',
+        text: 'لكن النظام قد يكون قائمًا بالكامل بينما لا يحدث أي شيء مفيد: طلبات تنتظر في قائمة انتظار لا يتولاها أحد، واستفسارات تصل ولا يُرد عليها، وإجراء مؤتمت متوقف ينتظر شيئًا لن يأتي. كل الفحوصات تنجح، لأن كل الفحوصات تطرح السؤال الخطأ.',
       },
       { type: 'h2', text: 'التكلفة الحقيقية' },
       {
@@ -116,8 +120,8 @@ const article: Article = {
         type: 'ul',
         items: [
           'العمل المنجز فعلًا: صار النظام يتحقق من أن المهام تكتمل في الوقت المتوقع. وإذا مرت مدة طويلة دون إنجاز أي مهمة يُعامل ذلك كمشكلة، حتى لو أفادت كل الأنظمة بأنها تعمل.',
-          'السعة الأساسية: يراقب أيضًا أمورًا بسيطة مثل مساحة التخزين؛ فهي سهلة النسيان، وقد توقف العمل بهدوء دون أن يتعطل أي شيء.',
-          'الاستعادة التلقائية: حين يبقى أحد العاملين خاملًا بينما تنتظر المهام، يوقظه النظام تلقائيًا بدلًا من انتظار أن ألاحظ ذلك بنفسي.',
+          'الموارد الأساسية: يراقب أيضًا أمورًا بسيطة مثل مساحة التخزين؛ فهي سهلة النسيان، وقد توقف العمل بهدوء دون أن يتعطل أي شيء.',
+          'الاستعادة التلقائية: حين يبقى أحد الوكلاء متوقفًا بينما تنتظر المهام، يوقظه النظام تلقائيًا بدلًا من انتظار أن ألاحظ ذلك بنفسي.',
           'تنبيهات مستقلة: لم تعد التنبيهات تعتمد على الجزء الذي تراقبه؛ فإذا تعطل جزء ما، يصل التحذير عبر مسار منفصل.',
         ],
       },
@@ -145,7 +149,7 @@ const article: Article = {
       },
       {
         type: 'p',
-        text: 'إذا بدا لك هذا مألوفًا ورغبت في الحديث عنه، فزر واتساب في هذه الصفحة هو أسرع طريقة للتواصل معي.',
+        text: 'إذا بدا لك هذا مألوفًا ورغبت في الحديث عنه، فالضغط على زر واتساب في هذه الصفحة هو أسرع طريقة للتواصل معي.',
       },
     ],
   },
