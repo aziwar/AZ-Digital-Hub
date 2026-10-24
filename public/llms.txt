@@ -18,6 +18,8 @@
 
 - [Articles (English)](https://www.zewar.xyz/en/articles): Articles on AI strategy, delivery and adoption for companies in Kuwait and the GCC
 - [Articles (Arabic)](https://www.zewar.xyz/ar/articles): Arabic version of the articles
+- [One AI Coordinator, Many AI Workers: An AI Workflow You Can Trust](https://www.zewar.xyz/en/articles/one-coordinator-many-ai-workers): How one AI coordinator, written briefs and an independent checker turned AI coding agents into an accountable workflow (Arabic: https://www.zewar.xyz/ar/articles/one-coordinator-many-ai-workers)
+- [The Right AI Model for Each Request: AI Governance Through One Gateway](https://www.zewar.xyz/en/articles/right-ai-model-for-each-request): How an AI gateway routes each request by complexity and data sensitivity, keeping sensitive data on approved routes and every cost visible (Arabic: https://www.zewar.xyz/ar/articles/right-ai-model-for-each-request)
 - [All Green, Zero Work: AI Agent Monitoring That Checks the Work](https://www.zewar.xyz/en/articles/monitoring-that-checks-the-work): Why a green status screen can hide stopped work, and how monitoring that checks completed work, capacity and independent alerts fixes it (Arabic: https://www.zewar.xyz/ar/articles/monitoring-that-checks-the-work)
 
 ## Services
