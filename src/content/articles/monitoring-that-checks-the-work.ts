@@ -9,7 +9,7 @@ const article: Article = {
     title: 'All Green, Zero Work: AI Monitoring That Checks the Work',
     description:
       'My dashboard showed all green while zero tasks were completed in 4.5 hours. How I rebuilt AI agent monitoring to check the work, not just the lights.',
-    imageAlt: 'A green status dashboard beside an idle conveyor, while an independent inspector raises an alert.',
+    imageAlt: 'An empty, idle conveyor line in front of a wall of green status lights, with one amber warning light glowing beside it.',
     body: [
       {
         type: 'p',
@@ -83,7 +83,7 @@ const article: Article = {
     title: 'كل المؤشرات خضراء ولا عمل يُنجز: مراقبة تتحقق من العمل الفعلي',
     description:
       'لوحة المتابعة أظهرت أن كل شيء سليم بينما لم تُنجز أي مهمة خلال أربع ساعات ونصف. هكذا أعدت بناء المراقبة لتتحقق من العمل المنجز لا من المؤشرات فقط.',
-    imageAlt: 'لوحة متابعة خضراء بجانب خط إنتاج متوقف، بينما يرفع مفتّش مستقل تنبيهًا.',
+    imageAlt: 'خط إنتاج فارغ ومتوقف أمام جدار من مؤشرات خضراء، وبجانبه ضوء تحذير كهرماني واحد.',
     body: [
       {
         type: 'p',

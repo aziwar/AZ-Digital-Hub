@@ -9,7 +9,7 @@ const article: Article = {
     title: 'One Coordinator, Many AI Workers: A Workflow You Can Trust',
     description:
       'How I turned scattered AI tools into one accountable workflow, with written briefs and an independent checker: 284 tasks in one night.',
-    imageAlt: 'A central coordinator handing written briefs to several AI workers, with a separate checker inspecting the finished work.',
+    imageAlt: 'A conductor seen from behind on a dark stage, baton raised, facing rows of music stands that each hold one sheet of music.',
     body: [
       {
         type: 'p',
@@ -91,7 +91,7 @@ const article: Article = {
     title: 'منسّق واحد وعدة وكلاء ذكاء اصطناعي: سير عمل يمكن الوثوق به',
     description:
       'كيف حوّلت أدوات الذكاء الاصطناعي المتفرقة إلى سير عمل منظم وقابل للمساءلة بتكليفات مكتوبة ومراجع مستقل: 284 مهمة في ليلة واحدة.',
-    imageAlt: 'منسّق مركزي يوزّع تكليفات مكتوبة على عدة وكلاء ذكاء اصطناعي، ومدقّق مستقل يفحص العمل المنجز.',
+    imageAlt: 'قائد أوركسترا من الخلف على مسرح مظلم يرفع عصاه أمام صفوف من حوامل النوتة، على كل منها ورقة واحدة.',
     body: [
       {
         type: 'p',

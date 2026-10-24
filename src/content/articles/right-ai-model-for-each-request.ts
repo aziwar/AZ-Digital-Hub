@@ -9,7 +9,7 @@ const article: Article = {
     title: 'AI Governance: The Right Model for Each Request',
     description:
       'How an AI gateway routes each request by complexity and data sensitivity, so sensitive data stays where it belongs and every AI cost stays visible.',
-    imageAlt: 'Many requests flowing through one gateway, with sensitive data kept on a locked, protected path.',
+    imageAlt: 'A railway junction at night where one track splits into several, with one track entering a lit, protected tunnel.',
     body: [
       {
         type: 'p',
@@ -94,7 +94,7 @@ const article: Article = {
     title: 'النموذج المناسب لكل طلب: حوكمة الذكاء الاصطناعي عبر بوابة واحدة',
     description:
       'كيف توجّه بوابة الذكاء الاصطناعي كل طلب بحسب تعقيده وحساسية بياناته، فتبقى البيانات الحساسة في مكانها وتبقى تكلفة الذكاء الاصطناعي واضحة.',
-    imageAlt: 'طلبات كثيرة تمر عبر بوابة واحدة، والبيانات الحساسة تبقى على مسار محمي بقفل.',
+    imageAlt: 'تقاطع سكة حديد ليلًا يتفرع فيه خط واحد إلى عدة خطوط، وأحدها يدخل نفقًا مضاءً ومحميًا.',
     body: [
       {
         type: 'p',
