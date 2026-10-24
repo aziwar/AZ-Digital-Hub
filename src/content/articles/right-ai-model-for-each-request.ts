@@ -4,10 +4,12 @@ const article: Article = {
   slug: 'right-ai-model-for-each-request',
   datePublished: '2026-10-23',
   dateModified: '2026-10-24',
+  image: '/images/articles/right-ai-model-for-each-request.webp',
   en: {
     title: 'AI Governance: The Right Model for Each Request',
     description:
       'How an AI gateway routes each request by complexity and data sensitivity, so sensitive data stays where it belongs and every AI cost stays visible.',
+    imageAlt: 'Many requests flowing through one gateway, with sensitive data kept on a locked, protected path.',
     body: [
       {
         type: 'p',
@@ -92,6 +94,7 @@ const article: Article = {
     title: 'النموذج المناسب لكل طلب: حوكمة الذكاء الاصطناعي عبر بوابة واحدة',
     description:
       'كيف توجّه بوابة الذكاء الاصطناعي كل طلب بحسب تعقيده وحساسية بياناته، فتبقى البيانات الحساسة في مكانها وتبقى تكلفة الذكاء الاصطناعي واضحة.',
+    imageAlt: 'طلبات كثيرة تمر عبر بوابة واحدة، والبيانات الحساسة تبقى على مسار محمي بقفل.',
     body: [
       {
         type: 'p',

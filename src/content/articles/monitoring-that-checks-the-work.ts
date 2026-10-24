@@ -4,10 +4,12 @@ const article: Article = {
   slug: 'monitoring-that-checks-the-work',
   datePublished: '2026-10-23',
   dateModified: '2026-10-24',
+  image: '/images/articles/monitoring-that-checks-the-work.webp',
   en: {
     title: 'All Green, Zero Work: AI Monitoring That Checks the Work',
     description:
       'My dashboard showed all green while zero tasks were completed in 4.5 hours. How I rebuilt AI agent monitoring to check the work, not just the lights.',
+    imageAlt: 'A green status dashboard beside an idle conveyor, while an independent inspector raises an alert.',
     body: [
       {
         type: 'p',
@@ -81,6 +83,7 @@ const article: Article = {
     title: 'كل المؤشرات خضراء ولا عمل يُنجز: مراقبة تتحقق من العمل الفعلي',
     description:
       'لوحة المتابعة أظهرت أن كل شيء سليم بينما لم تُنجز أي مهمة خلال أربع ساعات ونصف. هكذا أعدت بناء المراقبة لتتحقق من العمل المنجز لا من المؤشرات فقط.',
+    imageAlt: 'لوحة متابعة خضراء بجانب خط إنتاج متوقف، بينما يرفع مفتّش مستقل تنبيهًا.',
     body: [
       {
         type: 'p',
