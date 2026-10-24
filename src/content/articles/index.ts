@@ -1,3 +1,4 @@
+import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import rightAiModelForEachRequest from './right-ai-model-for-each-request'
 import type { Article } from './types'
@@ -5,7 +6,7 @@ import type { Article } from './types'
 export type { Article, ArticleBlock, ArticleTranslation } from './types'
 
 // Register every post here (import its module and add it to the list); see README.md.
-const ARTICLES: readonly Article[] = [oneCoordinatorManyAiWorkers, rightAiModelForEachRequest]
+const ARTICLES: readonly Article[] = [oneCoordinatorManyAiWorkers, rightAiModelForEachRequest, monitoringThatChecksTheWork]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DATE = /^\d{4}-\d{2}-\d{2}$/
