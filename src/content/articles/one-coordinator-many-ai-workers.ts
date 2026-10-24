@@ -3,10 +3,11 @@ import type { Article } from './types'
 const article: Article = {
   slug: 'one-coordinator-many-ai-workers',
   datePublished: '2026-10-23',
+  dateModified: '2026-10-24',
   en: {
-    title: 'One AI Coordinator, Many AI Workers: An AI Workflow You Can Trust',
+    title: 'One Coordinator, Many AI Workers: A Workflow You Can Trust',
     description:
-      'How I turned scattered AI coding agents into one accountable AI workflow, with written briefs and an independent checker: 284 tasks in one night.',
+      'How I turned scattered AI tools into one accountable workflow, with written briefs and an independent checker: 284 tasks in one night.',
     body: [
       {
         type: 'p',
@@ -76,7 +77,7 @@ const article: Article = {
       },
       {
         type: 'p',
-        text: 'This is the same discipline I apply to the AI solutions I have delivered for large enterprises and public-sector organisations over the past year, and to the multi-model orchestration I run every day in my own AI operations.',
+        text: 'This is the same discipline I apply to the AI solutions I have delivered for large enterprises and public-sector organisations over the past year, and to the way I coordinate several AI tools every day in my own AI operations.',
       },
       {
         type: 'p',
@@ -85,9 +86,9 @@ const article: Article = {
     ],
   },
   ar: {
-    title: 'منسّق ذكي واحد وعدة عاملين: سير عمل بالذكاء الاصطناعي يمكن الوثوق به',
+    title: 'منسّق واحد وعدة وكلاء ذكاء اصطناعي: سير عمل يمكن الوثوق به',
     description:
-      'كيف حوّلت أدوات البرمجة بالذكاء الاصطناعي المتفرقة إلى سير عمل منظم وقابل للمساءلة بتكليفات مكتوبة ومراجع مستقل: 284 مهمة في ليلة واحدة.',
+      'كيف حوّلت أدوات الذكاء الاصطناعي المتفرقة إلى سير عمل منظم وقابل للمساءلة بتكليفات مكتوبة ومراجع مستقل: 284 مهمة في ليلة واحدة.',
     body: [
       {
         type: 'p',
@@ -96,7 +97,7 @@ const article: Article = {
       { type: 'h2', text: 'المشكلة: أدوات كثيرة ونتيجة غير واضحة' },
       {
         type: 'p',
-        text: 'كثير من الشركات في الكويت والخليج تجرّب أدوات الذكاء الاصطناعي واحدة تلو الأخرى. فريق يستخدم محادثًا ذكيًا لصياغة التقارير، وفريق آخر يختبر مساعدًا للبرمجة، وموظف في العمليات يجرّب أداة ثالثة لمهمة أسبوعية. كل أداة تنتج شيئًا، وبعض ما تنتجه مبهر.',
+        text: 'كثير من الشركات في الكويت والخليج تجرّب أدوات الذكاء الاصطناعي واحدة تلو الأخرى. فريق يستخدم روبوت محادثة لصياغة التقارير، وفريق آخر يختبر مساعدًا للبرمجة، وموظف في العمليات يجرّب أداة ثالثة لمهمة أسبوعية. كل أداة تنتج شيئًا، وبعض ما تنتجه مبهر.',
       },
       {
         type: 'p',
@@ -118,14 +119,14 @@ const article: Article = {
       },
       {
         type: 'p',
-        text: 'لم يكن الحل في أداة أفضل، بل في إدارة أفضل. خصصت منسّقًا ذكيًا واحدًا لا يتولى التنفيذ بنفسه، بل ينظّم العمل: يقسّم الهدف الكبير إلى مهام صغيرة محددة، ويسلّم كل مهمة إلى أحد العاملين مع تكليف مكتوب يجيب عن ثلاثة أسئلة:',
+        text: 'لم يكن الحل في أداة أفضل، بل في إدارة أفضل. خصصت منسّقًا ذكيًا واحدًا لا يتولى التنفيذ بنفسه، بل ينظّم العمل: يقسّم الهدف الكبير إلى مهام صغيرة محددة، ويسلّم كل مهمة إلى أحد الوكلاء مع تكليف مكتوب يجيب عن ثلاثة أسئلة:',
       },
       {
         type: 'ol',
         items: [
           'ما المطلوب تنفيذه بالضبط.',
-          'ما الأجزاء التي يُسمح للعامل بالعمل عليها، ولا شيء خارجها.',
-          'كيف يثبت العامل أن المهمة أُنجزت.',
+          'ما الأجزاء التي يُسمح للوكيل بالعمل عليها، ولا شيء خارجها.',
+          'كيف يثبت الوكيل أن المهمة أُنجزت.',
         ],
       },
       {
@@ -150,7 +151,7 @@ const article: Article = {
         type: 'ul',
         items: [
           'حدّد المهمة بوضوح قبل أن يبدأ الذكاء الاصطناعي.',
-          'قيّد ما يُسمح لكل عامل ذكي بتغييره.',
+          'قيّد ما يُسمح لكل وكيل بتغييره.',
           'اطلب دليلًا، لا مجرد إجابة.',
           'افصل المراجعة عن التنفيذ.',
         ],
@@ -161,7 +162,7 @@ const article: Article = {
       },
       {
         type: 'p',
-        text: 'إذا كانت فرق شركتك تجرّب أدوات الذكاء الاصطناعي وتشعر أن النتائج مبعثرة، يسعدني أن نتحدث في الأمر. زر واتساب في هذه الصفحة هو أسرع طريق لبدء الحديث.',
+        text: 'إذا كانت فرق شركتك تجرّب أدوات الذكاء الاصطناعي وتشعر أن النتائج مبعثرة، يسعدني أن نتحدث في الأمر. الضغط على زر واتساب في هذه الصفحة هو أسرع طريق لبدء الحديث.',
       },
     ],
   },
