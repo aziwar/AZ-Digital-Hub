@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import TalkingAvatarSlot from '@/components/avatar/TalkingAvatarSlot'
 import Footer from '@/components/Footer'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
@@ -201,6 +202,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={null}>
           {children}
           <Footer locale={locale} />
+          <TalkingAvatarSlot />
         </NextIntlClientProvider>
         {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
         {process.env.VERCEL && (
