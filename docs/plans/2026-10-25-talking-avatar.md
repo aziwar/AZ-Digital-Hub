@@ -2,6 +2,24 @@
 
 Status: **plan + dormant code only**. Nothing is visible to visitors. No account, purchase or key exists yet.
 
+## Owner decision (2026-10-25): the brain is ours, ElevenLabs is the voice
+
+This decision overrides the rest of this plan where they differ.
+
+- **Ours.** The agent's brain, rules, knowledge, model choice, logs and the whole backend run on our infrastructure. The owner's AI gateway or server exposes it as an OpenAI-compatible streaming endpoint (`POST /v1/chat/completions`).
+- **ElevenLabs.** It only gives the agent his cloned voice: speech-to-text, text-to-speech and turn-taking. It may also animate his photo, if it offers that.
+  - It is configured with **Custom LLM** pointing at our endpoint, so ElevenLabs never holds the prompt or knowledge.
+  - No ElevenLabs knowledge base is used, and no ElevenLabs LLM is billed.
+- **Fallback.** If Custom LLM doesn't fit, the site calls our brain directly and uses ElevenLabs text-to-speech only, through a server route. The widget slot and flag stay the same. *(Future work: this path would also need speech-to-text and turn detection on our side; it is not designed yet.)*
+- **Order of work.**
+  1. Helper sessions prepare the topics and knowledge, and design the backend.
+  2. This session keeps the website ready: the widget behind the flag.
+  3. The ElevenLabs account steps come **last**.
+- **Effect on the sections below.**
+  - "Create the agent" in the checklist becomes: attach his voice, then set Custom LLM to our endpoint URL plus a bearer token. The token is stored in Infisical and entered in ElevenLabs by the owner.
+  - The system prompt and knowledge are loaded by our backend, not uploaded to ElevenLabs.
+  - The cost line "plus LLM" becomes our own gateway's model cost.
+
 ## Goal
 
 A visitor clicks Ahmed's photo and talks, by voice, with a limited assistant that answers in Ahmed's own voice. It answers general inquiries only and hands anything else to Ahmed (WhatsApp or email).
@@ -21,10 +39,10 @@ A visitor clicks Ahmed's photo and talks, by voice, with a limited assistant tha
 | | A. Voice agent + animated photo (recommended first) | B. Photo-real live avatar | C. Pre-rendered video avatar |
 |---|---|---|---|
 | What the visitor sees | Ahmed's real photo, animated while he speaks (speaking ring / light lip-sync on the client) | A real-time video face generated from his photo | A fixed recorded clip, not conversational |
-| Pieces | ElevenLabs Agent (his voice clone + LLM + knowledge) + our widget via the ElevenLabs web SDK and a signed URL | ElevenLabs Agent + HeyGen LiveAvatar (official ElevenLabs integration) or Anam | ElevenLabs Avatars (video) |
+| Pieces | ElevenLabs voice (his clone) with Custom LLM pointing at our backend (brain, prompt, knowledge) + our widget via the ElevenLabs web SDK and a signed URL | ElevenLabs Agent + HeyGen LiveAvatar (official ElevenLabs integration) or Anam | ElevenLabs Avatars (video) |
 | Cost driver | ElevenLabs plan + agent minutes (~$0.08/min over the bundle) + LLM | Plan + agent minutes + avatar video: HeyGen 1 credit per session minute; Anam ~$0.11–0.16/min | Credits per video |
 | Latency | Voice only, lowest | Adds avatar rendering (video stream) | n/a |
-| Privacy of face | Photo stays on our site; no vendor trains or hosts a face model | Photo (or video) uploaded to the avatar vendor | Uploaded to ElevenLabs |
+| Privacy of face | Photo stays on our site, unless the optional vendor animation is chosen | Photo (or video) uploaded to the avatar vendor | Uploaded to ElevenLabs |
 | Privacy of voice | Clone held in his ElevenLabs account | Same | Same |
 
 **Recommendation: A now, B later if wanted.**
@@ -36,7 +54,7 @@ A visitor clicks Ahmed's photo and talks, by voice, with a limited assistant tha
 
 - **ElevenLabs Creator plan, ~$22/month.**
   - It is the lowest tier with Professional Voice Cloning: 1 PVC slot.
-  - It bundles about 275 agent minutes a month. Extra minutes are about $0.08 each, and LLM usage is billed separately.
+  - It bundles about 275 agent minutes a month. Extra minutes are about $0.08 each. There is no ElevenLabs LLM charge with Custom LLM; model cost is on our own gateway.
 - **Example:** 100 conversations × 2 min = 200 min/month, which stays inside the bundle. The total is about $22/month plus a few dollars of LLM.
 - **Hosting:** Vercel stays the same. One small API route issues signed session URLs.
 - Instant Voice Cloning (Starter, ~$6/month) is possible, but it sounds less like him. PVC is recommended for a voice people will hear as "Ahmed".
@@ -101,8 +119,7 @@ Ahmed does these steps himself. No account or purchase is made by an agent.
    - Complete ElevenLabs' voice-captcha verification (he reads a prompt live).
 5. **Create the agent.**
    - Attach his PVC voice.
-   - Paste the scope above as the system prompt; we will draft it.
-   - Upload the knowledge list.
+   - Set **Custom LLM** to our endpoint: the server URL and model id from our backend, plus a bearer token kept in Infisical. Do not paste a prompt or upload knowledge to ElevenLabs; our backend loads them.
    - Set the first message in Arabic and English.
    - Enable authentication (signed URLs).
    - Allowlist `zewar.xyz` and `www.zewar.xyz`.
