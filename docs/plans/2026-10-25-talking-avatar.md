@@ -2,6 +2,24 @@
 
 Status: **plan + dormant code only**. Nothing is visible to visitors. No account, purchase or key exists yet.
 
+## Owner decision (2026-10-25): the brain is ours, ElevenLabs is the voice
+
+This decision overrides the rest of this plan where they differ.
+
+- **Ours.** The agent's brain, rules, knowledge, model choice, logs and the whole backend run on our infrastructure. The owner's AI gateway or server exposes it as an OpenAI-compatible streaming endpoint (`POST /v1/chat/completions`).
+- **ElevenLabs.** It only gives the agent his cloned voice: speech-to-text, text-to-speech and turn-taking. It may also animate his photo, if it offers that.
+  - It is configured with **Custom LLM** pointing at our endpoint, so ElevenLabs never holds the prompt or knowledge.
+  - No ElevenLabs knowledge base is used, and no ElevenLabs LLM is billed.
+- **Fallback.** If Custom LLM doesn't fit, the site calls our brain directly and uses ElevenLabs text-to-speech only, through a server route. The widget slot and flag stay the same.
+- **Order of work.**
+  1. Helper sessions prepare the topics and knowledge, and design the backend.
+  2. This session keeps the website ready: the widget behind the flag.
+  3. The ElevenLabs account steps come **last**.
+- **Effect on the sections below.**
+  - "Create the agent" in the checklist becomes: attach his voice, then set Custom LLM to our endpoint URL plus a bearer token. The token is stored in Infisical and entered in ElevenLabs by the owner.
+  - The system prompt and knowledge are loaded by our backend, not uploaded to ElevenLabs.
+  - The cost line "plus LLM" becomes our own gateway's model cost.
+
 ## Goal
 
 A visitor clicks Ahmed's photo and talks, by voice, with a limited assistant that answers in Ahmed's own voice. It answers general inquiries only and hands anything else to Ahmed (WhatsApp or email).
