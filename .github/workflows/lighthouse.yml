@@ -30,13 +30,20 @@ jobs:
       - name: Run Lighthouse (mobile)
         # A page that fails to load leaves no report; the threshold check turns that into an issue
         continue-on-error: true
+        # One cold run is noisy (the first visit after an idle period scores far lower), so warm the
+        # page, run three times and keep the run with the median performance score.
         run: |
           mkdir -p lighthouse
           for locale in en ar; do
-            npx --yes lighthouse@12 "https://www.zewar.xyz/$locale" \
-              --quiet --chrome-flags="--headless=new --no-sandbox" \
-              --only-categories=performance,accessibility,best-practices,seo \
-              --output=json --output=html --output-path="lighthouse/$locale"
+            url="https://www.zewar.xyz/$locale"
+            curl -s -o /dev/null "$url"; curl -s -o /dev/null "$url"
+            for run in 1 2 3; do
+              npx --yes lighthouse@12 "$url" \
+                --quiet --chrome-flags="--headless=new --no-sandbox" \
+                --only-categories=performance,accessibility,best-practices,seo \
+                --output=json --output=html --output-path="lighthouse/$locale-$run" || true
+            done
+            node .github/scripts/lighthouse-median.mjs "lighthouse/$locale" 3
           done
 
       - name: Check thresholds
