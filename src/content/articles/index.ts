@@ -1,4 +1,5 @@
 import aiReadinessWhereToStart from './ai-readiness-where-to-start'
+import documentIntelligenceAnswersFromYourFiles from './document-intelligence-answers-from-your-files'
 import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import rightAiModelForEachRequest from './right-ai-model-for-each-request'
@@ -12,6 +13,7 @@ const ARTICLES: readonly Article[] = [
   rightAiModelForEachRequest,
   monitoringThatChecksTheWork,
   aiReadinessWhereToStart,
+  documentIntelligenceAnswersFromYourFiles,
 ]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
