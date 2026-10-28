@@ -22,6 +22,7 @@
 - [AI Governance: The Right Model for Each Request](https://www.zewar.xyz/en/articles/right-ai-model-for-each-request): How an AI gateway routes each request by complexity and data sensitivity, keeping sensitive data on approved routes and every cost visible (Arabic: https://www.zewar.xyz/ar/articles/right-ai-model-for-each-request)
 - [All Green, Zero Work: AI Monitoring That Checks the Work](https://www.zewar.xyz/en/articles/monitoring-that-checks-the-work): Why a green status screen can hide stopped work, and how monitoring that checks completed work, capacity and independent alerts fixes it (Arabic: https://www.zewar.xyz/ar/articles/monitoring-that-checks-the-work)
 - [Where to Start with AI: Use Cases Before Tools](https://www.zewar.xyz/en/articles/ai-readiness-where-to-start): Why AI should start with use cases, a data and systems readiness check and a prioritised plan, with tools chosen last (Arabic: https://www.zewar.xyz/ar/articles/ai-readiness-where-to-start)
+- [Build, Buy or Partner: Choosing Your Route to AI](https://www.zewar.xyz/en/articles/build-buy-or-partner-ai): The questions to ask before deciding whether to build, buy or partner for an AI capability, and what a wrong choice costs later (Arabic: https://www.zewar.xyz/ar/articles/build-buy-or-partner-ai)
 
 ## Services
 
