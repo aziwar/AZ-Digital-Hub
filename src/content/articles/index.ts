@@ -1,4 +1,6 @@
 import aiReadinessWhereToStart from './ai-readiness-where-to-start'
+import bilingualAiAssistantArabicEnglish from './bilingual-ai-assistant-arabic-english'
+import documentIntelligenceAnswersFromYourFiles from './document-intelligence-answers-from-your-files'
 import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import processAutomationAgentsRepetitiveWork from './process-automation-agents-repetitive-work'
@@ -13,6 +15,8 @@ const ARTICLES: readonly Article[] = [
   rightAiModelForEachRequest,
   monitoringThatChecksTheWork,
   aiReadinessWhereToStart,
+  bilingualAiAssistantArabicEnglish,
+  documentIntelligenceAnswersFromYourFiles,
   processAutomationAgentsRepetitiveWork,
 ]
 
