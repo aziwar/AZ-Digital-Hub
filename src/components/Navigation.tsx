@@ -71,7 +71,7 @@ const Navigation: React.FC<NavigationProps> = ({ messages, locale, languageLabel
           </div>
 
           {/* Mobile: the language links stay in the bar, so they work without JS (the menu needs JS) */}
-          <div className="lg:hidden flex items-center gap-1">
+          <div className="lg:hidden flex items-center gap-1.5">
             <LanguageSwitcher currentLocale={locale} labels={languageLabels} hrefs={languageHrefs} />
 
             {/* Mobile menu button */}

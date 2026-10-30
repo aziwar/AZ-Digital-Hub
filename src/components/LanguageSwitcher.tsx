@@ -5,37 +5,31 @@ interface LanguageSwitcherProps {
   hrefs?: { en: string; ar: string }
 }
 
-const LANGUAGES = [
-  { locale: 'en', text: 'EN', labelKey: 'switchToEnglish' },
-  { locale: 'ar', text: 'AR', labelKey: 'switchToArabic' },
-] as const
+// The other language, named in its own script so a reader of that language recognises it at a glance
+const TARGET = {
+  en: { locale: 'ar', text: 'العربية', labelKey: 'switchToArabic' },
+  ar: { locale: 'en', text: 'English', labelKey: 'switchToEnglish' },
+} as const
 
-// Plain links between the two locale versions of the page (homepages by default), so switching works without JS and crawlers can follow it.
-// The accessible name starts with the visible text ("AR Switch to Arabic", WCAG 2.5.3); the extra words are
-// in the page language, the visible code in the target language.
+// One plain link to the same page in the other language, so switching works without JS and crawlers can follow it.
+// The accessible name starts with the visible text (WCAG 2.5.3); the extra words are in the page language.
 export default function LanguageSwitcher({ currentLocale, labels, hrefs }: LanguageSwitcherProps) {
+  const { locale, text, labelKey } = TARGET[currentLocale === 'ar' ? 'ar' : 'en']
   return (
-    <div className="flex items-center gap-2 bg-slate-800/50 rounded-full p-1 border border-slate-700">
-      {LANGUAGES.map(({ locale, text, labelKey }) => {
-        const isCurrent = locale === currentLocale
-        return (
-          <a
-            key={locale}
-            href={hrefs?.[locale] ?? `/${locale}`}
-            hrefLang={locale}
-            lang={locale}
-            aria-current={isCurrent ? 'page' : undefined}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-              isCurrent
-                ? 'bg-linear-to-r/srgb from-purple-500 to-cyan-500 text-white shadow-lg'
-                : 'text-gray-400 hover:text-white hover:bg-slate-700'
-            }`}
-          >
-            {text}
-            <span className="sr-only" lang={currentLocale}>{` ${labels[labelKey]}`}</span>
-          </a>
-        )
-      })}
-    </div>
+    <a
+      href={hrefs?.[locale] ?? `/${locale}`}
+      hrefLang={locale}
+      lang={locale}
+      className="group inline-flex min-h-[44px] items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-400"
+    >
+      <span className="inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-700 bg-slate-800/60 px-3.5 text-sm font-medium text-gray-200 transition-colors group-hover:border-purple-400/70 group-hover:bg-slate-800 group-hover:text-white">
+        <svg className="h-4 w-4 shrink-0 text-purple-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" />
+        </svg>
+        {text}
+      </span>
+      <span className="sr-only" lang={currentLocale}>{` ${labels[labelKey]}`}</span>
+    </a>
   )
 }
