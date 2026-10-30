@@ -1,9 +1,6 @@
 import aiReadinessWhereToStart from './ai-readiness-where-to-start'
-<<<<<<< HEAD
-import buildBuyOrPartnerAi from './build-buy-or-partner-ai'
-=======
 import bilingualAiAssistantArabicEnglish from './bilingual-ai-assistant-arabic-english'
->>>>>>> origin/main
+import buildBuyOrPartnerAi from './build-buy-or-partner-ai'
 import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import rightAiModelForEachRequest from './right-ai-model-for-each-request'
@@ -17,11 +14,8 @@ const ARTICLES: readonly Article[] = [
   rightAiModelForEachRequest,
   monitoringThatChecksTheWork,
   aiReadinessWhereToStart,
-<<<<<<< HEAD
   buildBuyOrPartnerAi,
-=======
   bilingualAiAssistantArabicEnglish,
->>>>>>> origin/main
 ]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
