@@ -261,6 +261,12 @@
 }
 
 /* Enhanced Body Styling */
+/* Slide-in animations start off-screen; clip (not hidden) stops a sideways overflow without breaking sticky/fixed */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   padding: 0;
