@@ -3,11 +3,10 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-import LanguageSwitcher from './LanguageSwitcher';
-
 import { imageConfig } from '@/lib/images.config';
 import { createTranslator, type MessageTree } from '@/lib/messages';
 
+import LanguageSwitcher from './LanguageSwitcher';
 
 // `hash` items are sections of the homepage; `articles` is its own page
 const menuItems = [
