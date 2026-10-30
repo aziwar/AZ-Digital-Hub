@@ -24,6 +24,8 @@
 - [Where to Start with AI: Use Cases Before Tools](https://www.zewar.xyz/en/articles/ai-readiness-where-to-start): Why AI should start with use cases, a data and systems readiness check and a prioritised plan, with tools chosen last (Arabic: https://www.zewar.xyz/ar/articles/ai-readiness-where-to-start)
 - [Build, Buy or Partner: Choosing Your Route to AI](https://www.zewar.xyz/en/articles/build-buy-or-partner-ai): The questions to ask before deciding whether to build, buy or partner for an AI capability, and what a wrong choice costs later (Arabic: https://www.zewar.xyz/ar/articles/build-buy-or-partner-ai)
 - [A Bilingual AI Assistant That Serves Arabic Properly](https://www.zewar.xyz/en/articles/bilingual-ai-assistant-arabic-english): Why an AI assistant should be designed in Arabic and English from day one, answering only from approved content (Arabic: https://www.zewar.xyz/ar/articles/bilingual-ai-assistant-arabic-english)
+- [Document Intelligence: Sourced Answers From Your Files](https://www.zewar.xyz/en/articles/document-intelligence-answers-from-your-files): How document intelligence turns internal policies, contracts and reports into fast answers that point to their source (Arabic: https://www.zewar.xyz/ar/articles/document-intelligence-answers-from-your-files)
+- [Automation Agents That Take Repetitive Work Off Your Team](https://www.zewar.xyz/en/articles/process-automation-agents-repetitive-work): How process automation agents handle repetitive multi-step work within clear limits, with a person approving what matters (Arabic: https://www.zewar.xyz/ar/articles/process-automation-agents-repetitive-work)
 
 ## Services
 
