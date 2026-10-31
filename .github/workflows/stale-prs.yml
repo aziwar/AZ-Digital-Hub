@@ -1,0 +1,33 @@
+name: stale-prs
+
+# Official actions/stale (v11). Pull requests only: stale after 10 idle days, closed 4 days later.
+# Issues are untouched (days-before-issue-* = -1). Exempt labels: keep, needs:owner-yes.
+on:
+  schedule:
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/stale@v11
+        with:
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          days-before-pr-stale: 10
+          days-before-pr-close: 4
+          exempt-pr-labels: 'keep,needs:owner-yes'
+          stale-pr-label: stale
+          stale-pr-message: >
+            Thanks for this pull request. It has had no activity for 10 days, so it is marked stale.
+            It will be closed in 4 days unless someone updates it. Add the `keep` label to stop this.
+          close-pr-message: >
+            Closing this pull request because it stayed inactive after the stale notice.
+            Feel free to reopen it, or open a new one, when you are ready to continue.
+          operations-per-run: 100
