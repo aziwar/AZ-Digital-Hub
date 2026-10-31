@@ -1,11 +1,12 @@
 name: auto-merge
 
 # Enables squash auto-merge on every non-draft PR. The branch ruleset still gates the merge
-# (required checks); nothing merges until they pass. Opt out with the label `no-automerge`
-# or `needs:owner-yes`. Dependabot PRs are skipped (its token is read-only).
+# (required checks); nothing merges until they pass. Hold labels `no-automerge` and
+# `needs:owner-yes` opt a PR out: adding one disables auto-merge, removing the last one re-enables it.
+# Dependabot PRs are skipped (its token is read-only).
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, labeled, unlabeled]
 
 permissions:
   contents: write
@@ -16,6 +17,9 @@ jobs:
     if: >-
       github.event.pull_request.draft == false &&
       github.actor != 'dependabot[bot]' &&
+      (github.event.action != 'labeled' && github.event.action != 'unlabeled' ||
+       github.event.label.name == 'no-automerge' || github.event.label.name == 'needs:owner-yes') &&
+      github.event.action != 'labeled' &&
       !contains(github.event.pull_request.labels.*.name, 'no-automerge') &&
       !contains(github.event.pull_request.labels.*.name, 'needs:owner-yes')
     runs-on: ubuntu-latest
@@ -26,3 +30,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
         run: gh pr merge --auto --squash "$PR_URL"
+
+  hold:
+    if: >-
+      github.event.action == 'labeled' &&
+      (github.event.label.name == 'no-automerge' || github.event.label.name == 'needs:owner-yes')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Disable auto-merge (hold label added)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --disable-auto "$PR_URL"
