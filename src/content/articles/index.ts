@@ -2,11 +2,13 @@ import afterLaunchHandoverAndImprove from './after-launch-handover-and-improve'
 import aiReadinessWhereToStart from './ai-readiness-where-to-start'
 import bilingualAiAssistantArabicEnglish from './bilingual-ai-assistant-arabic-english'
 import buildBuyOrPartnerAi from './build-buy-or-partner-ai'
+import dataReadinessBeforeAi from './data-readiness-before-ai'
 import documentIntelligenceAnswersFromYourFiles from './document-intelligence-answers-from-your-files'
 import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import processAutomationAgentsRepetitiveWork from './process-automation-agents-repetitive-work'
 import rightAiModelForEachRequest from './right-ai-model-for-each-request'
+import safeEverydayAiUsePolicy from './safe-everyday-ai-use-policy'
 import type { Article } from './types'
 
 export type { Article, ArticleBlock, ArticleTranslation } from './types'
@@ -22,6 +24,8 @@ const ARTICLES: readonly Article[] = [
   documentIntelligenceAnswersFromYourFiles,
   processAutomationAgentsRepetitiveWork,
   afterLaunchHandoverAndImprove,
+  dataReadinessBeforeAi,
+  safeEverydayAiUsePolicy,
 ]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
