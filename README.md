@@ -18,7 +18,7 @@ Live site: [https://www.zewar.xyz](https://www.zewar.xyz) (English at `/en`, Ara
 messages/            # Site copy (en.json, ar.json): source of truth for content
 lib/                 # Site config, rate limiting, utilities
 public/              # Static assets, llms.txt, llms-full.txt, robots.txt
-src/app/[locale]/    # Localised pages, layout, metadata, OG image
+src/app/[locale]/    # Localized pages, layout, metadata, OG image
 src/app/api/health/  # Health check
 src/app/sitemap.ts   # Sitemap
 src/components/      # Sections and UI components
