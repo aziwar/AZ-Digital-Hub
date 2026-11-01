@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: path,
       languages: { en: '/en/articles', ar: '/ar/articles', 'x-default': '/en/articles' },
+      types: { 'application/rss+xml': `${path}/rss.xml` },
     },
     // og:image comes from ./opengraph-image.tsx
     openGraph: {

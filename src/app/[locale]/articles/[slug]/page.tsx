@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: path,
       languages: { en: `/en/articles/${slug}`, ar: `/ar/articles/${slug}`, 'x-default': `/en/articles/${slug}` },
+      types: { 'application/rss+xml': `/${locale}/articles/rss.xml` },
     },
     // og:image comes from ./opengraph-image.tsx
     openGraph: {
@@ -56,7 +57,10 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound()
 
   const t = await getTranslations({ locale, namespace: 'Articles' })
-  const { title, description, imageAlt, body } = article[asArticleLocale(locale)]
+  const lang = asArticleLocale(locale)
+  const { title, description, imageAlt, body } = article[lang]
+  // Newest other posts, so a reader who finishes one has somewhere to go next
+  const more = getArticles().filter((other) => other.slug !== slug).slice(0, 3)
   const modified = getArticleModified(article)
   const url = `${SITE_URL}/${locale}/articles/${slug}`
 
@@ -122,6 +126,27 @@ export default async function ArticlePage({ params }: Props) {
           <ArticleBody blocks={body} />
 
           <ArticleCta locale={locale} />
+
+          {more.length > 0 && (
+            <section aria-labelledby="more-articles" className="mt-14">
+              <h2 id="more-articles" className="text-xl sm:text-2xl font-bold text-white">{t('moreArticles')}</h2>
+              <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+                {more.map((other) => (
+                  <li key={other.slug}>
+                    <a
+                      href={`/${locale}/articles/${other.slug}`}
+                      className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900/60 p-5 transition-colors hover:border-purple-500/60"
+                    >
+                      <span className="font-semibold leading-snug text-white">{other[lang].title}</span>
+                      <time dateTime={other.datePublished} className="mt-3 text-sm text-gray-400">
+                        {formatArticleDate(other.datePublished, locale)}
+                      </time>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <div className="mt-10 flex flex-wrap gap-x-8">
             <BackLink href={`/${locale}/articles`}>{t('allArticles')}</BackLink>
