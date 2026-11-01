@@ -12,6 +12,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: read
+  statuses: write
 
 jobs:
   gate:
@@ -51,6 +52,17 @@ jobs:
               review.commit_sha === pr.head.sha &&
               review.has_any_findings === false &&
               review.has_unresolved_findings === false;
+            const findings = review?.status === 'completed' &&
+              review.commit_sha === pr.head.sha &&
+              (review.has_any_findings === true || review.has_unresolved_findings === true);
+            await github.rest.repos.createCommitStatus({
+              owner, repo, sha: pr.head.sha,
+              context: 'Codex review',
+              state: clean ? 'success' : findings ? 'failure' : 'pending',
+              description: clean ? 'Clean Codex review of this head' :
+                findings ? 'Codex review has findings' : 'Waiting for clean Codex review of this head',
+              target_url: summary?.html_url ?? pr.html_url,
+            });
             const enable = !pr.draft && pr.user.login !== 'dependabot[bot]' && !held && clean;
             core.setOutput('action', enable ? 'enable' : 'disable');
             core.setOutput('sha', pr.head.sha);
