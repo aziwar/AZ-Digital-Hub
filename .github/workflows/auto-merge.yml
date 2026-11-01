@@ -14,10 +14,6 @@ permissions:
   issues: read
   statuses: write
 
-concurrency:
-  group: auto-merge-${{ github.event.pull_request.number || github.event.issue.number }}
-  cancel-in-progress: false
-
 jobs:
   gate:
     if: >-
@@ -25,6 +21,9 @@ jobs:
       (github.event.issue.pull_request &&
        github.event.comment.user.login == 'chatgpt-codex-connector[bot]' &&
        contains(github.event.comment.body, '<!-- codex-pull-request-review-summary -->'))
+    concurrency:
+      group: auto-merge-${{ github.event.pull_request.number || github.event.issue.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
