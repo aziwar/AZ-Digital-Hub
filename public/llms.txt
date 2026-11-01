@@ -28,6 +28,7 @@
 - [Automation Agents That Take Repetitive Work Off Your Team](https://www.zewar.xyz/en/articles/process-automation-agents-repetitive-work): How process automation agents handle repetitive multi-step work within clear limits, with a person approving what matters (Arabic: https://www.zewar.xyz/ar/articles/process-automation-agents-repetitive-work)
 - [After Launch: Hand Over, Measure, Improve](https://www.zewar.xyz/en/articles/after-launch-handover-and-improve): Why an AI solution needs an owner, a proper handover, measured use and small improvements after it goes live (Arabic: https://www.zewar.xyz/ar/articles/after-launch-handover-and-improve)
 - [Get Your Data Ready Before an AI Project](https://www.zewar.xyz/en/articles/data-readiness-before-ai): How a readiness review of documents, data owners and systems gives a short, ordered list of fixes before an AI project starts (Arabic: https://www.zewar.xyz/ar/articles/data-readiness-before-ai)
+- [A Simple Company Policy for Everyday AI Use](https://www.zewar.xyz/en/articles/safe-everyday-ai-use-policy): A one-page policy on what staff may share with AI tools, which tools are approved and who to ask, backed by a safe approved route (Arabic: https://www.zewar.xyz/ar/articles/safe-everyday-ai-use-policy)
 
 ## Services
 

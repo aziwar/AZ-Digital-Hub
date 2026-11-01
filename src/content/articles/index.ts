@@ -8,6 +8,7 @@ import monitoringThatChecksTheWork from './monitoring-that-checks-the-work'
 import oneCoordinatorManyAiWorkers from './one-coordinator-many-ai-workers'
 import processAutomationAgentsRepetitiveWork from './process-automation-agents-repetitive-work'
 import rightAiModelForEachRequest from './right-ai-model-for-each-request'
+import safeEverydayAiUsePolicy from './safe-everyday-ai-use-policy'
 import type { Article } from './types'
 
 export type { Article, ArticleBlock, ArticleTranslation } from './types'
@@ -24,6 +25,7 @@ const ARTICLES: readonly Article[] = [
   processAutomationAgentsRepetitiveWork,
   afterLaunchHandoverAndImprove,
   dataReadinessBeforeAi,
+  safeEverydayAiUsePolicy,
 ]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
