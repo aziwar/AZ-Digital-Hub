@@ -1,45 +1,71 @@
 name: auto-merge
 
-# Enables squash auto-merge on every non-draft PR. The branch ruleset still gates the merge
-# (required checks); nothing merges until they pass. Hold labels `no-automerge` and
-# `needs:owner-yes` opt a PR out: adding one disables auto-merge, removing the last one re-enables it.
-# Dependabot PRs are skipped (its token is read-only).
+# Codex edits its summary comment when a review finishes. Only a clean review of
+# the current head may enable auto-merge; a new head or hold label disables it.
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, labeled, unlabeled]
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+  issue_comment:
+    types: [created, edited]
 
 permissions:
   contents: write
   pull-requests: write
+  issues: read
 
 jobs:
-  enable:
+  gate:
     if: >-
-      github.event.pull_request.draft == false &&
-      github.actor != 'dependabot[bot]' &&
-      (github.event.action != 'labeled' && github.event.action != 'unlabeled' ||
-       github.event.label.name == 'no-automerge' || github.event.label.name == 'needs:owner-yes') &&
-      github.event.action != 'labeled' &&
-      !contains(github.event.pull_request.labels.*.name, 'no-automerge') &&
-      !contains(github.event.pull_request.labels.*.name, 'needs:owner-yes')
+      github.event_name == 'pull_request' ||
+      (github.event.issue.pull_request &&
+       github.event.comment.user.login == 'chatgpt-codex-connector[bot]' &&
+       contains(github.event.comment.body, '<!-- codex-pull-request-review-summary -->'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Enable auto-merge (squash)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr merge --auto --squash "$PR_URL"
+      - name: Check review of current head
+        id: review
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request?.number ?? context.issue.number;
+            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number });
+            if (pr.state !== 'open') return;
 
-  hold:
-    if: >-
-      github.event.action == 'labeled' &&
-      (github.event.label.name == 'no-automerge' || github.event.label.name == 'needs:owner-yes')
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Disable auto-merge (hold label added)
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: pull_number, per_page: 100,
+            });
+            const summary = comments.find(comment =>
+              comment.user.login === 'chatgpt-codex-connector[bot]' &&
+              comment.body.includes('<!-- codex-pull-request-review-summary -->'));
+            const match = summary?.body.match(/<!-- codex-review-state:v1 (\{[^\n]*\}) -->/);
+            let review;
+            if (match) {
+              try { review = JSON.parse(match[1]).code_review; } catch { /* fail closed */ }
+            }
+
+            const held = pr.labels.some(label =>
+              ['no-automerge', 'needs:owner-yes'].includes(label.name));
+            const clean = review?.status === 'completed' &&
+              review.commit_sha === pr.head.sha &&
+              review.has_any_findings === false &&
+              review.has_unresolved_findings === false;
+            const enable = !pr.draft && pr.user.login !== 'dependabot[bot]' && !held && clean;
+            core.setOutput('action', enable ? 'enable' : 'disable');
+            core.setOutput('sha', pr.head.sha);
+            core.setOutput('url', pr.html_url);
+
+      - name: Apply merge gate
+        if: steps.review.outputs.action != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr merge --disable-auto "$PR_URL"
+          ACTION: ${{ steps.review.outputs.action }}
+          HEAD_SHA: ${{ steps.review.outputs.sha }}
+          PR_URL: ${{ steps.review.outputs.url }}
+        run: |
+          if [ "$ACTION" = enable ]; then
+            gh pr merge --auto --squash --match-head-commit "$HEAD_SHA" "$PR_URL"
+          elif [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = true ]; then
+            gh pr merge --disable-auto "$PR_URL"
+          fi
