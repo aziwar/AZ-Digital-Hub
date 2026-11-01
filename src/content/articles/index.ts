@@ -1,3 +1,4 @@
+import afterLaunchHandoverAndImprove from './after-launch-handover-and-improve'
 import aiReadinessWhereToStart from './ai-readiness-where-to-start'
 import bilingualAiAssistantArabicEnglish from './bilingual-ai-assistant-arabic-english'
 import buildBuyOrPartnerAi from './build-buy-or-partner-ai'
@@ -20,6 +21,7 @@ const ARTICLES: readonly Article[] = [
   bilingualAiAssistantArabicEnglish,
   documentIntelligenceAnswersFromYourFiles,
   processAutomationAgentsRepetitiveWork,
+  afterLaunchHandoverAndImprove,
 ]
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
