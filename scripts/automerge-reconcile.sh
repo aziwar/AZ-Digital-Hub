@@ -22,10 +22,12 @@ set -u
 PR_URL="${1:-}"
 OWNER_LOGIN="${OWNER_LOGIN:-aziwar}"
 REPO="${GITHUB_REPOSITORY:-}"
-FIELDS=headRefOid,isDraft,labels,comments,autoMergeRequest,state
-STATE_SCHEMA='(.headRefOid|type=="string") and (.isDraft|type=="boolean") and (.state|type=="string") and has("autoMergeRequest")
+FIELDS=headRefOid,isDraft,labels,comments,autoMergeRequest,state,baseRefName
+STATE_SCHEMA='(.headRefOid|type=="string") and (.isDraft|type=="boolean") and (.state|type=="string") and (.baseRefName|type=="string") and has("autoMergeRequest")
   and (.labels|type=="array" and all(.[]; type=="object" and (.name|type=="string")))'
-COMMENT_SCHEMA='(.comments|type=="array" and all(.[]; type=="object" and (.body|type=="string") and (.author|type=="object") and (.author.login|type=="string")))'
+COMMENT_SCHEMA='(.comments|type=="array" and all(.[]; type=="object" and (.body|type=="string") and ((.author == null) or ((.author|type=="object") and (.author.login|type=="string")))))'
+# comments longer than this are refused (gh may cap the field; a verdict beyond the cap would be invisible)
+MAX_COMMENTS=99
 
 gh_merge() { # runs `gh pr merge` or only prints it
   if [ "${DRYRUN:-0}" = "1" ]; then echo "automerge-reconcile: dry run: gh pr merge $*"; return 0; fi
@@ -45,13 +47,14 @@ post_gate() { # posts lens-gate for $HEAD from the last evaluate(); failing to p
 
 # evaluate <PR JSON>: sets HEAD, ARMED (true|false), ELIGIBLE (1|0), WHY. Any parse problem calls fail().
 evaluate() {
-  local J="$1" STATE DRAFT HOLD RISKS NEED FABLE ASTRA
+  local J="$1" STATE DRAFT HOLD RISKS NEED FABLE ASTRA BASE
   printf '%s' "$J" | jq -e "$STATE_SCHEMA" >/dev/null || fail "PR JSON does not have the expected schema (fail closed)"
   printf '%s' "$J" | jq -e "$COMMENT_SCHEMA" >/dev/null || fail "PR comments do not have the expected schema (fail closed)"
   HEAD=$(printf '%s' "$J" | jq -r '.headRefOid') || fail "cannot parse headRefOid"
   [[ "$HEAD" =~ ^[0-9a-f]{40}$ ]] || fail "headRefOid is not a full SHA"
   ARMED=$(printf '%s' "$J" | jq -r '.autoMergeRequest != null') || fail "cannot parse autoMergeRequest"
   STATE=$(printf '%s' "$J" | jq -r '.state') || fail "cannot parse state"
+  BASE=$(printf '%s' "$J" | jq -r '.baseRefName') || fail "cannot parse baseRefName"
   DRAFT=$(printf '%s' "$J" | jq -r '.isDraft') || fail "cannot parse isDraft"
   HOLD=$(printf '%s' "$J" | jq -r '[.labels[].name | select(. == "no-automerge" or . == "needs:owner-yes")] | join(",")') || fail "cannot parse labels"
   RISKS=$(printf '%s' "$J" | jq -r '[.labels[].name | select(. == "risk:LOW" or . == "risk:NORMAL" or . == "risk:HIGH")] | join(",")') || fail "cannot parse risk labels"
@@ -60,13 +63,17 @@ evaluate() {
   GATE=pending
   WHY=""
   if [ "$NEED" = LOW ] && [ "${LOW_NEEDS_CHECK:-0}" = "1" ] && [ "$STATE" = "OPEN" ]; then
-    CHECKS=$(gh api "repos/${REPO}/commits/${HEAD}/check-runs" --jq '[.check_runs[] | select(.status == "completed" and .conclusion == "success")] | length' 2>/dev/null) || CHECKS=0
+    # Only check runs whose NAME is in LOW_REQUIRED_CHECKS (comma list, exact names) count. Empty/unset list = none qualifies, so LOW is
+    # treated as NORMAL. This reconciler's own run and any PR-author-added workflow can never satisfy it (Fable f2 HIGH).
+    CHECKS=$(gh api --paginate "repos/${REPO}/commits/${HEAD}/check-runs" --jq '[.check_runs[] | select(.status == "completed" and .conclusion == "success") | .name]' 2>/dev/null | jq -s -r --arg names "${LOW_REQUIRED_CHECKS:-}" '[.[][] | select(. as $n | ($names | split(",") | map(select(length > 0)) | index($n)) != null)] | length' 2>/dev/null) || CHECKS=0
     [[ "$CHECKS" =~ ^[0-9]+$ ]] || CHECKS=0
-    if [ "$CHECKS" -lt 1 ]; then NEED=NORMAL; WHY="risk:LOW has no successful check run on this head, treated as NORMAL; "; fi
+    if [ "$CHECKS" -lt 1 ]; then NEED=NORMAL; WHY="risk:LOW has no successful required check run on this head, treated as NORMAL; "; fi
   fi
   if [ "$STATE" != "OPEN" ]; then GATE=failure; WHY="PR is not open ($STATE)"
-  elif [ "$DRAFT" != "false" ]; then WHY="PR is a draft"
   elif [ -n "$HOLD" ]; then GATE=failure; WHY="hold label present: $HOLD"
+  elif [ "$DRAFT" != "false" ]; then WHY="PR is a draft"
+  elif [ -n "${DEFAULT_BRANCH:-}" ] && [ "$BASE" != "$DEFAULT_BRANCH" ]; then GATE=failure; WHY="base branch $BASE is not the default branch $DEFAULT_BRANCH"
+  elif [ "$(printf '%s' "$J" | jq -r '.comments | length')" -gt "$MAX_COMMENTS" ]; then WHY="more than $MAX_COMMENTS comments: verdict lookup cannot be trusted, refused"
   else
     FABLE=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: fable PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"
     ASTRA=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: astra PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"

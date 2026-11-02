@@ -25,17 +25,18 @@ if [ "$1" = api ]; then
     [ -f "$FAKE_DIR/status.fail" ] && exit 1
     echo "STATUS $*" >> "$FAKE_DIR/all.log"; echo "$*" >> "$FAKE_DIR/status.log"; exit 0 ;;
   esac
-  [ -f "$FAKE_DIR/checks.out" ] || exit 1
-  cat "$FAKE_DIR/checks.out"; exit 0
+  [ -f "$FAKE_DIR/checks.json" ] || exit 1
+  expr=""; prev=""; for a in "$@"; do [ "$prev" = "--jq" ] && expr="$a"; prev="$a"; done
+  jq -c "$expr" "$FAKE_DIR/checks.json"; exit 0
 fi
 if [ "$1 $2" = "pr list" ]; then cat "$FAKE_DIR/list.json"; exit 0; fi
 echo "unexpected gh call: $*" >&2; exit 9
 EOS
 chmod +x "$T/gh"
-export PATH="$T:$PATH" GITHUB_REPOSITORY=aziwar/example-repo FAKE_DIR="$T"
+export PATH="$T:$PATH" GITHUB_REPOSITORY=aziwar/example-repo FAKE_DIR="$T" DEFAULT_BRANCH=main
 ARMEDJ='{"enabledBy":{"login":"aziwar"},"mergeMethod":"SQUASH"}'
-pj() { # head draft labels comments [autoMergeRequest-json] [state]
-  printf '{"headRefOid":"%s","isDraft":%s,"labels":%s,"comments":%s,"autoMergeRequest":%s,"state":"%s"}\n' "$1" "$2" "$3" "$4" "${5:-null}" "${6:-OPEN}"; }
+pj() { # head draft labels comments [autoMergeRequest-json] [state] [base]
+  printf '{"headRefOid":"%s","isDraft":%s,"labels":%s,"comments":%s,"autoMergeRequest":%s,"state":"%s","baseRefName":"%s"}\n' "$1" "$2" "$3" "$4" "${5:-null}" "${6:-OPEN}" "${7:-main}"; }
 mkpr() { rm -f "$T"/pr?.json "$T/n" "$T/merge.log" "$T/status.log" "$T/all.log" "$T/status.fail"; pj "$@" > "$T/pr.json"; }
 verdict() { printf '{"author":{"login":"%s"},"body":"lens-verdict: %s PASS %s"}' "$1" "$2" "$3"; }
 FABLE="[$(verdict aziwar fable $SHA)]"
@@ -91,23 +92,37 @@ mkpr $SHA false null '[]';                                        run "labels nu
 mkpr $SHA false '[{"name":"risk:LOW"},7]' '[]';                   run "non-object label member => refuse, never arm" 1 "--disable-auto"
 mkpr $SHA false '[7,{"name":"no-automerge"}]' '[]';               run "bad member before a hold => refuse, never arm" 1 "--disable-auto"
 mkpr $SHA false '[{"name":5}]' '[]';                              run "label name not a string => refuse" 1 "--disable-auto"
-mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[{"body":"lens-verdict: fable PASS '$SHA'"}]'; run "comment without author => refuse, never arm" 1 "--disable-auto"
-printf '{"headRefOid":"abc","isDraft":false,"labels":[],"comments":[],"autoMergeRequest":null,"state":"OPEN"}\n' > "$T/pr.json"; rm -f "$T/n" "$T/merge.log"
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[{"body":"lens-verdict: fable PASS '$SHA'"}]'; run "comment without author is ghost data, never counts as owner verdict => no arm" 0 NONE
+printf '{"headRefOid":"abc","isDraft":false,"labels":[],"comments":[],"autoMergeRequest":null,"state":"OPEN","baseRefName":"main"}\n' > "$T/pr.json"; rm -f "$T/n" "$T/merge.log"
 run "short head SHA => refuse" 1 "--disable-auto"
 mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; sed -i 's/"autoMergeRequest":null,//' "$T/pr.json"; run "autoMergeRequest missing => refuse" 1 "--disable-auto"
 
-# --- LOW_NEEDS_CHECK=1 (report-stack: no required checks in the ruleset)
-mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 0 > "$T/checks.out"
-LOW_NEEDS_CHECK=1 run "LOW + no successful check run => treated as NORMAL, no verdict, no arm" 0 NONE
-mkpr $SHA false '[{"name":"risk:LOW"}]' "$FABLE"; echo 0 > "$T/checks.out"
-LOW_NEEDS_CHECK=1 run "LOW + no successful check run + fable verdict => arms" 0 "$ARM"
-mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 2 > "$T/checks.out"
-LOW_NEEDS_CHECK=1 run "LOW + a successful check run on the head => arms without a verdict" 0 "$ARM"
-mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; rm -f "$T/checks.out"
-LOW_NEEDS_CHECK=1 run "LOW + check-runs call fails => fail safe as NORMAL, no arm" 0 NONE
-mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 0 > "$T/checks.out"
+# --- LOW_NEEDS_CHECK=1 with an allowlist of check NAMES (Fable f2 HIGH: a self-triggered or author-added green run must not count)
+okrun() { printf '{"check_runs":[{"name":"%s","status":"completed","conclusion":"%s"}]}\n' "$1" "${2:-success}" > "$T/checks.json"; }
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun build
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS=build run "LOW + required check 'build' succeeded => arms without a verdict" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun reconcile
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS=build run "LOW + only the reconciler's own green run (not in the list) => treated as NORMAL, no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun anything-the-author-added
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS=build run "LOW + an author-added green workflow (not in the list) => no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun build failure
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS=build run "LOW + required check failed => no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun build
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS= run "LOW + empty allowlist (report-stack today: no CI) => NORMAL, no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' "$FABLE"; okrun reconcile
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS= run "LOW as NORMAL + fable verdict => arms" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; rm -f "$T/checks.json"
+LOW_NEEDS_CHECK=1 LOW_REQUIRED_CHECKS=build run "LOW + check-runs call fails => fail safe as NORMAL, no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; okrun build
 run "LOW_NEEDS_CHECK unset (AZ-Digital-Hub: ruleset requires build + Codex review) => LOW arms" 0 "$ARM"
-rm -f "$T/checks.out"
+rm -f "$T/checks.json"
+
+# --- Fable f2 MEDIUMs and f1 M1
+mkpr $SHA true '[{"name":"risk:LOW"},{"name":"no-automerge"}]' '[]'; run "draft + hold label => hold wins" 0 NONE; gate_is_late="1"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[{"author":null,"body":"a deleted user wrote this"}]'; run "comment with a null (ghost) author is valid data, LOW still arms" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' "[{\"author\":null,\"body\":\"ghost\"},$(verdict aziwar fable $SHA)]"; run "ghost comment next to the owner verdict: still arms" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]' null OPEN develop; run "PR targeting a non-default base is never armed" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' "$(python3 -c "import json;print(json.dumps([{'author':{'login':'x'},'body':'c'}]*120))" 2>/dev/null || python -c "import json;print(json.dumps([{'author':{'login':'x'},'body':'c'}]*120))")"; run "more than 99 comments => verdict lookup cannot be trusted, no arm" 0 NONE
 
 # --- server-side lens-gate commit status (Astra HIGH PR 20/65): posted on the exact head BEFORE any arm/disarm
 gate_is() { # name want-state sha
@@ -121,12 +136,23 @@ if [ "$(head -1 "$T/all.log" | cut -c1-6)" = STATUS ]; then echo "ok   status is
 mkpr $SHA false '[{"name":"risk:NORMAL"}]' "$FABLE"; touch "$T/status.fail"; run "status cannot be posted => refuse, never arm" 1 "--disable-auto"
 mkpr $SHA false '[{"name":"risk:NORMAL"}]' "$FABLE" "$ARMEDJ"; rm -f "$T/status.fail"; run "armed + eligible: keep, status success refreshed" 0 NONE; gate_is "keep path also posts success" success $SHA
 
-# --- sweep: dependabot only gets lens-gate=success; other PRs are reconciled (a deleted comment or late check is caught here)
+# --- sweep: ONLY the exact bot (is_bot true + login app/dependabot) gets lens-gate=success; lookalikes are reconciled (Fable f1 H1, Astra HIGH x2)
 mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[]' "$ARMEDJ"   # verdict was revoked (comment deleted): armed PR with no verdict
-printf '[{"url":"%s","headRefOid":"%s","author":{"login":"aziwar"}},{"url":"https://github.com/aziwar/example-repo/pull/8","headRefOid":"%s","author":{"login":"dependabot[bot]"}}]\n' "$URL" "$SHA" "$OTHER" > "$T/list.json"
-DEFAULT_BRANCH=main bash "$HERE/automerge-sweep.sh" >"$T/out" 2>&1; rc=$?
-if [ $rc = 0 ] && grep -q -- "--disable-auto" "$T/merge.log" && grep -q "statuses/$OTHER" "$T/status.log" && grep -q "state=success" "$T/status.log"; then echo "ok   sweep disarms the PR whose verdict was revoked and passes dependabot (lens-gate success)"; else echo "FAIL sweep rc=$rc: $(cat "$T/out") [$(cat "$T/merge.log" 2>&1)]"; fails=$((fails+1)); fi
-if ! grep -q -- "pull/8" "$T/merge.log"; then echo "ok   sweep never arms or disarms a dependabot PR"; else echo "FAIL sweep touched the dependabot PR"; fails=$((fails+1)); fi
+printf '[{"url":"%s","headRefOid":"%s","author":{"login":"aziwar","is_bot":false}},{"url":"https://github.com/aziwar/example-repo/pull/8","headRefOid":"%s","author":{"login":"app/dependabot","is_bot":true}}]\n' "$URL" "$SHA" "$OTHER" > "$T/list.json"
+bash "$HERE/automerge-sweep.sh" >"$T/out" 2>&1; rc=$?
+if [ $rc = 0 ] && grep -q -- "--disable-auto" "$T/merge.log" && grep -q "statuses/$OTHER" "$T/status.log" && grep -q "state=success" "$T/status.log"; then echo "ok   sweep disarms the PR whose verdict was revoked and passes the real Dependabot (lens-gate success)"; else echo "FAIL sweep rc=$rc: $(cat "$T/out") [$(cat "$T/merge.log" 2>&1)]"; fails=$((fails+1)); fi
+if ! grep -q -- "pull/8" "$T/merge.log"; then echo "ok   sweep never arms or disarms the real Dependabot PR"; else echo "FAIL sweep touched the dependabot PR"; fails=$((fails+1)); fi
+# lookalike logins and a human account named dependabot must NOT get the exemption: they go through reconcile (held PR => failure status, no success)
+for who in 'dependabot-helper|false' 'xdependabotx|true' 'dependabot|false' 'app/dependabot|false' 'dependabot[bot]|true'; do
+  login="${who%%|*}"; bot="${who##*|}"
+  mkpr $SHA false '[{"name":"risk:HIGH"},{"name":"no-automerge"}]' '[]'
+  printf '[{"url":"%s","headRefOid":"%s","author":{"login":"%s","is_bot":%s}}]\n' "$URL" "$SHA" "$login" "$bot" > "$T/list.json"
+  bash "$HERE/automerge-sweep.sh" >"$T/out" 2>&1
+  if grep -q "state=failure" "$T/status.log" && ! grep -q "state=success" "$T/status.log"; then echo "ok   sweep: '$login' (is_bot=$bot) is NOT exempt: held HIGH PR gets lens-gate failure, never success"; else echo "FAIL sweep exempted '$login': [$(cat "$T/status.log" 2>&1)]"; fails=$((fails+1)); fi
+done
+printf '[{"url":"%s","headRefOid":"%s","author":{"login":"aziwar"}}]\n' "$URL" "$SHA" > "$T/list.json"
+bash "$HERE/automerge-sweep.sh" >"$T/out" 2>&1; rc=$?
+if [ $rc -ne 0 ]; then echo "ok   sweep refuses a PR list without author.is_bot (schema fail closed)"; else echo "FAIL sweep accepted a list without is_bot"; fails=$((fails+1)); fi
 
 # --- workflow wiring (static): revocation events, trusted checkout, base pin, schedule
 WF="$HERE/../.github/workflows/auto-merge.yml"

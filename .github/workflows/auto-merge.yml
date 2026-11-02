@@ -36,7 +36,7 @@ jobs:
       (github.event.issue.pull_request &&
        github.event.comment.user.login == 'aziwar')
     concurrency:
-      group: auto-merge-${{ github.event.pull_request.number || github.event.issue.number }}
+      group: auto-merge
       cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -99,6 +99,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ steps.review.outputs.url }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           OWNER_LOGIN: aziwar
         run: bash scripts/automerge-reconcile.sh "$PR_URL"
 
@@ -117,7 +118,7 @@ jobs:
   sweep:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     concurrency:
-      group: auto-merge-sweep
+      group: auto-merge
       cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
