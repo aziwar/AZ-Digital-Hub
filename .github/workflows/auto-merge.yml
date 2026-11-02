@@ -1,10 +1,16 @@
 name: auto-merge
 
-# Codex edits its summary comment when a review finishes. Only a clean review of
-# the current head may enable auto-merge; a new head or hold label disables it.
+# Codex edits its summary comment when a review finishes; the `Codex review` commit status below (required by the ruleset
+# together with `build`) is kept exactly as it was.
+# Auto-merge arming changed on 2026-11-02 (owner approval 12:43 KWT, Rahmi ticket 7398cd8d): scripts/automerge-reconcile.sh arms
+# GitHub native auto-merge only when the owner account commented "lens-verdict: <fable|astra> PASS <full head sha>" on the
+# EXACT current head for the lenses the risk label needs (risk:LOW none, risk:NORMAL fable, risk:HIGH fable + astra; no risk
+# label counts as NORMAL), and disarms on every new push (GitHub itself disarms only for pushers without write permission),
+# on a hold label and when the PR goes back to draft. Dependabot PRs keep the Codex-review gate only and are never armed here.
+# The script is checked out from the default branch, never from the PR head.
 on:
   pull_request:
-    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, labeled, unlabeled]
   issue_comment:
     types: [created, edited]
 
@@ -20,7 +26,10 @@ jobs:
       github.event_name == 'pull_request' ||
       (github.event.issue.pull_request &&
        github.event.comment.user.login == 'chatgpt-codex-connector[bot]' &&
-       contains(github.event.comment.body, '<!-- codex-pull-request-review-summary -->'))
+       contains(github.event.comment.body, '<!-- codex-pull-request-review-summary -->')) ||
+      (github.event.issue.pull_request &&
+       github.event.comment.user.login == 'aziwar' &&
+       startsWith(github.event.comment.body, 'lens-verdict:'))
     concurrency:
       group: auto-merge-${{ github.event.pull_request.number || github.event.issue.number }}
       cancel-in-progress: false
@@ -68,19 +77,31 @@ jobs:
             });
             const enable = !pr.draft && pr.user.login !== 'dependabot[bot]' && !held && clean;
             core.setOutput('action', enable ? 'enable' : 'disable');
+            core.setOutput('dependabot', String(pr.user.login === 'dependabot[bot]'));
             core.setOutput('sha', pr.head.sha);
             core.setOutput('url', pr.html_url);
 
-      - name: Apply merge gate
-        if: steps.review.outputs.action != ''
+      - name: Check out the default branch (never the PR head)
+        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot != 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Arm or disarm auto-merge from the lens verdicts
+        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACTION: ${{ steps.review.outputs.action }}
-          HEAD_SHA: ${{ steps.review.outputs.sha }}
+          PR_URL: ${{ steps.review.outputs.url }}
+          OWNER_LOGIN: aziwar
+        run: bash scripts/automerge-reconcile.sh "$PR_URL"
+
+      - name: Dependabot PR is never armed here (disarm if it was)
+        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ steps.review.outputs.url }}
         run: |
-          if [ "$ACTION" = enable ]; then
-            gh pr merge --auto --squash --match-head-commit "$HEAD_SHA" "$PR_URL"
-          elif [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = true ]; then
+          if [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = true ]; then
             gh pr merge --disable-auto "$PR_URL"
           fi
