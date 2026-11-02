@@ -20,6 +20,10 @@ if [ "$1 $2" = "pr merge" ]; then
   case "$*" in *--disable-auto*) jq '.autoMergeRequest=null' "$FAKE_DIR/pr.json" > "$FAKE_DIR/pr.tmp" && mv "$FAKE_DIR/pr.tmp" "$FAKE_DIR/pr.json"; rm -f "$FAKE_DIR"/pr?.json ;; esac
   exit 0
 fi
+if [ "$1" = api ]; then
+  [ -f "$FAKE_DIR/checks.out" ] || exit 1
+  cat "$FAKE_DIR/checks.out"; exit 0
+fi
 echo "unexpected gh call: $*" >&2; exit 9
 EOS
 chmod +x "$T/gh"
@@ -86,6 +90,19 @@ mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[{"body":"lens-verdict: fable PASS '
 printf '{"headRefOid":"abc","isDraft":false,"labels":[],"comments":[],"autoMergeRequest":null,"state":"OPEN"}\n' > "$T/pr.json"; rm -f "$T/n" "$T/merge.log"
 run "short head SHA => refuse" 1 "--disable-auto"
 mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; sed -i 's/"autoMergeRequest":null,//' "$T/pr.json"; run "autoMergeRequest missing => refuse" 1 "--disable-auto"
+
+# --- LOW_NEEDS_CHECK=1 (report-stack: no required checks in the ruleset)
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 0 > "$T/checks.out"
+LOW_NEEDS_CHECK=1 run "LOW + no successful check run => treated as NORMAL, no verdict, no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' "$FABLE"; echo 0 > "$T/checks.out"
+LOW_NEEDS_CHECK=1 run "LOW + no successful check run + fable verdict => arms" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 2 > "$T/checks.out"
+LOW_NEEDS_CHECK=1 run "LOW + a successful check run on the head => arms without a verdict" 0 "$ARM"
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; rm -f "$T/checks.out"
+LOW_NEEDS_CHECK=1 run "LOW + check-runs call fails => fail safe as NORMAL, no arm" 0 NONE
+mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 0 > "$T/checks.out"
+run "LOW_NEEDS_CHECK unset (AZ-Digital-Hub: ruleset requires build + Codex review) => LOW arms" 0 "$ARM"
+rm -f "$T/checks.out"
 
 # --- inputs and the no-bypass checks
 bash "$HERE/automerge-reconcile.sh" "https://github.com/other/repo/pull/1" >"$T/out" 2>&1; rc=$?

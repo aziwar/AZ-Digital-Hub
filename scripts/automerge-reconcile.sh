@@ -11,6 +11,8 @@
 # (docs.github.com .../automatically-merging-a-pull-request), so a writer's push must be handled by the `synchronize` run of this script.
 # Reused from 211's validated gate (cloudbot-plugins scripts/automerge-gate.sh): strict schema, exact head, hold labels,
 # fail closed on every parse error, re-read right before the arm. The re-read narrows but cannot close the last race.
+# Optional LOW_NEEDS_CHECK=1 (report-stack, whose ruleset has NO required checks): risk:LOW arms only when the exact head has at least
+# one completed SUCCESSFUL check run; with none (or when the check-runs call fails) LOW is treated as NORMAL and needs the fable verdict.
 # Exit: 0 = decision applied (including "nothing to do"); 1 = refused or error (best-effort disarm was attempted).
 set -u
 PR_URL="${1:-}"
@@ -47,6 +49,12 @@ evaluate() {
   RISKS=$(printf '%s' "$J" | jq -r '[.labels[].name | select(. == "risk:LOW" or . == "risk:NORMAL" or . == "risk:HIGH")] | join(",")') || fail "cannot parse risk labels"
   case ",$RISKS," in *,risk:HIGH,*) NEED=HIGH ;; *,risk:NORMAL,*) NEED=NORMAL ;; *,risk:LOW,*) NEED=LOW ;; *) NEED=NORMAL ;; esac
   ELIGIBLE=0
+  WHY=""
+  if [ "$NEED" = LOW ] && [ "${LOW_NEEDS_CHECK:-0}" = "1" ] && [ "$STATE" = "OPEN" ]; then
+    CHECKS=$(gh api "repos/${REPO}/commits/${HEAD}/check-runs" --jq '[.check_runs[] | select(.status == "completed" and .conclusion == "success")] | length' 2>/dev/null) || CHECKS=0
+    [[ "$CHECKS" =~ ^[0-9]+$ ]] || CHECKS=0
+    if [ "$CHECKS" -lt 1 ]; then NEED=NORMAL; WHY="risk:LOW has no successful check run on this head, treated as NORMAL; "; fi
+  fi
   if [ "$STATE" != "OPEN" ]; then WHY="PR is not open ($STATE)"
   elif [ "$DRAFT" != "false" ]; then WHY="PR is a draft"
   elif [ -n "$HOLD" ]; then WHY="hold label present: $HOLD"
@@ -54,8 +62,8 @@ evaluate() {
     FABLE=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: fable PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"
     ASTRA=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: astra PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"
     if [ "$NEED" = LOW ]; then ELIGIBLE=1; WHY="risk:LOW needs no lens verdict"
-    elif [ "$FABLE" -lt 1 ]; then WHY="risk $NEED needs 'lens-verdict: fable PASS $HEAD' by $OWNER_LOGIN on the current head"
-    elif [ "$NEED" = HIGH ] && [ "$ASTRA" -lt 1 ]; then WHY="risk HIGH also needs 'lens-verdict: astra PASS $HEAD' by $OWNER_LOGIN on the current head"
+    elif [ "$FABLE" -lt 1 ]; then WHY="${WHY}risk $NEED needs 'lens-verdict: fable PASS $HEAD' by $OWNER_LOGIN on the current head"
+    elif [ "$NEED" = HIGH ] && [ "$ASTRA" -lt 1 ]; then WHY="${WHY}risk HIGH also needs 'lens-verdict: astra PASS $HEAD' by $OWNER_LOGIN on the current head"
     else ELIGIBLE=1; WHY="risk $NEED lens verdicts present on $HEAD"; fi
   fi
 }
