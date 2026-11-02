@@ -16,14 +16,19 @@ if [ "$1 $2" = "pr view" ]; then
   f="$FAKE_DIR/pr$n.json"; [ -f "$f" ] || f="$FAKE_DIR/pr.json"; cat "$f"; exit 0
 fi
 if [ "$1 $2" = "pr merge" ]; then
-  echo "$*" >> "$FAKE_DIR/merge.log"
+  echo "$*" >> "$FAKE_DIR/merge.log"; echo "MERGE $*" >> "$FAKE_DIR/all.log"
   case "$*" in *--disable-auto*) jq '.autoMergeRequest=null' "$FAKE_DIR/pr.json" > "$FAKE_DIR/pr.tmp" && mv "$FAKE_DIR/pr.tmp" "$FAKE_DIR/pr.json"; rm -f "$FAKE_DIR"/pr?.json ;; esac
   exit 0
 fi
 if [ "$1" = api ]; then
+  case "$*" in *statuses/*)
+    [ -f "$FAKE_DIR/status.fail" ] && exit 1
+    echo "STATUS $*" >> "$FAKE_DIR/all.log"; echo "$*" >> "$FAKE_DIR/status.log"; exit 0 ;;
+  esac
   [ -f "$FAKE_DIR/checks.out" ] || exit 1
   cat "$FAKE_DIR/checks.out"; exit 0
 fi
+if [ "$1 $2" = "pr list" ]; then cat "$FAKE_DIR/list.json"; exit 0; fi
 echo "unexpected gh call: $*" >&2; exit 9
 EOS
 chmod +x "$T/gh"
@@ -31,7 +36,7 @@ export PATH="$T:$PATH" GITHUB_REPOSITORY=aziwar/example-repo FAKE_DIR="$T"
 ARMEDJ='{"enabledBy":{"login":"aziwar"},"mergeMethod":"SQUASH"}'
 pj() { # head draft labels comments [autoMergeRequest-json] [state]
   printf '{"headRefOid":"%s","isDraft":%s,"labels":%s,"comments":%s,"autoMergeRequest":%s,"state":"%s"}\n' "$1" "$2" "$3" "$4" "${5:-null}" "${6:-OPEN}"; }
-mkpr() { rm -f "$T"/pr?.json "$T/n" "$T/merge.log"; pj "$@" > "$T/pr.json"; }
+mkpr() { rm -f "$T"/pr?.json "$T/n" "$T/merge.log" "$T/status.log" "$T/all.log" "$T/status.fail"; pj "$@" > "$T/pr.json"; }
 verdict() { printf '{"author":{"login":"%s"},"body":"lens-verdict: %s PASS %s"}' "$1" "$2" "$3"; }
 FABLE="[$(verdict aziwar fable $SHA)]"
 BOTH="[$(verdict aziwar fable $SHA),$(verdict aziwar astra $SHA)]"
@@ -103,6 +108,32 @@ LOW_NEEDS_CHECK=1 run "LOW + check-runs call fails => fail safe as NORMAL, no ar
 mkpr $SHA false '[{"name":"risk:LOW"}]' '[]'; echo 0 > "$T/checks.out"
 run "LOW_NEEDS_CHECK unset (AZ-Digital-Hub: ruleset requires build + Codex review) => LOW arms" 0 "$ARM"
 rm -f "$T/checks.out"
+
+# --- server-side lens-gate commit status (Astra HIGH PR 20/65): posted on the exact head BEFORE any arm/disarm
+gate_is() { # name want-state sha
+  if grep -q -- "statuses/$3" "$T/status.log" 2>/dev/null && grep -q -- "state=$2" "$T/status.log" && grep -q -- "context=lens-gate" "$T/status.log"; then echo "ok   $1"; else echo "FAIL $1: [$(cat "$T/status.log" 2>&1)]"; fails=$((fails+1)); fi; }
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' "$FABLE"; run "eligible: arms" 0 "$ARM"; gate_is "lens-gate=success posted on the head" success $SHA
+if [ "$(head -1 "$T/all.log" | cut -c1-6)" = STATUS ]; then echo "ok   status is posted BEFORE the arm call"; else echo "FAIL order: $(cat "$T/all.log")"; fails=$((fails+1)); fi
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[]'; run "missing verdict: no arm" 0 NONE; gate_is "lens-gate=pending while the verdict is missing" pending $SHA
+mkpr $SHA false '[{"name":"risk:LOW"},{"name":"no-automerge"}]' '[]'; run "hold: no arm" 0 NONE; gate_is "lens-gate=failure on a hold label" failure $SHA
+mkpr $OTHER false '[{"name":"risk:NORMAL"}]' "$FABLE" "$ARMEDJ"; run "armed + new head: disarm" 0 "--disable-auto"; gate_is "new head gets lens-gate=pending (stale approval cannot ride along)" pending $OTHER
+if [ "$(head -1 "$T/all.log" | cut -c1-6)" = STATUS ]; then echo "ok   status is posted BEFORE the disarm call"; else echo "FAIL order: $(cat "$T/all.log")"; fails=$((fails+1)); fi
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' "$FABLE"; touch "$T/status.fail"; run "status cannot be posted => refuse, never arm" 1 "--disable-auto"
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' "$FABLE" "$ARMEDJ"; rm -f "$T/status.fail"; run "armed + eligible: keep, status success refreshed" 0 NONE; gate_is "keep path also posts success" success $SHA
+
+# --- sweep: dependabot only gets lens-gate=success; other PRs are reconciled (a deleted comment or late check is caught here)
+mkpr $SHA false '[{"name":"risk:NORMAL"}]' '[]' "$ARMEDJ"   # verdict was revoked (comment deleted): armed PR with no verdict
+printf '[{"url":"%s","headRefOid":"%s","author":{"login":"aziwar"}},{"url":"https://github.com/aziwar/example-repo/pull/8","headRefOid":"%s","author":{"login":"dependabot[bot]"}}]\n' "$URL" "$SHA" "$OTHER" > "$T/list.json"
+DEFAULT_BRANCH=main bash "$HERE/automerge-sweep.sh" >"$T/out" 2>&1; rc=$?
+if [ $rc = 0 ] && grep -q -- "--disable-auto" "$T/merge.log" && grep -q "statuses/$OTHER" "$T/status.log" && grep -q "state=success" "$T/status.log"; then echo "ok   sweep disarms the PR whose verdict was revoked and passes dependabot (lens-gate success)"; else echo "FAIL sweep rc=$rc: $(cat "$T/out") [$(cat "$T/merge.log" 2>&1)]"; fails=$((fails+1)); fi
+if ! grep -q -- "pull/8" "$T/merge.log"; then echo "ok   sweep never arms or disarms a dependabot PR"; else echo "FAIL sweep touched the dependabot PR"; fails=$((fails+1)); fi
+
+# --- workflow wiring (static): revocation events, trusted checkout, base pin, schedule
+WF="$HERE/../.github/workflows/auto-merge.yml"
+if grep -qE 'types: \[created, edited, deleted\]' "$WF"; then echo "ok   workflow reconciles comment edits AND deletions"; else echo "FAIL workflow lacks created/edited/deleted comment events"; fails=$((fails+1)); fi
+if ! grep -q "startsWith(github.event.comment.body" "$WF"; then echo "ok   owner comment events are not filtered by the NEW body prefix (a withdrawn/edited verdict still reconciles)"; else echo "FAIL workflow still filters on the comment body prefix"; fails=$((fails+1)); fi
+if grep -q "schedule:" "$WF" && grep -q "automerge-sweep.sh" "$WF"; then echo "ok   workflow has a scheduled sweep"; else echo "FAIL no scheduled sweep"; fails=$((fails+1)); fi
+if grep -q "ref: \${{ github.event.repository.default_branch }}" "$WF"; then echo "ok   the privileged checkout is pinned to the default branch"; else echo "FAIL checkout is not pinned to the default branch"; fails=$((fails+1)); fi
 
 # --- inputs and the no-bypass checks
 bash "$HERE/automerge-reconcile.sh" "https://github.com/other/repo/pull/1" >"$T/out" 2>&1; rc=$?

@@ -6,13 +6,19 @@ name: auto-merge
 # GitHub native auto-merge only when the owner account commented "lens-verdict: <fable|astra> PASS <full head sha>" on the
 # EXACT current head for the lenses the risk label needs (risk:LOW none, risk:NORMAL fable, risk:HIGH fable + astra; no risk
 # label counts as NORMAL), and disarms on every new push (GitHub itself disarms only for pushers without write permission),
-# on a hold label and when the PR goes back to draft. Dependabot PRs keep the Codex-review gate only and are never armed here.
-# The script is checked out from the default branch, never from the PR head.
+# on a hold label, when the PR goes back to draft, and when an owner comment is edited or DELETED (revocation). Every decision is
+# also posted as the commit status `lens-gate` on the exact head; making `lens-gate` a REQUIRED status in the ruleset is what turns
+# this into a server-enforced gate (a new head has no status until the workflow posts one; command in the PR body). A scheduled sweep
+# re-evaluates every open PR. Dependabot PRs keep the Codex-review gate only, are never armed here, and get lens-gate=success.
+# The script is checked out from the default branch, never from the PR head; PRs with another base branch are not armed.
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, labeled, unlabeled]
   issue_comment:
-    types: [created, edited]
+    types: [created, edited, deleted]
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -28,8 +34,7 @@ jobs:
        github.event.comment.user.login == 'chatgpt-codex-connector[bot]' &&
        contains(github.event.comment.body, '<!-- codex-pull-request-review-summary -->')) ||
       (github.event.issue.pull_request &&
-       github.event.comment.user.login == 'aziwar' &&
-       startsWith(github.event.comment.body, 'lens-verdict:'))
+       github.event.comment.user.login == 'aziwar')
     concurrency:
       group: auto-merge-${{ github.event.pull_request.number || github.event.issue.number }}
       cancel-in-progress: false
@@ -78,30 +83,54 @@ jobs:
             const enable = !pr.draft && pr.user.login !== 'dependabot[bot]' && !held && clean;
             core.setOutput('action', enable ? 'enable' : 'disable');
             core.setOutput('dependabot', String(pr.user.login === 'dependabot[bot]'));
+            core.setOutput('base_ok', String(pr.base.ref === context.payload.repository.default_branch));
             core.setOutput('sha', pr.head.sha);
             core.setOutput('url', pr.html_url);
 
       - name: Check out the default branch (never the PR head)
-        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot != 'true'
+        if: steps.review.outputs.action != '' && steps.review.outputs.base_ok == 'true'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
 
       - name: Arm or disarm auto-merge from the lens verdicts
-        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot != 'true'
+        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot != 'true' && steps.review.outputs.base_ok == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ steps.review.outputs.url }}
           OWNER_LOGIN: aziwar
         run: bash scripts/automerge-reconcile.sh "$PR_URL"
 
-      - name: Dependabot PR is never armed here (disarm if it was)
-        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot == 'true'
+      - name: Dependabot PR is never armed here (disarm if it was) and gets lens-gate success
+        if: steps.review.outputs.action != '' && steps.review.outputs.dependabot == 'true' && steps.review.outputs.base_ok == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ steps.review.outputs.url }}
+          HEAD_SHA: ${{ steps.review.outputs.sha }}
         run: |
+          bash scripts/lens-gate-status.sh "$HEAD_SHA" success "dependabot PR, never armed by the lens gate"
           if [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = true ]; then
             gh pr merge --disable-auto "$PR_URL"
           fi
+
+  sweep:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    concurrency:
+      group: auto-merge-sweep
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Re-evaluate every open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          OWNER_LOGIN: aziwar
+        run: bash scripts/automerge-sweep.sh

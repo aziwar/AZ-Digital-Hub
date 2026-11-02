@@ -13,6 +13,10 @@
 # fail closed on every parse error, re-read right before the arm. The re-read narrows but cannot close the last race.
 # Optional LOW_NEEDS_CHECK=1 (report-stack, whose ruleset has NO required checks): risk:LOW arms only when the exact head has at least
 # one completed SUCCESSFUL check run; with none (or when the check-runs call fails) LOW is treated as NORMAL and needs the fable verdict.
+# Server-side half (Astra HIGH on PRs 20/65): every decision is ALSO posted as the commit status `lens-gate` on the exact head
+# (scripts/lens-gate-status.sh): success = eligible, pending = verdict missing or draft, failure = hold label or PR closed. The
+# status is posted BEFORE the arm/disarm call. When the ruleset requires the context `lens-gate`, a new head cannot merge until the
+# trusted workflow has posted success for that head, so a late, queued or missing run cannot let stale approval ride along.
 # Exit: 0 = decision applied (including "nothing to do"); 1 = refused or error (best-effort disarm was attempted).
 set -u
 PR_URL="${1:-}"
@@ -35,6 +39,10 @@ fail() { # fail closed: try to disarm, then exit 1
 [ -n "$REPO" ] || { echo "automerge-reconcile: REFUSED GITHUB_REPOSITORY is not set" >&2; exit 1; }
 [[ "$PR_URL" =~ ^https://github\.com/${REPO}/pull/[0-9]+$ ]] || { echo "automerge-reconcile: REFUSED pr_url must be https://github.com/${REPO}/pull/<n>" >&2; exit 1; }
 
+post_gate() { # posts lens-gate for $HEAD from the last evaluate(); failing to post is a refusal (never arm without it)
+  bash "$(dirname "$0")/lens-gate-status.sh" "$HEAD" "$GATE" "$WHY" >/dev/null || fail "could not post the lens-gate status"
+}
+
 # evaluate <PR JSON>: sets HEAD, ARMED (true|false), ELIGIBLE (1|0), WHY. Any parse problem calls fail().
 evaluate() {
   local J="$1" STATE DRAFT HOLD RISKS NEED FABLE ASTRA
@@ -49,22 +57,23 @@ evaluate() {
   RISKS=$(printf '%s' "$J" | jq -r '[.labels[].name | select(. == "risk:LOW" or . == "risk:NORMAL" or . == "risk:HIGH")] | join(",")') || fail "cannot parse risk labels"
   case ",$RISKS," in *,risk:HIGH,*) NEED=HIGH ;; *,risk:NORMAL,*) NEED=NORMAL ;; *,risk:LOW,*) NEED=LOW ;; *) NEED=NORMAL ;; esac
   ELIGIBLE=0
+  GATE=pending
   WHY=""
   if [ "$NEED" = LOW ] && [ "${LOW_NEEDS_CHECK:-0}" = "1" ] && [ "$STATE" = "OPEN" ]; then
     CHECKS=$(gh api "repos/${REPO}/commits/${HEAD}/check-runs" --jq '[.check_runs[] | select(.status == "completed" and .conclusion == "success")] | length' 2>/dev/null) || CHECKS=0
     [[ "$CHECKS" =~ ^[0-9]+$ ]] || CHECKS=0
     if [ "$CHECKS" -lt 1 ]; then NEED=NORMAL; WHY="risk:LOW has no successful check run on this head, treated as NORMAL; "; fi
   fi
-  if [ "$STATE" != "OPEN" ]; then WHY="PR is not open ($STATE)"
+  if [ "$STATE" != "OPEN" ]; then GATE=failure; WHY="PR is not open ($STATE)"
   elif [ "$DRAFT" != "false" ]; then WHY="PR is a draft"
-  elif [ -n "$HOLD" ]; then WHY="hold label present: $HOLD"
+  elif [ -n "$HOLD" ]; then GATE=failure; WHY="hold label present: $HOLD"
   else
     FABLE=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: fable PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"
     ASTRA=$(printf '%s' "$J" | jq -r --arg u "$OWNER_LOGIN" --arg s "$HEAD" '[.comments[] | select(.author.login == $u) | select(.body | test("^\\s*lens-verdict: astra PASS " + $s + "\\s*$"))] | length') || fail "cannot parse comments"
-    if [ "$NEED" = LOW ]; then ELIGIBLE=1; WHY="risk:LOW needs no lens verdict"
+    if [ "$NEED" = LOW ]; then ELIGIBLE=1; GATE=success; WHY="risk:LOW needs no lens verdict"
     elif [ "$FABLE" -lt 1 ]; then WHY="${WHY}risk $NEED needs 'lens-verdict: fable PASS $HEAD' by $OWNER_LOGIN on the current head"
     elif [ "$NEED" = HIGH ] && [ "$ASTRA" -lt 1 ]; then WHY="${WHY}risk HIGH also needs 'lens-verdict: astra PASS $HEAD' by $OWNER_LOGIN on the current head"
-    else ELIGIBLE=1; WHY="risk $NEED lens verdicts present on $HEAD"; fi
+    else ELIGIBLE=1; GATE=success; WHY="risk $NEED lens verdicts present on $HEAD"; fi
   fi
 }
 
@@ -77,10 +86,12 @@ if [ "$ELIGIBLE" = 1 ] && [ "$ARMED" = false ]; then
   evaluate "$J2"
   [ "$HEAD" = "$FIRST_HEAD" ] || fail "head moved between the checks; run again"
   if [ "$ELIGIBLE" = 1 ] && [ "$ARMED" = false ]; then
+    post_gate
     gh_merge --auto --squash --match-head-commit "$HEAD" "$PR_URL" || fail "gh pr merge --auto failed"
     echo "automerge-reconcile: ARMED $PR_URL at $HEAD ($WHY)"; exit 0
   fi
 fi
+post_gate
 if [ "$ELIGIBLE" = 1 ]; then echo "automerge-reconcile: KEEP armed ($WHY)"; exit 0; fi
 if [ "$ARMED" = true ]; then
   gh_merge --disable-auto "$PR_URL" || fail "gh pr merge --disable-auto failed"
