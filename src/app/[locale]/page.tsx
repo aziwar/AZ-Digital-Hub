@@ -4,6 +4,7 @@ import About from '@/components/sections/About'
 import EnhancedContact from '@/components/sections/EnhancedContact'
 import EnhancedHero from '@/components/sections/EnhancedHero'
 import FAQ from '@/components/sections/FAQ'
+import LatestArticles from '@/components/sections/LatestArticles'
 import Portfolio from '@/components/sections/Portfolio'
 import Process from '@/components/sections/Process'
 import Services from '@/components/sections/Services'
@@ -34,6 +35,7 @@ export default async function Home({
         <Portfolio />
         <About />
         <FAQ />
+        <LatestArticles locale={locale} />
         <EnhancedContact
           messages={messages.Contact}
           title={contact.rich('title', {
