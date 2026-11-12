@@ -1,7 +1,7 @@
 # PR shepherd (ticket 8193e95f, 2026-11-12). Owner rule, Rahmi dfd9034e (2026-11-02 12:43, «موافق»):
 # "ARM auto-merge only after the required lens verdicts exist as owner comments
 #  'lens-verdict: <fable|astra> PASS <full head sha>' on the EXACT current head ... Disarm on a new push."
-# Native features only. Steps (b) arm and (c) update-branch run only when repo variable SHEPHERD_ACT=true;
+# Native features only. Step (b) merges (no persistent auto-merge: head-pinned merge only when CLEAN; Codex review 2026-11-12). Steps (b) merge and (c) update-branch run only when repo variable SHEPHERD_ACT=true;
 # otherwise the run is REPORT-ONLY.
 name: pr-shepherd
 
@@ -74,8 +74,11 @@ jobs:
             elif [ "$NOAM" = true ]; then ACTION="no-automerge label"
             elif [ "$OK" = true ] && [ "$ARM" = false ]; then
               if [ "$ACT" = true ]; then
-                if gh pr merge "$N" -R "$REPO" --auto --squash --match-head-commit "$HEAD" >/dev/null 2>&1; then ACTION="ARMED"; ARMED=$((ARMED+1)); else ACTION="arm FAILED"; fi
-              else ACTION="would arm (report-only)"; fi
+                # No persistent auto-merge (a later push by a writer would keep it armed). Merge only now, when GitHub reports
+                # CLEAN (required checks green), atomically pinned to the verified head: a new head makes the merge fail.
+                if [ "$MS" != "CLEAN" ]; then ACTION="verdict ok, waiting for required checks (merge state $MS)"
+                elif gh pr merge "$N" -R "$REPO" --squash --match-head-commit "$HEAD" >/dev/null 2>&1; then ACTION="MERGED (head pinned)"; ARMED=$((ARMED+1)); else ACTION="merge FAILED (head changed or blocked)"; fi
+              else ACTION="would merge when CLEAN (report-only)"; fi
             elif [ "$OK" = true ]; then ACTION="already armed"
             else
               case "$RISK" in ""|*,*) ACTION="needs exactly one risk label" ;; *) ACTION="waiting for lens verdict on head" ;; esac
