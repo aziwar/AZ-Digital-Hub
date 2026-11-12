@@ -1,0 +1,118 @@
+# PR shepherd (ticket 8193e95f, 2026-11-12). Owner rule, Rahmi dfd9034e (2026-11-02 12:43, «موافق»):
+# "ARM auto-merge only after the required lens verdicts exist as owner comments
+#  'lens-verdict: <fable|astra> PASS <full head sha>' on the EXACT current head ... Disarm on a new push."
+# Native features only. Step (b) merges (no persistent auto-merge: head-pinned merge only when CLEAN; Codex review 2026-11-12). Steps (b) merge and (c) update-branch run only when repo variable SHEPHERD_ACT=true;
+# otherwise the run is REPORT-ONLY.
+name: pr-shepherd
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+  # Disarm on a new push (owner rule). No checkout happens in this workflow, so pull_request_target is safe.
+  pull_request_target:
+    types: [synchronize, labeled, unlabeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-shepherd
+  cancel-in-progress: false
+
+jobs:
+  shepherd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SHEPHERD_ACT: ${{ vars.SHEPHERD_ACT }}
+      RAHMI_OBS_URL: ${{ vars.RAHMI_OBS_URL }}
+      BRAIN_BEARER_TOKEN: ${{ secrets.BRAIN_BEARER_TOKEN }}
+    steps:
+      - name: Shepherd open PRs
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPO="$GITHUB_REPOSITORY"; OWNER="${REPO%%/*}"
+          ACT=false; [ "${SHEPHERD_ACT:-false}" = "true" ] && ACT=true
+          NOW=$(date +%s)
+          PRS=$(gh pr list -R "$REPO" --state open --limit 200 \
+            --json number,title,isDraft,headRefOid,createdAt,labels,autoMergeRequest,mergeStateStatus,author)
+          COUNT=$(jq length <<<"$PRS")
+          ROWS=""; FILES_MAP="{}"; OLD=0; ARMED=0; UPDATED=0
+          for N in $(jq -r '.[].number' <<<"$PRS"); do
+            P=$(jq --argjson n "$N" '.[]|select(.number==$n)' <<<"$PRS")
+            HEAD=$(jq -r .headRefOid <<<"$P"); DRAFT=$(jq -r .isDraft <<<"$P")
+            MS=$(jq -r .mergeStateStatus <<<"$P"); ARM=$(jq -r '.autoMergeRequest!=null' <<<"$P")
+            AGE=$(( (NOW - $(date -d "$(jq -r .createdAt <<<"$P")" +%s)) / 86400 ))
+            RISK=$(jq -r '[.labels[].name|select(startswith("risk:"))]|join(",")' <<<"$P")
+            NOAM=$(jq -r '[.labels[].name]|(index("no-automerge")!=null or index("needs:owner-yes")!=null)' <<<"$P")
+            FILES=$(gh pr view "$N" -R "$REPO" --json files -q '[.files[].path]')
+            FILES_MAP=$(jq --arg n "$N" --argjson f "$FILES" '.[$n]=$f' <<<"$FILES_MAP")
+            COMMENTS=$(gh api --paginate "repos/$REPO/issues/$N/comments" | jq -s 'add // []')
+            V=$(jq -c --arg owner "$OWNER" --arg head "$HEAD" '
+              [ .[] | select((.user.login|ascii_downcase)==($owner|ascii_downcase)) | . as $c |
+                if .updated_at != .created_at then {at:.updated_at,lens:"*",v:"FAIL"}
+                else (.body|split("\n")[] | capture("^[ \\t]*lens-verdict:[ \\t]*(?<lens>fable|astra|egm-loop|egm)[ \\t]+(?<v>PASS|REVISE|FAIL)[ \\t]+(?<sha>[0-9a-f]{40})[ \\t]*$")
+                      | select(.sha==$head) | {at:$c.created_at,lens:.lens,v:.v}) end ] as $ev |
+              ["fable","astra","egm","egm-loop"] | map(. as $l | {key:$l, value:(([$ev[]|select(.lens==$l or .lens=="*")]|sort_by(.at)|last|.v)=="PASS")}) | from_entries' <<<"$COMMENTS")
+            F=$(jq .fable <<<"$V"); A=$(jq .astra <<<"$V"); E=$(jq .egm <<<"$V"); EL=$(jq '."egm-loop"' <<<"$V")
+            OK=false
+            case "$RISK" in
+              risk:LOW) OK=true ;;
+              risk:NORMAL) [ "$F" = true ] && OK=true ;;
+              risk:HIGH) [ "$F" = true ] && [ "$A" = true ] && OK=true ;;
+            esac
+            ACTION="-"
+            if [ "$ARM" = true ] && { [ "$OK" = false ] || [ "$NOAM" = true ] || [ "$DRAFT" = true ]; }; then
+              if [ "$ACT" = true ]; then
+                if gh pr merge "$N" -R "$REPO" --disable-auto >/dev/null 2>&1; then ACTION="DISARMED (no valid verdict on head, or no-automerge/draft)"; else ACTION="disarm FAILED"; fi
+              else ACTION="would disarm (report-only)"; fi
+            elif [ "$DRAFT" = true ]; then ACTION="draft (cannot merge)"
+            elif [ "$NOAM" = true ]; then ACTION="no-automerge label"
+            elif [ "$OK" = true ] && [ "$ARM" = false ]; then
+              if [ "$ACT" = true ]; then
+                # No persistent auto-merge (a later push by a writer would keep it armed). Merge only now, when GitHub reports
+                # CLEAN (required checks green), atomically pinned to the verified head: a new head makes the merge fail.
+                if [ "$MS" != "CLEAN" ]; then ACTION="verdict ok, waiting for required checks (merge state $MS)"
+                elif gh pr merge "$N" -R "$REPO" --squash --match-head-commit "$HEAD" >/dev/null 2>&1; then ACTION="MERGED (head pinned)"; ARMED=$((ARMED+1)); else ACTION="merge FAILED (head changed or blocked)"; fi
+              else ACTION="would merge when CLEAN (report-only)"; fi
+            elif [ "$OK" = true ]; then ACTION="already armed"
+            else
+              case "$RISK" in ""|*,*) ACTION="needs exactly one risk label" ;; *) ACTION="waiting for lens verdict on head" ;; esac
+            fi
+            # update-branch only for PRs that are not armed and have no valid verdict (an update changes the head and voids a verdict; risk:LOW needs no verdict, so it may be updated)
+            if [ "$MS" = "BEHIND" ] && [ "$ARM" = false ] && { [ "$OK" = false ] || [ "$RISK" = risk:LOW ]; }; then
+              if [ "$ACT" = true ]; then
+                gh pr update-branch "$N" -R "$REPO" >/dev/null 2>&1 && { ACTION="$ACTION; branch updated"; UPDATED=$((UPDATED+1)); } || ACTION="$ACTION; update-branch FAILED"
+              else ACTION="$ACTION; would update-branch (report-only)"; fi
+            elif [ "$MS" = "BEHIND" ]; then ACTION="$ACTION; behind base (not updated: armed or verdict on head)"; fi
+            [ "$MS" = "DIRTY" ] && ACTION="$ACTION; CONFLICT (needs rebase)"
+            FLAG=""; [ "$AGE" -ge 3 ] && { FLAG="OLD"; OLD=$((OLD+1)); }
+            ROWS="$ROWS| #$N | ${AGE}d $FLAG | $DRAFT | ${RISK:--} | $MS | F=$F A=$A | $ACTION |"$'\n'
+          done
+          OVERLAP=$(jq -r '. as $m | [keys[]] as $k | [range(0;($k|length)) as $i | range($i+1;($k|length)) as $j |
+              {a:$k[$i],b:$k[$j],c:([$m[$k[$i]][]] - ([$m[$k[$i]][]] - $m[$k[$j]]))}|select(.c|length>0)]
+              | .[] | "- #\(.a) x #\(.b): \(.c|length) shared file(s), e.g. \(.c[0])"' <<<"$FILES_MAP")
+          MODE="REPORT-ONLY"; [ "$ACT" = true ] && MODE="ACT"
+          {
+            echo "## PR shepherd: $REPO ($MODE) $(date -u +%FT%TZ)"
+            echo "Open PRs: $COUNT | older than 3 days: $OLD | armed this run: $ARMED | branches updated: $UPDATED"
+            echo
+            echo "| PR | age | draft | risk | merge state | lens (head) | action |"
+            echo "|---|---|---|---|---|---|---|"
+            printf '%s' "$ROWS"
+            echo
+            echo "### Overlap (open PRs touching the same files)"
+            if [ -n "$OVERLAP" ]; then echo "$OVERLAP"; else echo "none"; fi
+          } | tee -a "${GITHUB_STEP_SUMMARY:-/dev/null}"
+          # Optional Rahmi observation: needs BRAIN_BEARER_TOKEN secret and RAHMI_OBS_URL variable; skipped otherwise.
+          if [ -n "${BRAIN_BEARER_TOKEN:-}" ] && [ -n "${RAHMI_OBS_URL:-}" ]; then
+            BODY=$(jq -n --arg c "PR shepherd $REPO $MODE: open=$COUNT older3d=$OLD armed=$ARMED updated=$UPDATED" '{entity_name:"pr-shepherd",observation_type:"fact",content:$c,source:"agent-inferred:pr-shepherd"}')
+            curl -sS -m 20 -X POST -H "Authorization: Bearer $BRAIN_BEARER_TOKEN" -H "Content-Type: application/json" -d "$BODY" "$RAHMI_OBS_URL" >/dev/null \
+              && echo "rahmi observation posted" || echo "rahmi observation FAILED (non-fatal)"
+          else
+            echo "Rahmi observation skipped: BRAIN_BEARER_TOKEN secret and/or RAHMI_OBS_URL variable not set."
+          fi
