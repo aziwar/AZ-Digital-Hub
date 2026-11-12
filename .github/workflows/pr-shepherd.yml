@@ -48,7 +48,7 @@ jobs:
             MS=$(jq -r .mergeStateStatus <<<"$P"); ARM=$(jq -r '.autoMergeRequest!=null' <<<"$P")
             AGE=$(( (NOW - $(date -d "$(jq -r .createdAt <<<"$P")" +%s)) / 86400 ))
             RISK=$(jq -r '[.labels[].name|select(startswith("risk:"))]|join(",")' <<<"$P")
-            NOAM=$(jq -r '[.labels[].name]|index("no-automerge")!=null' <<<"$P")
+            NOAM=$(jq -r '[.labels[].name]|(index("no-automerge")!=null or index("needs:owner-yes")!=null)' <<<"$P")
             FILES=$(gh pr view "$N" -R "$REPO" --json files -q '[.files[].path]')
             FILES_MAP=$(jq --arg n "$N" --argjson f "$FILES" '.[$n]=$f' <<<"$FILES_MAP")
             COMMENTS=$(gh api --paginate "repos/$REPO/issues/$N/comments" | jq -s 'add // []')
@@ -83,8 +83,8 @@ jobs:
             else
               case "$RISK" in ""|*,*) ACTION="needs exactly one risk label" ;; *) ACTION="waiting for lens verdict on head" ;; esac
             fi
-            # update-branch only for PRs that are not armed and have no valid verdict (an update changes the head and voids a verdict)
-            if [ "$MS" = "BEHIND" ] && [ "$ARM" = false ] && [ "$OK" = false ]; then
+            # update-branch only for PRs that are not armed and have no valid verdict (an update changes the head and voids a verdict; risk:LOW needs no verdict, so it may be updated)
+            if [ "$MS" = "BEHIND" ] && [ "$ARM" = false ] && { [ "$OK" = false ] || [ "$RISK" = risk:LOW ]; }; then
               if [ "$ACT" = true ]; then
                 gh pr update-branch "$N" -R "$REPO" >/dev/null 2>&1 && { ACTION="$ACTION; branch updated"; UPDATED=$((UPDATED+1)); } || ACTION="$ACTION; update-branch FAILED"
               else ACTION="$ACTION; would update-branch (report-only)"; fi
