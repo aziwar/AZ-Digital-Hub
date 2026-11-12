@@ -9,6 +9,9 @@ on:
   schedule:
     - cron: "17 5 * * *"
   workflow_dispatch:
+  # Disarm on a new push (owner rule). No checkout happens in this workflow, so pull_request_target is safe.
+  pull_request_target:
+    types: [synchronize, labeled, unlabeled]
 
 permissions:
   contents: write
@@ -59,28 +62,30 @@ jobs:
             OK=false
             case "$RISK" in
               risk:LOW) OK=true ;;
-              risk:NORMAL) { [ "$F" = true ] || [ "$A" = true ] || [ "$E" = true ]; } && OK=true ;;
-              risk:HIGH) { { [ "$F" = true ] && [ "$A" = true ]; } || [ "$EL" = true ]; } && OK=true ;;
+              risk:NORMAL) [ "$F" = true ] && OK=true ;;
+              risk:HIGH) [ "$F" = true ] && [ "$A" = true ] && OK=true ;;
             esac
             ACTION="-"
-            if [ "$DRAFT" = true ]; then ACTION="draft (cannot merge)"
+            if [ "$ARM" = true ] && { [ "$OK" = false ] || [ "$NOAM" = true ] || [ "$DRAFT" = true ]; }; then
+              if [ "$ACT" = true ]; then
+                if gh pr merge "$N" -R "$REPO" --disable-auto >/dev/null 2>&1; then ACTION="DISARMED (no valid verdict on head, or no-automerge/draft)"; else ACTION="disarm FAILED"; fi
+              else ACTION="would disarm (report-only)"; fi
+            elif [ "$DRAFT" = true ]; then ACTION="draft (cannot merge)"
             elif [ "$NOAM" = true ]; then ACTION="no-automerge label"
             elif [ "$OK" = true ] && [ "$ARM" = false ]; then
               if [ "$ACT" = true ]; then
-                if gh pr merge "$N" -R "$REPO" --auto --squash >/dev/null 2>&1; then ACTION="ARMED"; ARMED=$((ARMED+1)); else ACTION="arm FAILED"; fi
+                if gh pr merge "$N" -R "$REPO" --auto --squash --match-head-commit "$HEAD" >/dev/null 2>&1; then ACTION="ARMED"; ARMED=$((ARMED+1)); else ACTION="arm FAILED"; fi
               else ACTION="would arm (report-only)"; fi
-            elif [ "$OK" = true ] && [ "$ARM" = true ]; then ACTION="already armed"
-            elif [ "$OK" = false ] && [ "$ARM" = true ]; then
-              if [ "$ACT" = true ]; then gh pr merge "$N" -R "$REPO" --disable-auto >/dev/null 2>&1 && ACTION="DISARMED (no valid verdict on head)"
-              else ACTION="would disarm (report-only)"; fi
+            elif [ "$OK" = true ]; then ACTION="already armed"
             else
               case "$RISK" in ""|*,*) ACTION="needs exactly one risk label" ;; *) ACTION="waiting for lens verdict on head" ;; esac
             fi
-            if [ "$MS" = "BEHIND" ]; then
+            # update-branch only for PRs that are not armed and have no valid verdict (an update changes the head and voids a verdict)
+            if [ "$MS" = "BEHIND" ] && [ "$ARM" = false ] && [ "$OK" = false ]; then
               if [ "$ACT" = true ]; then
                 gh pr update-branch "$N" -R "$REPO" >/dev/null 2>&1 && { ACTION="$ACTION; branch updated"; UPDATED=$((UPDATED+1)); } || ACTION="$ACTION; update-branch FAILED"
               else ACTION="$ACTION; would update-branch (report-only)"; fi
-            fi
+            elif [ "$MS" = "BEHIND" ]; then ACTION="$ACTION; behind base (not updated: armed or verdict on head)"; fi
             [ "$MS" = "DIRTY" ] && ACTION="$ACTION; CONFLICT (needs rebase)"
             FLAG=""; [ "$AGE" -ge 3 ] && { FLAG="OLD"; OLD=$((OLD+1)); }
             ROWS="$ROWS| #$N | ${AGE}d $FLAG | $DRAFT | ${RISK:--} | $MS | F=$F A=$A | $ACTION |"$'\n'
