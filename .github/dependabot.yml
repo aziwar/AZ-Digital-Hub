@@ -2,6 +2,9 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    labels:
+      - dependencies
+      - risk:LOW
     schedule:
       interval: weekly
       day: monday
@@ -25,5 +28,8 @@ updates:
 
   - package-ecosystem: github-actions
     directory: /
+    labels:
+      - dependencies
+      - risk:LOW
     schedule:
       interval: monthly
