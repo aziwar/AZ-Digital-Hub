@@ -12,7 +12,7 @@ export async function GET() {
   const secret = process.env.VOICE_RELAY_ACCESS_CLIENT_SECRET
   if (!base || !id || !secret) return NextResponse.json({ ok: false, error: 'not-configured' }, { status: 503 })
   try {
-    const res = await fetch(`${base.replace(/\/$/, '')}/healthz`, {
+    const res = await fetch(`${base.replace(/\/$/, '')}/`, {
       headers: { 'CF-Access-Client-Id': id, 'CF-Access-Client-Secret': secret },
       redirect: 'manual',
       signal: AbortSignal.timeout(10_000)
