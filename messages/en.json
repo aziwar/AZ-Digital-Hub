@@ -370,5 +370,25 @@
     "switchToEnglish": "Switch to English",
     "switchToArabic": "Switch to Arabic",
     "skipToContent": "Skip to content"
+  },
+  "VoiceLab": {
+    "label": "Talk to me - Ahmed's AI assistant",
+    "bubbleTitle": "Need help? Talk to me.",
+    "bubbleSub": "AI assistant. Tap to speak.",
+    "bubbleClose": "Dismiss",
+    "panelTitle": "Ahmed's AI assistant",
+    "panelClose": "Close",
+    "disclosure": "You are talking to an AI assistant, not to Ahmed.",
+    "consent": "Your voice is processed by third-party speech and AI providers (including ElevenLabs) to turn it into text and answer you. Transcript handling: to be confirmed by the owner. Sessions are limited in length. Privacy notice: coming before launch.",
+    "agree": "I agree",
+    "start": "Start talking",
+    "connecting": "Connecting...",
+    "micOn": "Microphone on",
+    "mute": "Mute",
+    "muted": "Muted",
+    "end": "End",
+    "whatsapp": "Message on WhatsApp instead",
+    "errConnect": "Connection failed. Please try again.",
+    "labBanner": "Test page. The voice session is a stub: only the relay health is checked."
   }
 }
