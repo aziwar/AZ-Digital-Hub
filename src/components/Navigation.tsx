@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
+import { AGENT_URL } from '@/components/contactDetails';
 import { imageConfig } from '@/lib/images.config';
 import { createTranslator, type MessageTree } from '@/lib/messages';
 
@@ -67,11 +68,29 @@ const Navigation: React.FC<NavigationProps> = ({ messages, locale, languageLabel
                 {t(`menu.${item.key}`)}
               </a>
             ))}
+            <a
+              href={AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-purple-400/50 bg-purple-600/20 hover:bg-purple-600/30 text-purple-200 text-sm font-medium px-3 min-h-[44px] whitespace-nowrap transition-colors focus-enhanced"
+            >
+              <span className="w-2 h-2 bg-cyan-400 rounded-full" aria-hidden="true"></span>
+              {t('agent')}
+            </a>
             <LanguageSwitcher currentLocale={locale} labels={languageLabels} hrefs={languageHrefs} />
           </div>
 
           {/* Mobile: the language links stay in the bar, so they work without JS (the menu needs JS) */}
           <div className="lg:hidden flex items-center gap-1.5">
+            <a
+              href={AGENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-purple-400/50 bg-purple-600/20 hover:bg-purple-600/30 text-purple-200 text-sm font-medium px-3 min-h-[44px] whitespace-nowrap transition-colors focus-enhanced"
+            >
+              <span className="w-2 h-2 bg-cyan-400 rounded-full" aria-hidden="true"></span>
+              {t('agent')}
+            </a>
             <LanguageSwitcher currentLocale={locale} labels={languageLabels} hrefs={languageHrefs} />
 
             {/* Mobile menu button */}
