@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
-import { WHATSAPP_NUMBER } from '@/components/contactDetails';
+import { AGENT_URL, WHATSAPP_NUMBER } from '@/components/contactDetails';
 import { VideoBackground } from '@/components/ui/VideoBackground';
 import { imageConfig } from '@/lib/images.config';
 
@@ -71,6 +71,16 @@ const EnhancedHero: React.FC = () => {
                 className="px-8 py-4 min-h-[44px] flex items-center justify-center rounded-xl border border-green-400/40 bg-white/5 hover:bg-green-600/20 text-green-200 font-semibold text-base sm:text-lg transition-colors focus-enhanced"
               >
                 {t('cta.whatsapp.text')}
+              </a>
+
+              <a
+                href={AGENT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-purple-400/50 bg-purple-600/20 hover:bg-purple-600/30 text-purple-200 font-semibold text-base sm:text-lg transition-colors focus-enhanced"
+              >
+                <span className="w-2 h-2 bg-cyan-400 rounded-full motion-safe:animate-pulse" aria-hidden="true"></span>
+                {t('cta.agent')}
               </a>
             </div>
 
