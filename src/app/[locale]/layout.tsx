@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { preload } from 'react-dom'
 
 import TalkingAvatarSlot from '@/components/avatar/TalkingAvatarSlot'
 import Footer from '@/components/Footer'
@@ -120,6 +121,12 @@ export default async function RootLayout({
   const t = await getTranslations({ locale, namespace: 'Metadata' })
   const isArabic = locale === 'ar'
 
+  if (isArabic) {
+    for (const href of ARABIC_PRELOAD_FONTS) {
+      preload(href, { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' })
+    }
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -181,9 +188,6 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={isArabic ? 'rtl' : 'ltr'} data-scroll-behavior="smooth">
       <head>
-        {isArabic && ARABIC_PRELOAD_FONTS.map((href) => (
-          <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="anonymous" />
-        ))}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
