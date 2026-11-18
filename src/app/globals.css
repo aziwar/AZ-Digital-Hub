@@ -1109,6 +1109,19 @@ html {
 [dir="rtl"] .observe-slide-right.is-visible {
   transform: translateX(0);
 }
+
+/* Scripting Disabled Fallback */
+@media (scripting: none) {
+  .observe-fade-in,
+  .observe-slide-left,
+  .observe-slide-right,
+  .observe-stagger-children,
+  .observe-stagger-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
 /* ============================================================================
    RTL-Aware Animation Utilities (tailwindcss-animate wrappers)
    ============================================================================ */
