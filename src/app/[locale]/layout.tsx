@@ -7,6 +7,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { preload } from 'react-dom'
 
 import TalkingAvatarSlot from '@/components/avatar/TalkingAvatarSlot'
+import { AGENT_URL } from '@/components/contactDetails'
 import Footer from '@/components/Footer'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
@@ -120,6 +121,7 @@ export default async function RootLayout({
 
   const t = await getTranslations({ locale, namespace: 'Metadata' })
   const isArabic = locale === 'ar'
+  const common = await getTranslations({ locale, namespace: 'Common' })
 
   if (isArabic) {
     for (const href of ARABIC_PRELOAD_FONTS) {
@@ -207,6 +209,15 @@ export default async function RootLayout({
           {children}
           <Footer locale={locale} />
           <TalkingAvatarSlot />
+          <a
+            href={AGENT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 end-6 z-50 inline-flex items-center gap-2 rounded-full border border-purple-400/50 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm px-5 min-h-[44px] shadow-lg transition-colors focus-enhanced"
+          >
+            <span className="w-2 h-2 bg-cyan-300 rounded-full motion-safe:animate-pulse" aria-hidden="true"></span>
+            {common('agentLauncher')}
+          </a>
         </NextIntlClientProvider>
         {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
         {process.env.VERCEL && (
