@@ -5,7 +5,7 @@
       "about": "About",
       "services": "Services",
       "process": "Process",
-      "engagements": "What I build",
+      "engagements": "Case studies",
       "faq": "FAQ",
       "articles": "Articles",
       "contact": "Contact"
@@ -172,68 +172,39 @@
     ]
   },
   "Portfolio": {
-    "title": "What I build",
-    "subtitle": "Over the past 12 months I have delivered these types of AI solutions for large enterprises and public-sector organisations. Client names and details stay confidential.",
+    "title": "Case studies",
+    "subtitle": "Four examples of problems I have worked on, what I built, and what was measured.",
+    "labels": {
+      "problem": "The problem",
+      "built": "What I built",
+      "result": "The result"
+    },
     "items": [
       {
-        "title": "AI avatar and assistant systems",
-        "description": "Conversational assistants, including on-screen AI avatars, that answer questions from an organisation's own approved content.",
-        "points": [
-          "Arabic and English conversations",
-          "Answers drawn from approved sources",
-          "Connected to existing channels and systems"
-        ]
+        "title": "Delivery pricing for a Gulf meat retailer",
+        "problem": "Free-form customer addresses made it difficult to identify the delivery area and charge the right price.",
+        "built": "An address-matching and delivery pricing engine with checks for area and pricing exceptions.",
+        "result": "In tests, 357 of 372 real addresses (96%) resolved to the right area; all 137 of 137 prices were correct in blind checks."
       },
       {
-        "title": "Document-intelligence and legal-content portals",
-        "description": "Portals that organise large bodies of documents, including legal content, so people can find, read and question them quickly.",
-        "points": [
-          "Search and questions in plain language",
-          "Structured navigation of legal content",
-          "Review steps where accuracy matters"
-        ]
+        "title": "Memory and search for AI agents",
+        "problem": "Agents needed to retrieve the owner's recorded decisions across work sessions.",
+        "built": "A private memory and search system, still under evaluation, for decisions and project context.",
+        "result": "The right decision appeared in the top five results for 56 of 63 questions about the owner's decisions and 77 of 100 questions about project decisions."
       },
       {
-        "title": "AI model gateways",
-        "description": "A single, controlled entry point between an organisation's applications and the AI models they use.",
-        "points": [
-          "One access point for several models",
-          "Access control and usage visibility",
-          "Cost control by team or use case"
-        ]
+        "title": "One gateway for AI models",
+        "problem": "Using several AI models made access, budgets and price accuracy harder to control.",
+        "built": "A shared gateway with a daily budget for each key and auditable model pricing.",
+        "result": "A pricing audit found and fixed 13 incorrect model prices."
       },
       {
-        "title": "Process automation agents",
-        "description": "AI agents that take on repetitive steps in a business process and hand over to people where judgement is needed.",
-        "points": [
-          "Built around existing workflows",
-          "Human approval at defined points",
-          "Connected to the systems already in use"
-        ]
+        "title": "A personal assistant on Telegram",
+        "problem": "Finding the owner's own recorded decisions during a conversation took manual effort.",
+        "built": "A Telegram assistant that answers using the owner's recorded decisions; 456 rules were loaded.",
+        "result": "On 23 November 2026, one measured answer was correct, took about 5 seconds and cost about one US cent."
       }
     ],
-    "stack": {
-      "title": "My own AI operations stack",
-      "description": "I do not only advise on these systems; I built and run my own. My daily work runs on an AI operations stack I operate myself:",
-      "items": [
-        {
-          "title": "Persistent AI memory",
-          "description": "A knowledge system that keeps context and decisions available across work sessions."
-        },
-        {
-          "title": "Self-hosted secrets management",
-          "description": "Credentials and keys kept on infrastructure I control."
-        },
-        {
-          "title": "Self-hosted web intelligence",
-          "description": "A crawling service that gathers and structures web information."
-        },
-        {
-          "title": "Multi-model orchestration",
-          "description": "Claude, Codex/GPT and open models working together, with cost control."
-        }
-      ]
-    },
     "cta": {
       "text": "Want something similar for your business?",
       "button": "Request a discovery call"
