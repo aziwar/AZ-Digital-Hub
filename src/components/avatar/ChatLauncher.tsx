@@ -38,7 +38,7 @@ export default function ChatLauncher({ copy }: { copy: LauncherCopy }) {
       <span
         aria-hidden="true"
         data-chat-bubble=""
-        className={`pointer-events-none absolute right-[76px] bottom-2 w-max max-w-[min(260px,calc(100vw-124px))] rounded-[16px_16px_4px_16px] bg-white px-3.5 py-2.5 text-start text-sm leading-normal font-medium text-slate-900 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-[opacity,transform,visibility] duration-300 motion-reduce:transition-none ${
+        className={`pointer-events-none absolute right-[76px] bottom-2 max-sm:bottom-[max(8px,calc(100svh-716px))] w-max max-w-[min(260px,calc(100vw-124px))] rounded-[16px_16px_4px_16px] bg-white px-3.5 py-2.5 text-start text-sm leading-normal font-medium text-slate-900 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-[opacity,transform,visibility] duration-300 motion-reduce:transition-none ${
           bubble ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-1.5 opacity-0'
         }`}
       >
