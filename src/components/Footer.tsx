@@ -11,8 +11,8 @@ export default async function Footer({ locale }: { locale: string }) {
   const approach = t.raw('approach.items') as string[]
 
   return (
-    <footer className={`bg-slate-900 border-t border-slate-800 py-12${isAvatarEnabled() ? ' max-sm:pb-44' : ''}`}>
-      {/* max-sm:pb-44: with the chat launcher on, the last footer lines end above the floating photo */}
+    <footer className={`bg-slate-900 border-t border-slate-800 py-12${isAvatarEnabled() ? ' max-sm:pb-28' : ''}`}>
+      {/* max-sm:pb-28: with the chat launcher on, the last footer lines end above the floating photo */}
       <div className="max-w-7xl mx-auto px-4">
 
         <div className="text-center mb-10 p-6 bg-linear-to-r/srgb from-purple-900/30 to-cyan-900/30 rounded-xl border border-purple-500/30">
