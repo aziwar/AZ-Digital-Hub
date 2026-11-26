@@ -206,7 +206,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={null}>
           {children}
           <Footer locale={locale} />
-          <TalkingAvatarSlot />
+          <TalkingAvatarSlot locale={locale} />
         </NextIntlClientProvider>
         {/* Vercel injects these scripts only on its platform; elsewhere they 404 and log console errors */}
         {process.env.VERCEL && (

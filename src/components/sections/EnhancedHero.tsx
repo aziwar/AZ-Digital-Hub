@@ -4,6 +4,7 @@ import React from 'react';
 
 import { WHATSAPP_NUMBER } from '@/components/contactDetails';
 import { VideoBackground } from '@/components/ui/VideoBackground';
+import { isAvatarEnabled } from '@/lib/avatar';
 import { imageConfig } from '@/lib/images.config';
 
 const EnhancedHero: React.FC = () => {
@@ -53,7 +54,7 @@ const EnhancedHero: React.FC = () => {
             </div>
 
             {/* CTAs */}
-            <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-from-bottom motion-safe:delay-1000">
+            <div className={`mb-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-from-bottom motion-safe:delay-1000${isAvatarEnabled() ? ' max-sm:pr-[76px]' : ''}`}>
               <a
                 href="#contact"
                 className="group btn-primary btn-magnetic text-base sm:text-lg min-h-[44px] focus-enhanced"
